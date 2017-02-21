@@ -35,8 +35,7 @@ module.exports = function plugin (p, opts = {}) {
         value: trimmedValue
       }]
       if (opts.katex != null) {
-        const parsedChildrenAST = rehype.parse(opts.katex.renderToString(trimmedValue, {throwOnError: false}), {fragment: true})
-        hChildren = [parsedChildrenAST]
+        hChildren = [rehype.parse(opts.katex.renderToString(trimmedValue, {throwOnError: false}), {fragment: true})]
       }
 
       return eat(match[0])({
@@ -56,7 +55,6 @@ module.exports = function plugin (p, opts = {}) {
     }
   }
   inlineTokenizer.locator = locator
-  inlineTokenizer.notInLink = true
 
   // Inline math
   const inlineTokenizers = Parser.prototype.inlineTokenizers
