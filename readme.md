@@ -172,7 +172,7 @@ $$\alpha$$
 
 ## CAUTION
 
-This library is REQUIRED `remark-parse@`**`>=2.3.0`** as a peer dependency.
+This library requires `remark-parse@`**`>=2.3.0`** as a peer dependency.
 
 > For your information [wooorm/remark#232](https://github.com/wooorm/remark/issues/232)
 
