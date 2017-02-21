@@ -102,10 +102,10 @@ it('should set properties to math inline/block', () => {
   const processor = remark()
     .use(math, {
       inlineProperties: {
-        class: 'math-inline'
+        className: 'math-inline'
       },
       blockProperties: {
-        class: 'math-block'
+        className: 'math-block'
       }
     })
 
@@ -115,7 +115,7 @@ it('should set properties to math inline/block', () => {
   expect(ast.children[0].type).toEqual('paragraph')
   expect(ast.children[0].children.length).toEqual(1)
   expect(ast.children[0].children[0].type).toEqual('inlineMath')
-  expect(ast.children[0].children[0].data.hProperties.class).toEqual('math-inline')
+  expect(ast.children[0].children[0].data.hProperties.className).toEqual('math-inline')
   expect(ast.children[1].type).toEqual('math')
-  expect(ast.children[1].data.hProperties.class).toEqual('math-block')
+  expect(ast.children[1].data.hProperties.className).toEqual('math-block')
 })
