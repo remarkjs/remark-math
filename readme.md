@@ -1,5 +1,8 @@
 # Remark Math
 
+[![npm](https://img.shields.io/npm/v/remark-math.svg)](https://www.npmjs.com/package/remark-math)
+[![Build Status](https://travis-ci.org/Rokt33r/remark-math.svg?branch=master)](https://travis-ci.org/Rokt33r/remark-math)
+
 Add math inline and block syntax to Remark
 
 ## What does Remark Math?
