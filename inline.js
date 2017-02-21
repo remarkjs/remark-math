@@ -8,7 +8,7 @@ const ESCAPED_INLINE_MATH = /^\\\$/
 const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
-module.exports = function plugin (p, opts = {}) {
+module.exports = function inlinePlugin (p, opts = {}) {
   const Parser = p.Parser
 
   function inlineTokenizer (eat, value, silent) {

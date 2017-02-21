@@ -9,18 +9,16 @@ var C_DOLLAR = '$'
 var MIN_FENCE_COUNT = 2
 var CODE_INDENT_COUNT = 4
 
-module.exports = function plugin (p, opts = {}) {
+module.exports = function blockPlugin (p, opts = {}) {
   const Parser = p.Parser
 
   function blockTokenizer (eat, value, silent) {
-    var self = this
     var length = value.length + 1
     var index = 0
     var subvalue = ''
     var fenceCount
     var marker
     var character
-    var flag
     var queue
     var content
     var exdentedContent
@@ -96,9 +94,6 @@ module.exports = function plugin (p, opts = {}) {
     now = eat.now()
     now.column += subvalue.length
     now.offset += subvalue.length
-
-    subvalue += flag
-    flag = self.decode.raw(self.unescape(flag), now)
 
     if (queue) {
       subvalue += queue
