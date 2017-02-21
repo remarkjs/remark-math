@@ -83,29 +83,6 @@ module.exports = function plugin (p, opts = {}) {
       index++
     }
 
-    /* Eat flag. */
-    flag = queue = ''
-
-    while (index < length) {
-      character = value.charAt(index)
-
-      if (
-        character === C_NEWLINE ||
-        character === C_DOLLAR
-      ) {
-        break
-      }
-
-      if (character === C_SPACE || character === C_TAB) {
-        queue += character
-      } else {
-        flag += queue + character
-        queue = ''
-      }
-
-      index++
-    }
-
     character = value.charAt(index)
 
     if (character && character !== C_NEWLINE) {
