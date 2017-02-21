@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/remark-math.svg)](https://www.npmjs.com/package/remark-math)
 [![Build Status](https://travis-ci.org/Rokt33r/remark-math.svg?branch=master)](https://travis-ci.org/Rokt33r/remark-math)
 
-Add math inline and block syntax to Remark
+Math Inline and Block supporting for Remark
 
 ## What does Remark Math?
 
@@ -99,7 +99,7 @@ console.log(renderedString)
 
 ### Using only math inline(or math block)
 
-Access separate processors via `remark-math/inline` and `remark-math/block`
+Access separated processors via `remark-math/inline` and `remark-math/block`
 
 ```js
 const remark = require('remark')
