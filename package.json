@@ -1,0 +1,70 @@
+{
+  "name": "remark-math",
+  "version": "0.1.0",
+  "description": "Math block/inline parser plugin for Remark",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run lint --silent && jest",
+    "lint": "standard",
+    "test:watch": "jest --watch",
+    "demo:webpack": "webpack-dev-server --config examples/webpack/webpack.config.js",
+    "demo:nodejs": "node examples/nodejs/parse.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rokt33r/remark-math.git"
+  },
+  "keywords": [
+    "markdown",
+    "remark",
+    "math",
+    "katex",
+    "latex",
+    "tex",
+    "mathml"
+  ],
+  "author": "Junyoung Choi <fluke8259@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rokt33r/remark-math/issues"
+  },
+  "homepage": "https://github.com/Rokt33r/remark-math#readme",
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "css-loader": "^0.26.1",
+    "eslint-plugin-jest": "^1.0.2",
+    "file-loader": "^0.10.0",
+    "github-markdown-css": "^2.4.1",
+    "jest": "^18.1.0",
+    "katex": "^0.7.1",
+    "remark-html": "^5.1.0",
+    "remark-parse": "^2.3.0",
+    "standard": "^8.6.0",
+    "style-loader": "^0.13.1",
+    "unified": "^5.1.0",
+    "unist-util-find": "^1.0.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
+  },
+  "peerDependencies": {
+    "remark-parse": ">=2.3.0"
+  },
+  "dependencies": {
+    "rehype": "^3.0.0",
+    "trim-trailing-lines": "^1.1.0"
+  },
+  "files": [
+    "index.js",
+    "blockParser.js",
+    "inlineParser.js"
+  ],
+  "standard": {
+    "parser": "babel-eslint",
+    "plugins": [
+      "jest"
+    ],
+    "envs": [
+      "jest"
+    ]
+  }
+}
