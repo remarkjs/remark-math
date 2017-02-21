@@ -69,10 +69,10 @@ const katex = require('katex')
 const opts = {
   katex,
   inlineProperties: {
-    class: 'math-inline'
+    className: 'math-inline'
   },
   blockProperties: {
-    class: 'math-block'
+    className: 'math-block'
   }
 }
 
@@ -112,7 +112,7 @@ const mathInline = require('remark-math/inline')
 const opts = {
   katex,
   inlineProperties: {
-    class: 'math-inline'
+    className: 'math-inline'
   }
 }
 

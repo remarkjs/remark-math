@@ -12,10 +12,10 @@ function remark () {
 const opts = {
   katex,
   inlineProperties: {
-    class: 'math-inline'
+    className: 'math-inline'
   },
   blockProperties: {
-    class: 'math-block'
+    className: 'math-block'
   }
 }
 
