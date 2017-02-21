@@ -1,7 +1,7 @@
 {
   "name": "remark-math",
-  "version": "0.1.1",
-  "description": "Math block/inline parser plugin for Remark",
+  "version": "0.1.2",
+  "description": "Math Inline and Block supporting for Remark",
   "main": "index.js",
   "scripts": {
     "test": "npm run lint --silent && jest",
@@ -20,8 +20,7 @@
     "math",
     "katex",
     "latex",
-    "tex",
-    "mathml"
+    "tex"
   ],
   "author": "Junyoung Choi <fluke8259@gmail.com>",
   "license": "MIT",
