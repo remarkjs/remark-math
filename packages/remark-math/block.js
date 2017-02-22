@@ -9,6 +9,11 @@ var MIN_FENCE_COUNT = 2
 var CODE_INDENT_COUNT = 4
 
 module.exports = function blockPlugin (p, opts = {}) {
+  // This warning will be removed after v1.0
+  if (opts.katex != null) {
+    console.warn('Using options.katex has been deprecated.\nPlease use remark-math-katex.')
+  }
+
   const Parser = p.Parser
 
   function blockTokenizer (eat, value, silent) {
@@ -185,44 +190,32 @@ module.exports = function blockPlugin (p, opts = {}) {
     }
 
     subvalue += content + closing
-    const trimmedValue = trim(exdentedContent)
-    let hChildren = [{
-      type: 'text',
-      value: trimmedValue
-    }]
-    if (opts.katex != null) {
-      console.warn('Using options.katex has been deprecated.')
-    }
+
     return eat(subvalue)({
       type: 'math',
-      children: [
-        {
-          type: 'text',
-          value: trimmedValue
-        }
-      ],
-      data: {
-        hName: 'div',
-        hChildren: hChildren,
-        hProperties: opts.blockProperties
-      }
+      value: trim(exdentedContent)
     })
   }
+
+  // Inject blockTokenizer
   const blockTokenizers = Parser.prototype.blockTokenizers
   const blockMethods = Parser.prototype.blockMethods
+  blockTokenizers.math = blockTokenizer
+  blockMethods.splice(blockMethods.indexOf('fencedCode') + 1, 0, 'math')
+
+  // Inject math to interrupt rules
   const interruptParagraph = Parser.prototype.interruptParagraph
   const interruptList = Parser.prototype.interruptList
   const interruptBlockquote = Parser.prototype.interruptBlockquote
-  blockTokenizers.math = blockTokenizer
-  blockMethods.splice(blockMethods.indexOf('fencedCode') + 1, 0, 'math')
   interruptParagraph.splice(interruptParagraph.indexOf('fencedCode') + 1, 0, ['math'])
   interruptList.splice(interruptList.indexOf('fencedCode') + 1, 0, ['math'])
   interruptBlockquote.splice(interruptBlockquote.indexOf('fencedCode') + 1, 0, ['math'])
 
+  // Stringify for math block
   if (p.Compiler != null) {
     const visitors = p.Compiler.prototype.visitors
     visitors.math = function (node) {
-      return '$$\n' + node.children[0].value + '\n$$'
+      return '$$\n' + node.value + '\n$$'
     }
   }
 }

@@ -7,6 +7,11 @@ const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
 module.exports = function inlinePlugin (p, opts = {}) {
+  // This warning will be removed after v1.0
+  if (opts.katex != null) {
+    console.warn('Using options.katex has been deprecated.\nPlease use remark-math-katex.')
+  }
+
   const Parser = p.Parser
 
   function inlineTokenizer (eat, value, silent) {
@@ -27,44 +32,25 @@ module.exports = function inlinePlugin (p, opts = {}) {
         return true
       }
 
-      const trimmedValue = match[1].trim()
-      let hChildren = [{
-        type: 'text',
-        value: trimmedValue
-      }]
-      if (opts.katex != null) {
-        console.warn('Using options.katex has been deprecated.')
-      }
-
       return eat(match[0])({
         type: 'inlineMath',
-        children: [
-          {
-            type: 'text',
-            value: trimmedValue
-          }
-        ],
-        data: {
-          hName: 'span',
-          hChildren: hChildren,
-          hProperties: opts.inlineProperties
-        }
+        value: match[1].trim()
       })
     }
   }
   inlineTokenizer.locator = locator
 
-  // Inline math
+  // Inject inlineTokenizer
   const inlineTokenizers = Parser.prototype.inlineTokenizers
   const inlineMethods = Parser.prototype.inlineMethods
   inlineTokenizers.math = inlineTokenizer
-
   inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'math')
 
+  // Stringify for math inline
   if (p.Compiler != null) {
     const visitors = p.Compiler.prototype.visitors
     visitors.inlineMath = function (node) {
-      return '$' + node.children[0].value + '$'
+      return '$' + node.value + '$'
     }
   }
 }
