@@ -1,0 +1,36 @@
+{
+  "name": "remark-math-katex",
+  "version": "0.2.0",
+  "description": "Katex renderer plugin for remark-math",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rokt33r/remark-math.git"
+  },
+  "keywords": [
+    "markdown",
+    "remark",
+    "math",
+    "katex",
+    "latex",
+    "tex"
+  ],
+  "author": "Junyoung Choi <fluke8259@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rokt33r/remark-math/issues"
+  },
+  "homepage": "https://github.com/Rokt33r/remark-math#readme",
+  "peerDependencies": {
+    "remark-math": ">=0.2.0"
+  },
+  "dependencies": {
+    "rehype": "^3.0.0",
+    "katex": "^0.7.1"
+  },
+  "files": [
+    "index.js",
+    "blockParser.js",
+    "inlineParser.js"
+  ]
+}

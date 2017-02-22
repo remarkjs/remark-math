@@ -1,5 +1,3 @@
-const rehype = require('rehype')()
-
 function locator (value, fromIndex) {
   return value.indexOf('$', fromIndex)
 }
@@ -35,7 +33,7 @@ module.exports = function inlinePlugin (p, opts = {}) {
         value: trimmedValue
       }]
       if (opts.katex != null) {
-        hChildren = [rehype.parse(opts.katex.renderToString(trimmedValue, {throwOnError: false}), {fragment: true})]
+        console.warn('Using options.katex has been deprecated.')
       }
 
       return eat(match[0])({
@@ -62,4 +60,11 @@ module.exports = function inlinePlugin (p, opts = {}) {
   inlineTokenizers.math = inlineTokenizer
 
   inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'math')
+
+  if (p.Compiler != null) {
+    const visitors = p.Compiler.prototype.visitors
+    visitors.inlineMath = function (node) {
+      return '$' + node.children[0].value + '$'
+    }
+  }
 }

@@ -1,10 +1,12 @@
-const math = require('../index')
+const math = require('../packages/remark-math')
 const unified = require('unified')
 const parse = require('remark-parse')
+const stringify = require('remark-stringify')
 
 function remark () {
   return unified()
     .use(parse)
+    .use(stringify)
 }
 
 it('should parse a math inline and a math block ', () => {
@@ -109,7 +111,7 @@ it('should set properties to math inline/block', () => {
       }
     })
 
-  const targetText = '$$\\alpha$$\n$$\n\\alpha\beta\n$$'
+  const targetText = '$$\\alpha$$\n$$\n\\alpha\\beta\n$$'
 
   const ast = processor.parse(targetText)
   expect(ast.children[0].type).toEqual('paragraph')
@@ -118,4 +120,14 @@ it('should set properties to math inline/block', () => {
   expect(ast.children[0].children[0].data.hProperties.className).toEqual('math-inline')
   expect(ast.children[1].type).toEqual('math')
   expect(ast.children[1].data.hProperties.className).toEqual('math-block')
+})
+
+it('should stringify', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '$$\\alpha$$\n$$\n\\alpha\\beta\n$$'
+
+  const result = processor.process(targetText).toString()
+  expect(result).toEqual('$\\alpha$\n\n$$\n\\alpha\\beta\n$$\n')
 })

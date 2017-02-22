@@ -1,4 +1,3 @@
-const rehype = require('rehype')()
 var trim = require('trim-trailing-lines')
 
 var C_NEWLINE = '\n'
@@ -192,8 +191,7 @@ module.exports = function blockPlugin (p, opts = {}) {
       value: trimmedValue
     }]
     if (opts.katex != null) {
-      const parsedChildrenAST = rehype.parse(opts.katex.renderToString(trimmedValue, {throwOnError: false, displayMode: true}), {fragment: true})
-      hChildren = [parsedChildrenAST]
+      console.warn('Using options.katex has been deprecated.')
     }
     return eat(subvalue)({
       type: 'math',
@@ -220,4 +218,11 @@ module.exports = function blockPlugin (p, opts = {}) {
   interruptParagraph.splice(interruptParagraph.indexOf('fencedCode') + 1, 0, ['math'])
   interruptList.splice(interruptList.indexOf('fencedCode') + 1, 0, ['math'])
   interruptBlockquote.splice(interruptBlockquote.indexOf('fencedCode') + 1, 0, ['math'])
+
+  if (p.Compiler != null) {
+    const visitors = p.Compiler.prototype.visitors
+    visitors.math = function (node) {
+      return '$$\n' + node.children[0].value + '\n$$'
+    }
+  }
 }
