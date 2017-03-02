@@ -1,7 +1,7 @@
 {
   "name": "remark-math",
   "version": "0.2.0",
-  "description": "Math Inline and Block parser plugin",
+  "description": "Math Inline and Block parser plugin for Remark",
   "main": "index.js",
   "repository": {
     "type": "git",

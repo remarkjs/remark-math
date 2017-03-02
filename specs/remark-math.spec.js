@@ -105,7 +105,7 @@ it('should stringify', () => {
 
   const targetText = '$$\\alpha$$\n$$\n\\alpha\\beta\n$$'
 
-  const result = processor.process(targetText).toString()
+  const result = processor.processSync(targetText).toString()
   expect(result).toEqual('$\\alpha$\n\n$$\n\\alpha\\beta\n$$\n')
 })
 
@@ -115,6 +115,6 @@ it('should stringify math block child of blockquote', () => {
 
   const targetText = '> $$\n> \\alpha\\beta\n> $$'
 
-  const result = processor.process(targetText).toString()
+  const result = processor.processSync(targetText).toString()
   expect(result).toEqual('> $$\n> \\alpha\\beta\n> $$\n')
 })

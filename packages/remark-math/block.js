@@ -8,13 +8,11 @@ var C_DOLLAR = '$'
 var MIN_FENCE_COUNT = 2
 var CODE_INDENT_COUNT = 4
 
-module.exports = function blockPlugin (p, opts = {}) {
+module.exports = function blockPlugin (opts = {}) {
   // This warning will be removed after v1.0
   if (opts.katex != null) {
     console.warn('Using options.katex has been deprecated.\nPlease use remark-math-katex.')
   }
-
-  const Parser = p.Parser
 
   function blockTokenizer (eat, value, silent) {
     var length = value.length + 1
@@ -197,6 +195,8 @@ module.exports = function blockPlugin (p, opts = {}) {
     })
   }
 
+  const Parser = this.Parser
+
   // Inject blockTokenizer
   const blockTokenizers = Parser.prototype.blockTokenizers
   const blockMethods = Parser.prototype.blockMethods
@@ -211,9 +211,11 @@ module.exports = function blockPlugin (p, opts = {}) {
   interruptList.splice(interruptList.indexOf('fencedCode') + 1, 0, ['math'])
   interruptBlockquote.splice(interruptBlockquote.indexOf('fencedCode') + 1, 0, ['math'])
 
+  const Compiler = this.Compiler
+
   // Stringify for math block
-  if (p.Compiler != null) {
-    const visitors = p.Compiler.prototype.visitors
+  if (Compiler != null) {
+    const visitors = Compiler.prototype.visitors
     visitors.math = function (node) {
       return '$$\n' + node.value + '\n$$'
     }

@@ -6,13 +6,11 @@ const ESCAPED_INLINE_MATH = /^\\\$/
 const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
-module.exports = function inlinePlugin (p, opts = {}) {
+module.exports = function inlinePlugin (opts = {}) {
   // This warning will be removed after v1.0
   if (opts.katex != null) {
     console.warn('Using options.katex has been deprecated.\nPlease use remark-math-katex.')
   }
-
-  const Parser = p.Parser
 
   function inlineTokenizer (eat, value, silent) {
     const match = INLINE_MATH_DOUBLE.exec(value) || INLINE_MATH.exec(value)
@@ -40,15 +38,19 @@ module.exports = function inlinePlugin (p, opts = {}) {
   }
   inlineTokenizer.locator = locator
 
+  const Parser = this.Parser
+
   // Inject inlineTokenizer
   const inlineTokenizers = Parser.prototype.inlineTokenizers
   const inlineMethods = Parser.prototype.inlineMethods
   inlineTokenizers.math = inlineTokenizer
   inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'math')
 
+  const Compiler = this.Compiler
+
   // Stringify for math inline
-  if (p.Compiler != null) {
-    const visitors = p.Compiler.prototype.visitors
+  if (Compiler != null) {
+    const visitors = Compiler.prototype.visitors
     visitors.inlineMath = function (node) {
       return '$' + node.value + '$'
     }
