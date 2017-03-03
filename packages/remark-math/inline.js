@@ -30,9 +30,23 @@ module.exports = function inlinePlugin (opts = {}) {
         return true
       }
 
+      const trimmedContent = match[1].trim()
+
       return eat(match[0])({
         type: 'inlineMath',
-        value: match[1].trim()
+        value: trimmedContent,
+        data: {
+          hName: 'span',
+          hProperties: {
+            className: 'inlineMath'
+          },
+          hChildren: [
+            {
+              type: 'text',
+              value: trimmedContent
+            }
+          ]
+        }
       })
     }
   }

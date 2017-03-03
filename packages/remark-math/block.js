@@ -188,10 +188,23 @@ module.exports = function blockPlugin (opts = {}) {
     }
 
     subvalue += content + closing
+    const trimmedContent = trim(exdentedContent)
 
     return eat(subvalue)({
       type: 'math',
-      value: trim(exdentedContent)
+      value: trimmedContent,
+      data: {
+        hName: 'div',
+        hProperties: {
+          className: 'blockMath'
+        },
+        hChildren: [
+          {
+            type: 'text',
+            value: trimmedContent
+          }
+        ]
+      }
     })
   }
 

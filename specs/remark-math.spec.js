@@ -2,10 +2,11 @@ const math = require('../packages/remark-math')
 const unified = require('unified')
 const parse = require('remark-parse')
 const stringify = require('remark-stringify')
+const u = require('unist-builder')
 
 function remark () {
   return unified()
-    .use(parse)
+    .use(parse, {position: false})
     .use(stringify)
 }
 
@@ -13,78 +14,106 @@ it('should parse a math inline and a math block ', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = 'Math $\\alpha$\n\n$$\n\\beta+\\gamma\n$$'
+  const targetText = [
+    'Math $\\alpha$',
+    '',
+    '$$',
+    '\\beta+\\gamma',
+    '$$'
+  ].join('\n')
 
   const ast = processor.parse(targetText)
-  expect(ast.children[0].type).toEqual('paragraph')
-  expect(ast.children[0].children[0].type).toEqual('text')
-  expect(ast.children[0].children[0].value).toEqual('Math ')
-  expect(ast.children[0].children[1].type).toEqual('inlineMath')
-  expect(ast.children[0].children[1].value).toEqual('\\alpha')
-  expect(ast.children[1].type).toEqual('math')
-  expect(ast.children[1].value).toEqual('\\beta+\\gamma')
+
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('text', 'Math '),
+      u('inlineMath', '\\alpha')
+    ]),
+    u('math', '\\beta+\\gamma')
+  ]))
 })
 
 it('should escape a dollar with back slash', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = 'Math \\$\\alpha\\$\n'
+  const targetText = '\\$\\alpha\\$'
 
   const ast = processor.parse(targetText)
-  expect(ast.children[0].children[0].value).toEqual('Math ')
-  expect(ast.children[0].children[1].value).toEqual('$')
-  expect(ast.children[0].children[2].value).toEqual('\\alpha')
-  expect(ast.children[0].children[3].value).toEqual('$')
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('text', '$'),
+      u('text', '\\alpha'),
+      u('text', '$')
+    ])
+  ]))
 })
 
 it('should NOT escape a dollar with double backslashes', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = 'Math \\\\$\\alpha$\n'
+  const targetText = '\\\\$\\alpha$'
 
   const ast = processor.parse(targetText)
 
-  expect(ast.children[0].children[0].value).toEqual('Math ')
-  expect(ast.children[0].children[1].value).toEqual('\\')
-  expect(ast.children[0].children[2].type).toEqual('inlineMath')
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('text', '\\'),
+      u('inlineMath', '\\alpha')
+    ])
+  ]))
 })
 
 it('should render a super factorial to a math block', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = 'Math $a\\$$\n'
+  const targetText = '$\\alpha\\$$'
 
   const ast = processor.parse(targetText)
-  expect(ast.children[0].children[0].value).toEqual('Math ')
-  expect(ast.children[0].children[1].type).toEqual('inlineMath')
-  expect(ast.children[0].children[1].value).toEqual('a\\$')
+
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('inlineMath', '\\alpha\\$')
+    ])
+  ]))
 })
 
 it('should render super factorial to a math inline', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = 'Math\n\n$$\na\\$\n$$\n'
+  const targetText = [
+    '$$',
+    '\\alpha\\$',
+    '$$'
+  ].join('\n')
 
   const ast = processor.parse(targetText)
-  expect(ast.children[0].children[0].value).toEqual('Math')
-  expect(ast.children[1].type).toEqual('math')
-  expect(ast.children[1].value).toEqual('a\\$')
+
+  expect(ast).toMatchObject(u('root', [
+    u('math', '\\alpha\\$')
+  ]))
 })
 
 it('should render a math block just after a pragraph', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = 'Math\n$$\n\\alpha\n$$\n'
+  const targetText = [
+    'tango',
+    '$$',
+    '\\alpha',
+    '$$'
+  ].join('\n')
 
   const ast = processor.parse(targetText)
-  expect(ast.children[0].children[0].value).toEqual('Math')
-  expect(ast.children[1].type).toEqual('math')
-  expect(ast.children[1].value).toEqual('\\alpha')
+
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [u('text', 'tango')]),
+    u('math', '\\alpha')
+  ]))
 })
 
 it('should parse inline math between double dollars', () => {
@@ -94,27 +123,53 @@ it('should parse inline math between double dollars', () => {
   const targetText = '$$\\alpha$$'
 
   const ast = processor.parse(targetText)
-  expect(ast.children[0].type).toEqual('paragraph')
-  expect(ast.children[0].children.length).toEqual(1)
-  expect(ast.children[0].children[0].type).toEqual('inlineMath')
+
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('inlineMath', '\\alpha')
+    ])
+  ]))
 })
 
 it('should stringify', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = '$$\\alpha$$\n$$\n\\alpha\\beta\n$$'
+  const targetText = [
+    '$$\\alpha$$',
+    '$$',
+    '\\alpha\\beta',
+    '$$'
+  ].join('\n')
 
   const result = processor.processSync(targetText).toString()
-  expect(result).toEqual('$\\alpha$\n\n$$\n\\alpha\\beta\n$$\n')
+
+  expect(result).toEqual([
+    '$\\alpha$',
+    '',
+    '$$',
+    '\\alpha\\beta',
+    '$$',
+    ''
+  ].join('\n'))
 })
 
 it('should stringify math block child of blockquote', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = '> $$\n> \\alpha\\beta\n> $$'
+  const targetText = [
+    '> $$',
+    '> \\alpha\\beta',
+    '> $$'
+  ].join('\n')
 
   const result = processor.processSync(targetText).toString()
-  expect(result).toEqual('> $$\n> \\alpha\\beta\n> $$\n')
+
+  expect(result).toEqual([
+    '> $$',
+    '> \\alpha\\beta',
+    '> $$',
+    ''
+  ].join('\n'))
 })
