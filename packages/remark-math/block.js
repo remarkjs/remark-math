@@ -196,7 +196,7 @@ module.exports = function blockPlugin (opts = {}) {
       data: {
         hName: 'div',
         hProperties: {
-          className: 'blockMath'
+          className: 'math'
         },
         hChildren: [
           {
