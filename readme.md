@@ -124,7 +124,7 @@ const processor = remark()
 
 #### `options.throwOnError`
 
-Throw if a KaTeX parse error occurs.
+Throw if a KaTeX parse error occurs. (default: `false`)
 
 #### `options.errorColor`
 
