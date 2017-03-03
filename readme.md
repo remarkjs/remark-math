@@ -63,7 +63,7 @@ const result = processor.processSync(rawString).toString()
 ### Another usages(Using `remark-html-katex`)
 
 ```sh
-npm i -S unified remark-parse remark-math remark-html-katex remark-html
+npm i -S remark remark-math remark-html-katex remark-html
 ```
 
 ```js
