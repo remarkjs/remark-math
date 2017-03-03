@@ -24,20 +24,18 @@ There are two examples for server-side([`examples/nodejs`](examples/nodejs)) and
 Install dependencies
 
 ```sh
-npm i -S unified remark-parse remark-math remark-rehype rehype-katex rehype-stringify
+npm i -S remark remark-math remark-rehype rehype-katex rehype-stringify
 ```
 
 ```js
-const unified = require('unified')
-const parse = require('remark-parse')
+const remark = require('remark')
 const math = require('remark-math')
 const remark2rehype = require('remark-rehype')
 const katex = require('rehype-katex')
 const stringify = require('rehype-stringify')
 
 // Raw String => MDAST => HAST => transformed HAST => HTML
-const processor = unified()
-  .use(parse)
+const processor = remark()
   .use(math)
   .use(remark2rehype)
   .use(katex)
@@ -69,15 +67,13 @@ npm i -S unified remark-parse remark-math remark-html-katex remark-html
 ```
 
 ```js
-const unified = require('unified')
-const parse = require('remark-parse')
+const remark = require('remark')
 const math = require('remark-math')
 const katex = require('remark-html-katex') // Use remark-html-katex
 const html = require('remark-html')
 
 // Raw String => MDAST => transformed MDAST => HTML
-const processor = unified()
-  .use(parse)
+const processor = remark()
   .use(math)
   .use(katex)
   .use(html)
@@ -88,8 +84,7 @@ const processor = unified()
 Access separated processors via `remark-math/inline` and `remark-math/block`
 
 ```js
-const unified = require('unified')
-const parse = require('remark-parse')
+const remark = require('remark')
 const remark2rehype = require('remark-rehype')
 const katex = require('rehype-katex')
 const stringify = require('rehype-stringify')
@@ -98,8 +93,7 @@ const mathInline = require('remark-math/inline')
 // const mathBlock = require('remark-math/block')
 
 // Parse only inline
-const processor = unified()
-  .use(parse)
+const processor = remark()
   .use(mathInline)
   .use(remark2rehype)
   .use(katex)
@@ -108,11 +102,25 @@ const processor = unified()
 
 ## API
 
-### Remark Math
+### `remark-math`
 
-Remark math does not handle any option.
+`remark-math` does not handle any option.
 
-### Rehype Katex and Remark HTML Math
+### `rehype-katex` and `remark-html-katex`
+
+```js
+const katex = require('rehype-katex')
+
+const processor = remark()
+  .use(math)
+  .use(remark2rehype)
+  .use(katex, {
+    throwOnError: false,
+    errorColor: '#FF0000'
+  })
+  .use(stringify)
+
+```
 
 #### `options.throwOnError`
 

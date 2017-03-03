@@ -1,21 +1,16 @@
 const unified = require('unified')
 const parse = require('remark-parse')
-const stringify = require('remark-stringify')
 const math = require('../../packages/remark-math')
 const remark2rehype = require('remark-rehype')
 const rehypeStringify = require('rehype-stringify')
 const rehypeKatex = require('../../packages/rehype-katex')
 
-function remark () {
-  return unified()
-    .use(parse)
-    .use(stringify)
-}
 /**
  * Usage via rehype(Recommended by wooorm)
  * Raw String => MDAST => HAST => transformed HAST => HTML
  */
-const processor = remark()
+const processor = unified()
+  .use(parse)
   .use(math)
   .use(remark2rehype)
   .use(rehypeKatex)
@@ -27,7 +22,8 @@ const processor = remark()
  */
 // const remarkHtmlKatex = require('../../packages/remark-html-katex')
 // const html = require('remark-html')
-// const processor = remark()
+// const processor = unified()
+//   .use(parse)
 //   .use(math)
 //   .use(remarkHtmlKatex)
 //   .use(html)
@@ -48,6 +44,6 @@ const transformedAST = processor.runSync(parsedAST)
 const renderedString = processor.stringify(transformedAST)
 
 // Or you can directly process the markdown string
-// const renderedString = processor.process(rawString).toString()
+// const renderedString = processor.processSync(rawString).toString()
 
 console.log(renderedString)

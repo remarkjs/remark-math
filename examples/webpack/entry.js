@@ -8,12 +8,8 @@ const katex = require('../../packages/rehype-katex')
 require('katex/dist/katex.css')
 require('github-markdown-css')
 
-function remark () {
-  return unified()
-    .use(parse)
-}
-
-const processor = remark()
+const processor = unified()
+  .use(parse)
   .use(math)
   .use(remark2rehype)
   .use(katex)
