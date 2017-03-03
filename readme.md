@@ -7,9 +7,9 @@ Math Inline and Block supporting for Remark
 
 ## What does Remark Math?
 
-Remark Math parses `$` for `inlineMath` node and `$$` for `math` node.
+`remark-math` parses `$` for `inlineMath` node and `$$` for `math` node.
 
-Also, you can transform the tex content of the nodes into html string by Rehype Katex or Remark HTML Katex.
+Also, you can transform the tex content of the nodes into html string by `rehype-katex` or `remark-html-katex`.
 
 ![intro](resources/intro.png)
 
