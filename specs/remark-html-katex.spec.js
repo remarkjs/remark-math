@@ -5,13 +5,11 @@ const unified = require('unified')
 const parse = require('remark-parse')
 const html = require('remark-html')
 const rehype = require('rehype')
-const stringify = require('remark-stringify')
 const toHtml = require('hast-util-to-html')
 
 function remark () {
   return unified()
     .use(parse)
-    .use(stringify)
 }
 
 function parseHtml (html) {

@@ -7,76 +7,41 @@ Math Inline and Block supporting for Remark
 
 ## What does Remark Math?
 
-Remark Math parses `$` for math inline and `$$` for math block.
+Remark Math parses `$` for `inlineMath` node and `$$` for `math` node.
+
+Also, you can transform the tex content of the nodes into html string by Rehype Katex or Remark HTML Katex.
 
 ![intro](resources/intro.png)
-
-#### Raw string
-
-```
-Lift($L$) can be determined by Lift Coeeficient ($C_L$) like the following equation.
-
-$$
-L = \frac{1}{2} \rho v^2 S C_L
-$$
-```
-
-#### Parsed Abstract Syntax Tree(Omitted)
-
-```js
-{
-  type: root
-  children: [
-    {
-      type: paragraph,
-      children: [{
-        type: 'text',
-        value: ''
-      }]
-    },
-    {
-      type: 'math',
-      children: [{
-        type: 'text',
-        value: 'L = \frac{1}{2} \rho v^2 S C_L'
-      }]
-    }
-  ]
-}
-```
-
-#### Result HTML string (If you choose [KaTeX][katex])
-
-```html
-<p>
-  Lift(<span class="math-inline"><span class="katex">...</span></span>) can be determined by Lift Coeeficient (<span class="math-inline"><span class="katex">...</span></span>) like the following equation.
-</p>
-<div class="math-block">
-  <span class="katex">...</span>
-</div>
-```
 
 ## Usages
 
 There are two examples for server-side([`examples/nodejs`](examples/nodejs)) and browser-side([`examples/webpack`](examples/webpack), via webpack).
 
+> You can run the demo by `npm run demo:nodejs` and `npm run demo:webpack`.
+
+### Basic usages(Using `rehype-katex`, a little verbose but recommended)
+
+Install dependencies
+
+```sh
+npm i -S unified remark-parse remark-math remark-rehype rehype-katex rehype-stringify
+```
+
 ```js
-const remark = require('remark')
-const html = require('remark-html')
+const unified = require('unified')
+const parse = require('remark-parse')
 const math = require('remark-math')
-const katex = require('katex')
+const remark2rehype = require('remark-rehype')
+const katex = require('rehype-katex')
+const stringify = require('rehype-stringify')
 
-const opts = {
-  katex,
-  inlineProperties: {
-    className: 'math-inline'
-  },
-  blockProperties: {
-    className: 'math-block'
-  }
-}
-
-const processor = remark().use(math, opts).use(html)
+// Raw String => MDAST => HAST => transformed HAST => HTML
+const processor = unified()
+  .use(parse)
+  .use(math)
+  .use(remark2rehype)
+  .use(katex)
+  .use(stringify)
 
 // https://en.wikipedia.org/wiki/Lift_(force)#Lift_coefficient
 const rawString = `Lift($L$) can be determined by Lift Coeeficient ($C_L$) like the following equation.
@@ -86,15 +51,36 @@ L = \\frac{1}{2} \\rho v^2 S C_L
 $$
 `
 
-// Raw string => AST
-const parsedAST = processor.parse(rawString)
-// AST => HTML string
-const renderedString = processor.stringify(parsedAST)
+const result = processor.processSync(rawString).toString()
+/* result
+<p>
+  Lift(<span class="inlineMath"><span class="katex">...</span></span>) can be determined by Lift Coeeficient (<span class="inlineMath"><span class="katex">...</span></span>) like the following equation.
+</p>
+<div class="math">
+  <span class="katex-display"><span class="katex">...</span></span>
+</div>
+*/
+```
 
-// Or you can directly process the markdown string
-// const renderedString = processor.process(rawString).toString()
+### Another usages(Using `remark-html-katex`)
 
-console.log(renderedString)
+```sh
+npm i -S unified remark-parse remark-math remark-html-katex remark-html
+```
+
+```js
+const unified = require('unified')
+const parse = require('remark-parse')
+const math = require('remark-math')
+const katex = require('remark-html-katex') // Use remark-html-katex
+const html = require('remark-html')
+
+// Raw String => MDAST => transformed MDAST => HTML
+const processor = unified()
+  .use(parse)
+  .use(math)
+  .use(katex)
+  .use(html)
 ```
 
 ### Using only math inline(or math block)
@@ -102,38 +88,41 @@ console.log(renderedString)
 Access separated processors via `remark-math/inline` and `remark-math/block`
 
 ```js
-const remark = require('remark')
-const html = require('remark-html')
-const katex = require('katex')
+const unified = require('unified')
+const parse = require('remark-parse')
+const remark2rehype = require('remark-rehype')
+const katex = require('rehype-katex')
+const stringify = require('rehype-stringify')
 
 const mathInline = require('remark-math/inline')
 // const mathBlock = require('remark-math/block')
 
-const opts = {
-  katex,
-  inlineProperties: {
-    className: 'math-inline'
-  }
-}
-
-const processor = remark().use(mathInline, opts).use(html)
+// Parse only inline
+const processor = unified()
+  .use(parse)
+  .use(mathInline)
+  .use(remark2rehype)
+  .use(katex)
+  .use(stringify)
 ```
 
 ## API
 
-### `remark.use(math[, options])`
+### Remark Math
 
-#### `options.katex` (Optional)
+Remark math does not handle any option.
 
-KaTeX renderer
+### Rehype Katex and Remark HTML Math
 
-#### `options.blockProperties` (Optional)
+#### `options.throwOnError`
 
-Properties for math block
+Throw if a KaTeX parse error occurs.
 
-#### `options.inlineProperties` (Optional)
+#### `options.errorColor`
 
-Properties for math inline
+This is a same option of KaTeX. As long as `options.throwOnError` is not `true`, Malformed TeX will be colored by `options.errorColor`. (default: #cc0000)
+
+> [KaTeX#rendering-options](https://github.com/Khan/KaTeX#rendering-options)
 
 ## Specs
 
@@ -168,49 +157,6 @@ $$\alpha$$
 ```
 
 ![Double dollars as a inline token](resources/double-dollars.png)
-
-
-## CAUTION
-
-This library requires `remark-parse@`**`>=2.3.0`** as a peer dependency.
-
-> For your information [wooorm/remark#232](https://github.com/wooorm/remark/issues/232)
-
-You can check which version you are using by the following command.
-
-```sh
-npm ls remark
-```
-
-If you don't know how to fix, I recommend you to use `remark-parse` directly.
-
-First, remove `remark` and install `remark-parse` and `unified`
-
-```sh
-npm rm -S remark
-npm i -S remark-parse unified
-
-# Optional
-npm i -S remark-stringify
-```
-
-Then, rewrite `remark` like the following.
-
-```js
-// Before
-const remark = require('remark')
-
-// After
-const unified = require('unified')
-const parse = require('remark-parse')
-// const stringify = require('remark-stringify')
-
-function remark () {
-  return unified()
-    .use(parse)
-    // .use(stringify)
-}
-```
 
 ## License
 
