@@ -1,6 +1,6 @@
 {
   "name": "remark-math",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Math Inline and Block parser plugin for Remark",
   "main": "index.js",
   "repository": {
@@ -29,7 +29,7 @@
   },
   "files": [
     "index.js",
-    "blockParser.js",
-    "inlineParser.js"
+    "block.js",
+    "inline.js"
   ]
 }
