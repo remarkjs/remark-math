@@ -1,14 +1,14 @@
 {
   "name": "remark-math",
-  "version": "0.1.2",
   "description": "Math Inline and Block supporting for Remark",
-  "main": "index.js",
   "scripts": {
-    "test": "npm run lint --silent && jest",
+    "postinstall": "lerna bootstrap",
+    "test": "jest",
+    "posttest": "npm run lint --silent",
     "lint": "standard",
     "test:watch": "jest --watch",
     "demo:webpack": "webpack-dev-server --config examples/webpack/webpack.config.js",
-    "demo:nodejs": "node examples/nodejs/parse.js"
+    "demo:nodejs": "node examples/nodejs/process.js"
   },
   "repository": {
     "type": "git",
@@ -36,27 +36,23 @@
     "github-markdown-css": "^2.4.1",
     "jest": "^18.1.0",
     "katex": "^0.7.1",
-    "remark-html": "^5.1.0",
-    "remark-parse": "^2.3.0",
+    "lerna": "2.0.0-beta.37",
+    "rehype": "^3.0.0",
+    "rehype-parse": "^3.0.0",
+    "rehype-stringify": "^3.0.0",
+    "remark-html": "^6.0.0",
+    "remark-parse": "^3.0.0",
+    "remark-rehype": "^2.0.0",
+    "remark-stringify": "^3.0.0",
     "standard": "^8.6.0",
     "style-loader": "^0.13.1",
-    "unified": "^5.1.0",
+    "unified": "^6.1.1",
+    "unist-builder": "^1.0.2",
     "unist-util-find": "^1.0.1",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
   },
-  "peerDependencies": {
-    "remark-parse": ">=2.3.0"
-  },
-  "dependencies": {
-    "rehype": "^3.0.0",
-    "trim-trailing-lines": "^1.1.0"
-  },
-  "files": [
-    "index.js",
-    "blockParser.js",
-    "inlineParser.js"
-  ],
+  "dependencies": {},
   "standard": {
     "parser": "babel-eslint",
     "plugins": [
