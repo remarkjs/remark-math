@@ -1,8 +1,9 @@
 const unified = require('unified')
 const parse = require('remark-parse')
-const html = require('remark-html')
-const math = require('../../index')
-const katex = require('katex')
+const math = require('../../packages/remark-math')
+const remark2rehype = require('remark-rehype')
+const stringify = require('rehype-stringify')
+const katex = require('../../packages/rehype-katex')
 
 require('katex/dist/katex.css')
 require('github-markdown-css')
@@ -12,21 +13,13 @@ function remark () {
     .use(parse)
 }
 
-const opts = {
-  katex,
-  inlineProperties: {
-    className: 'math-inline'
-  },
-  blockProperties: {
-    className: 'math-block'
-  }
-}
-
 const processor = remark()
-  .use(math, opts)
-  .use(html)
+  .use(math)
+  .use(remark2rehype)
+  .use(katex)
+  .use(stringify)
 
 // Bind render method to window
 window.renderMarkdown = function renderMarkdown (rawString) {
-  return processor.process(rawString).toString()
+  return processor.processSync(rawString).toString()
 }
