@@ -1,4 +1,4 @@
-# `remark-math`
+# Remark Math
 
 Math inline/block node parser plugin for remark.
 

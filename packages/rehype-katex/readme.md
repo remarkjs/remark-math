@@ -1,4 +1,4 @@
-# `rehype-katex`
+# Rehype Katex
 
 KaTeX transform plugin for rehype.
 

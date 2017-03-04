@@ -1,4 +1,4 @@
-# `remark-html-katex`
+# Remark HTML Katex
 
 KaTeX transform plugin for remark-html.
 

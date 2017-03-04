@@ -1,0 +1,36 @@
+{
+  "name": "remark-html-mathjax",
+  "version": "0.2.0",
+  "description": "Mathjax transform plugin for remark-html",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rokt33r/remark-math.git"
+  },
+  "keywords": [
+    "markdown",
+    "remark",
+    "math",
+    "mathjax",
+    "latex",
+    "tex"
+  ],
+  "author": "Junyoung Choi <fluke8259@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rokt33r/remark-math/issues"
+  },
+  "homepage": "https://github.com/Rokt33r/remark-math#readme",
+  "peerDependencies": {
+    "remark-math": ">=0.2.0"
+  },
+  "dependencies": {
+    "rehype-parse": "^3.0.0",
+    "unified": "^6.1.1",
+    "unist-util-position": "^3.0.0",
+    "unist-util-visit": "^1.1.1"
+  },
+  "files": [
+    "index.js"
+  ]
+}
