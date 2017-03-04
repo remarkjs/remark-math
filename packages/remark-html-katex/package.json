@@ -1,6 +1,6 @@
 {
   "name": "remark-html-katex",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "KaTeX transform plugin for remark-html",
   "main": "index.js",
   "repository": {
