@@ -9,11 +9,6 @@ var MIN_FENCE_COUNT = 2
 var CODE_INDENT_COUNT = 4
 
 module.exports = function blockPlugin (opts = {}) {
-  // This warning will be removed after v1.0
-  if (opts.katex != null) {
-    console.warn('Using options.katex has been deprecated.\nPlease use remark-math-katex.')
-  }
-
   function blockTokenizer (eat, value, silent) {
     var length = value.length + 1
     var index = 0
@@ -71,12 +66,15 @@ module.exports = function blockPlugin (opts = {}) {
       return
     }
 
-    /* Eat spacing before flag. */
+    /* Eat everything after the fence. */
     while (index < length) {
       character = value.charAt(index)
 
-      if (character !== C_SPACE && character !== C_TAB) {
+      if (character === C_NEWLINE) {
         break
+      }
+      if (character === C_DOLLAR) {
+        return
       }
 
       subvalue += character
@@ -85,10 +83,6 @@ module.exports = function blockPlugin (opts = {}) {
 
     character = value.charAt(index)
 
-    if (character && character !== C_NEWLINE) {
-      return
-    }
-
     if (silent) {
       return true
     }
@@ -96,10 +90,6 @@ module.exports = function blockPlugin (opts = {}) {
     now = eat.now()
     now.column += subvalue.length
     now.offset += subvalue.length
-
-    if (queue) {
-      subvalue += queue
-    }
 
     queue = closing = exdentedClosing = content = exdentedContent = ''
 
@@ -173,7 +163,7 @@ module.exports = function blockPlugin (opts = {}) {
       while (index < length) {
         character = value.charAt(index)
 
-        if (character !== C_SPACE && character !== C_TAB) {
+        if (character === C_NEWLINE) {
           break
         }
 
@@ -182,14 +172,11 @@ module.exports = function blockPlugin (opts = {}) {
         index++
       }
 
-      if (!character || character === C_NEWLINE) {
-        break
-      }
+      break
     }
 
     subvalue += content + closing
     const trimmedContent = trim(exdentedContent)
-
     return eat(subvalue)({
       type: 'math',
       value: trimmedContent,

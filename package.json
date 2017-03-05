@@ -3,10 +3,11 @@
   "description": "Math Inline and Block supporting for Remark",
   "scripts": {
     "postinstall": "lerna bootstrap",
-    "test": "jest",
+    "test": "jest --coverage",
+    "test:api": "jest",
+    "test:watch": "jest --watch",
     "posttest": "npm run lint --silent",
     "lint": "standard",
-    "test:watch": "jest --watch",
     "demo:webpack": "webpack-dev-server --config examples/webpack/webpack.config.js",
     "demo:nodejs": "node examples/nodejs/process.js"
   },
@@ -34,7 +35,7 @@
     "eslint-plugin-jest": "^1.0.2",
     "file-loader": "^0.10.0",
     "github-markdown-css": "^2.4.1",
-    "jest": "^18.1.0",
+    "jest": "^19.0.2",
     "katex": "^0.7.1",
     "lerna": "2.0.0-beta.37",
     "rehype": "^3.0.0",
@@ -60,5 +61,19 @@
     "envs": [
       "jest"
     ]
+  },
+  "jest": {
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "packages/**/*.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
   }
 }

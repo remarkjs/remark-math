@@ -7,15 +7,11 @@ const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
 module.exports = function inlinePlugin (opts = {}) {
-  // This warning will be removed after v1.0
-  if (opts.katex != null) {
-    console.warn('Using options.katex has been deprecated.\nPlease use remark-math-katex.')
-  }
-
   function inlineTokenizer (eat, value, silent) {
     const match = INLINE_MATH_DOUBLE.exec(value) || INLINE_MATH.exec(value)
     const escaped = ESCAPED_INLINE_MATH.exec(value)
     if (escaped) {
+      /* istanbul ignore if - never used (yet) */
       if (silent) {
         return true
       }
@@ -26,6 +22,7 @@ module.exports = function inlinePlugin (opts = {}) {
     }
 
     if (match) {
+      /* istanbul ignore if - never used (yet) */
       if (silent) {
         return true
       }

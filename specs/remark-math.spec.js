@@ -173,3 +173,59 @@ it('should stringify math block child of blockquote', () => {
     ''
   ].join('\n'))
 })
+
+it('should parse math block with indent', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = [
+    '  $$$',
+    '    \\alpha',
+    '  $$$'
+  ].join('\n')
+
+  const ast = processor.parse(targetText)
+
+  expect(ast).toMatchObject(u('root', [
+    u('math', '  \\alpha')
+  ]))
+})
+
+it('should ignore everything just after opening/closing marker', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = [
+    '$$  should',
+    '\\alpha',
+    '$$  be ignored',
+    ''
+  ].join('\n')
+
+  const ast = processor.parse(targetText)
+
+  expect(ast).toMatchObject(u('root', [
+    u('math', '\\alpha')
+  ]))
+})
+
+it('should not affect next block', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = [
+    '$$',
+    '\\alpha',
+    '$$',
+    '```',
+    'code fence',
+    '```'
+  ].join('\n')
+
+  const ast = processor.parse(targetText)
+
+  expect(ast).toMatchObject(u('root', [
+    u('math', '\\alpha'),
+    u('code', 'code fence')
+  ]))
+})
