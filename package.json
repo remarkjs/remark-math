@@ -9,7 +9,8 @@
     "posttest": "npm run lint --silent",
     "lint": "standard",
     "demo:webpack": "webpack-dev-server --config examples/webpack/webpack.config.js",
-    "demo:nodejs": "node examples/nodejs/process.js"
+    "demo:nodejs": "node examples/nodejs/process.js",
+    "release": "lerna publish --skip-git"
   },
   "repository": {
     "type": "git",
