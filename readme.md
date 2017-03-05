@@ -81,7 +81,7 @@ const processor = remark()
 
 ### Using only math inline(or math block)
 
-Access separated processors via `remark-math/inline` and `remark-math/block`
+You can access separated processors by `remark-math/inline` and `remark-math/block`
 
 ```js
 const remark = require('remark')
