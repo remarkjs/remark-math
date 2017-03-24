@@ -8,7 +8,12 @@ const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
 module.exports = function inlinePlugin (opts = {}) {
   function inlineTokenizer (eat, value, silent) {
-    const match = INLINE_MATH_DOUBLE.exec(value) || INLINE_MATH.exec(value)
+    let isDouble = true
+    let match = INLINE_MATH_DOUBLE.exec(value)
+    if (!match) {
+      match = INLINE_MATH.exec(value)
+      isDouble = false
+    }
     const escaped = ESCAPED_INLINE_MATH.exec(value)
     if (escaped) {
       /* istanbul ignore if - never used (yet) */
@@ -35,7 +40,7 @@ module.exports = function inlinePlugin (opts = {}) {
         data: {
           hName: 'span',
           hProperties: {
-            className: 'inlineMath'
+            className: 'inlineMath' + (isDouble ? ' inlineMathDouble' : '')
           },
           hChildren: [
             {

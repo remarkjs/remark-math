@@ -17,8 +17,11 @@ module.exports = function plugin (opts = {}) {
   if (opts.throwOnError == null) opts.throwOnError = false
   return function transform (node, file) {
     visit(node, 'element', function (element) {
-      const isInlineMath = element.tagName === 'span' && element.properties.className === 'inlineMath'
+      const isInlineMath = element.tagName === 'span' &&
+        element.properties.className &&
+        element.properties.className.includes('inlineMath')
       const isMath = element.tagName === 'div' && element.properties.className === 'math'
+
       if (isInlineMath || isMath) {
         let renderedValue
         try {
@@ -43,10 +46,7 @@ module.exports = function plugin (opts = {}) {
 
         const inlineMathAst = parseMathHtml(renderedValue).children[0]
 
-        Object.assign(element.properties, {className: isInlineMath
-          ? 'inlineMath'
-          : 'math'
-        })
+        Object.assign(element.properties, {className: element.properties.className})
         element.children = [inlineMathAst]
       }
     })
