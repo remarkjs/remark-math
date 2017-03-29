@@ -6,7 +6,7 @@
     "test": "jest --coverage",
     "test:api": "jest",
     "test:watch": "jest --watch",
-    "posttest": "npm run lint --silent",
+    "pretest": "npm run lint --silent",
     "lint": "standard",
     "demo:webpack": "webpack-dev-server --config examples/webpack/webpack.config.js",
     "demo:nodejs": "node examples/nodejs/process.js",
