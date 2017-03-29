@@ -116,7 +116,8 @@ const processor = remark()
   .use(remark2rehype)
   .use(katex, {
     throwOnError: false,
-    errorColor: '#FF0000'
+    errorColor: '#FF0000',
+    inlineDoubleDisplay: false
   })
   .use(stringify)
 
@@ -131,6 +132,14 @@ Throw if a KaTeX parse error occurs. (default: `false`)
 This is a same option of KaTeX. As long as `options.throwOnError` is not `true`, Malformed TeX will be colored by `options.errorColor`. (default: #cc0000)
 
 > [KaTeX#rendering-options](https://github.com/Khan/KaTeX#rendering-options)
+
+#### `options.inlineDoubleDisplay`
+
+Parses inline `$$` math as `inlineMath` but displays it like `\displaystyle` or `math` display mode. (default: `false`)
+
+This option, together with a CSS rule like `.inlineMathDouble {display: block; text-align: center;}` allows authors to have equations inside paragraphs on a separate line:
+
+![Example](https://cloud.githubusercontent.com/assets/2022803/24314687/26c96bb8-10e3-11e7-928e-f93cff49b456.png)
 
 ## Specs
 
