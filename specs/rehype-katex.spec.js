@@ -128,6 +128,20 @@ it('should handle error', () => {
   expect(result.messages[0].message).toEqual('KaTeX parse error: Expected \'EOF\', got \'\\alpa\' at position 1: \\̲a̲l̲p̲a̲')
 })
 
+it.only('should handle error 2', () => {
+  const processor = remark()
+    .use(math)
+    .use(remark2rehype)
+    .use(rehypeKatex, {
+      throwOnError: false
+    })
+    .use(stringify)
+
+  const targetText = '$ê$'
+
+  processor.processSync(targetText)
+})
+
 it('should throw parsing error if `throwOnError` set true', () => {
   const processor = remark()
     .use(math)
