@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Rokt33r/remark-math#readme",
   "peerDependencies": {
-    "remark-math": ">=0.2.0"
+    "remark-math": ">=1.0.0"
   },
   "dependencies": {
     "katex": "^0.7.1",
