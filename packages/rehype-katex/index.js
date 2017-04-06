@@ -23,11 +23,11 @@ function isTag (element, tag) {
 
 module.exports = function plugin (opts = {}) {
   if (opts.throwOnError == null) opts.throwOnError = false
+  if (opts.errorColor == null) opts.errorColor = '#cc0000'
   return function transform (node, file) {
     visit(node, 'element', function (element) {
       const isInlineMath = isTag(element, 'span') && hasClass(element, 'inlineMath')
-      const isMath = (opts.inlineDoubleDisplay && hasClass(element, 'inlineMathDouble')) ||
-        (isTag(element, 'div') && hasClass(element, 'math'))
+      const isMath = (opts.inlineMathDoubleDisplay && hasClass(element, 'inlineMathDouble')) || (isTag(element, 'div') && hasClass(element, 'math'))
 
       if (isInlineMath || isMath) {
         let renderedValue
@@ -43,11 +43,15 @@ module.exports = function plugin (opts = {}) {
               err.message,
               position.start(element)
             )
-            renderedValue = katex.renderToString(element.children[0].value, {
-              displayMode: isMath,
-              throwOnError: false,
-              errorColor: opts.errorColor
-            }, 'katex-parse-error')
+            try {
+              renderedValue = katex.renderToString(element.children[0].value, {
+                displayMode: isMath,
+                throwOnError: false,
+                errorColor: opts.errorColor
+              })
+            } catch (err) {
+              renderedValue = '<code class="katex" style="color: ' + opts.errorColor + '">' + element.children[0].value + '</code>'
+            }
           }
         }
 

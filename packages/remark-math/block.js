@@ -8,7 +8,7 @@ var C_DOLLAR = '$'
 var MIN_FENCE_COUNT = 2
 var CODE_INDENT_COUNT = 4
 
-module.exports = function blockPlugin (opts = {}) {
+module.exports = function blockPlugin (opts) {
   function blockTokenizer (eat, value, silent) {
     var length = value.length + 1
     var index = 0

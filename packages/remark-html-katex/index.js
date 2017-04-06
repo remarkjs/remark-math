@@ -18,9 +18,10 @@ module.exports = function plugin (opts = {}) {
   return function transform (node, file) {
     function renderContent (element) {
       let renderedValue
+      const isMath = element.type === 'math'
       try {
         renderedValue = katex.renderToString(element.value, {
-          displayMode: element.type === 'math'
+          displayMode: isMath
         })
       } catch (err) {
         if (opts.throwOnError) {
@@ -30,11 +31,16 @@ module.exports = function plugin (opts = {}) {
             err.message,
             position.start(element)
           )
-          renderedValue = katex.renderToString(element.value, {
-            displayMode: element.type === 'math',
-            throwOnError: false,
-            errorColor: opts.errorColor
-          }, 'katex-parse-error')
+
+          try {
+            renderedValue = katex.renderToString(element.value, {
+              displayMode: isMath,
+              throwOnError: false,
+              errorColor: opts.errorColor
+            })
+          } catch (err) {
+            renderedValue = '<code class="katex" style="color: ' + opts.errorColor + '">' + element.value + '</code>'
+          }
         }
       }
 

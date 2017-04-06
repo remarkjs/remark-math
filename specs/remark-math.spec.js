@@ -10,7 +10,7 @@ function remark () {
     .use(stringify)
 }
 
-it('should parse a math inline and a math block ', () => {
+it('must parse a math inline and a math block ', () => {
   const processor = remark()
     .use(math)
 
@@ -33,7 +33,7 @@ it('should parse a math inline and a math block ', () => {
   ]))
 })
 
-it('should escape a dollar with back slash', () => {
+it('must escape a dollar with back slash', () => {
   const processor = remark()
     .use(math)
 
@@ -49,7 +49,7 @@ it('should escape a dollar with back slash', () => {
   ]))
 })
 
-it('should NOT escape a dollar with double backslashes', () => {
+it('must NOT escape a dollar with double backslashes', () => {
   const processor = remark()
     .use(math)
 
@@ -65,7 +65,7 @@ it('should NOT escape a dollar with double backslashes', () => {
   ]))
 })
 
-it('should render a super factorial to a math block', () => {
+it('must render a super factorial to a math block', () => {
   const processor = remark()
     .use(math)
 
@@ -80,7 +80,7 @@ it('should render a super factorial to a math block', () => {
   ]))
 })
 
-it('should render super factorial to a math inline', () => {
+it('must render super factorial to a math inline', () => {
   const processor = remark()
     .use(math)
 
@@ -97,7 +97,7 @@ it('should render super factorial to a math inline', () => {
   ]))
 })
 
-it('should render a math block just after a pragraph', () => {
+it('must render a math block just after a pragraph', () => {
   const processor = remark()
     .use(math)
 
@@ -116,7 +116,7 @@ it('should render a math block just after a pragraph', () => {
   ]))
 })
 
-it('should parse inline math between double dollars', () => {
+it('must parse inline math between double dollars', () => {
   const processor = remark()
     .use(math)
 
@@ -131,7 +131,7 @@ it('should parse inline math between double dollars', () => {
   ]))
 })
 
-it('should stringify', () => {
+it('must stringify', () => {
   const processor = remark()
     .use(math)
 
@@ -154,7 +154,7 @@ it('should stringify', () => {
   ].join('\n'))
 })
 
-it('should stringify math block child of blockquote', () => {
+it('must stringify math block child of blockquote', () => {
   const processor = remark()
     .use(math)
 
@@ -174,7 +174,7 @@ it('should stringify math block child of blockquote', () => {
   ].join('\n'))
 })
 
-it('should parse math block with indent', () => {
+it('must parse math block with indent', () => {
   const processor = remark()
     .use(math)
 
@@ -191,12 +191,12 @@ it('should parse math block with indent', () => {
   ]))
 })
 
-it('should ignore everything just after opening/closing marker', () => {
+it('must ignore everything just after opening/closing marker', () => {
   const processor = remark()
     .use(math)
 
   const targetText = [
-    '$$  should',
+    '$$  must',
     '\\alpha',
     '$$  be ignored',
     ''
@@ -209,7 +209,7 @@ it('should ignore everything just after opening/closing marker', () => {
   ]))
 })
 
-it('should not affect next block', () => {
+it('must not affect next block', () => {
   const processor = remark()
     .use(math)
 
@@ -227,5 +227,61 @@ it('should not affect next block', () => {
   expect(ast).toMatchObject(u('root', [
     u('math', '\\alpha'),
     u('code', 'code fence')
+  ]))
+})
+
+it('must not set inlineMathDouble class', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = [
+    '$$\\alpha$$'
+  ].join('\n')
+
+  const ast = processor.parse(targetText)
+
+  expect(ast).toEqual(u('root', [
+    u('paragraph', [
+      u('inlineMath', {
+        data: {
+          hChildren: [
+            u('text', '\\alpha')
+          ],
+          hName: 'span',
+          hProperties: {
+            className: 'inlineMath'
+          }
+        }
+      }, '\\alpha')
+    ])
+  ]))
+})
+
+it('must set inlineMathDouble class if inlineMathDouble is true', () => {
+  const processor = remark()
+    .use(math, {
+      inlineMathDouble: true
+    })
+
+  const targetText = [
+    '$$\\alpha$$'
+  ].join('\n')
+
+  const ast = processor.parse(targetText)
+
+  expect(ast).toEqual(u('root', [
+    u('paragraph', [
+      u('inlineMath', {
+        data: {
+          hChildren: [
+            u('text', '\\alpha')
+          ],
+          hName: 'span',
+          hProperties: {
+            className: 'inlineMath inlineMathDouble'
+          }
+        }
+      }, '\\alpha')
+    ])
   ]))
 })

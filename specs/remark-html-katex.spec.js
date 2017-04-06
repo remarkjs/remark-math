@@ -4,8 +4,9 @@ const remarkHtmlKatex = require('../packages/remark-html-katex')
 const unified = require('unified')
 const parse = require('remark-parse')
 const html = require('remark-html')
-const rehype = require('rehype')
-const toHtml = require('hast-util-to-html')
+const rehypeParse = require('rehype-parse')
+const u = require('unist-builder')
+const h = require('hastscript')
 
 function remark () {
   return unified()
@@ -13,7 +14,9 @@ function remark () {
 }
 
 function parseHtml (html) {
-  return rehype().parse(html, {fragment: true})
+  return unified()
+    .use(rehypeParse, {fragment: true, position: false})
+    .parse(html)
 }
 
 it('should parse into katex', () => {
@@ -32,19 +35,18 @@ it('should parse into katex', () => {
   const result = processor.processSync(targetText).toString()
   const renderedAst = parseHtml(result)
 
-  const expectedInlineMath = katex.renderToString('\\alpha')
+  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\alpha')).children
+  const expectedMath = parseHtml(katex.renderToString('\\alpha\\beta', {displayMode: true})).children
 
-  expect(renderedAst.children[0].type).toEqual('element')
-  expect(renderedAst.children[0].tagName).toEqual('p')
-  expect(renderedAst.children[0].children[0].tagName).toEqual('span')
-  expect(renderedAst.children[0].children[0].properties.className).toEqual(expect.arrayContaining(['inlineMath']))
-  expect(toHtml(renderedAst.children[0].children[0].children[0], {fragment: true})).toEqual(expectedInlineMath)
-
-  const expectedMath = katex.renderToString('\\alpha\\beta', {displayMode: true})
-
-  expect(renderedAst.children[2].tagName).toEqual('div')
-  expect(renderedAst.children[2].properties.className).toEqual(expect.arrayContaining(['math']))
-  expect(toHtml(renderedAst.children[2].children[0], {fragment: true})).toEqual(expectedMath)
+  expect(renderedAst)
+    .toEqual(u('root', {data: {quirksMode: false}}, [
+      h('p', [
+        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
+      ]),
+      u('text', '\n'),
+      h('div', {className: 'math'}, expectedMath),
+      u('text', '\n')
+    ]))
 })
 
 it('should handle error', () => {
@@ -60,18 +62,44 @@ it('should handle error', () => {
   const result = processor.processSync(targetText)
   const renderedAst = parseHtml(result.toString())
 
-  const expectedInlineMath = katex.renderToString('\\alpa', {
+  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\alpa', {
     throwOnError: false,
     errorColor: 'orange'
-  })
+  })).children
 
-  expect(renderedAst.children[0].type).toEqual('element')
-  expect(renderedAst.children[0].tagName).toEqual('p')
-  expect(renderedAst.children[0].children[0].tagName).toEqual('span')
-  expect(renderedAst.children[0].children[0].properties.className).toEqual(expect.arrayContaining(['inlineMath']))
-  expect(toHtml(renderedAst.children[0].children[0].children[0], {fragment: true})).toEqual(expectedInlineMath)
+  expect(renderedAst)
+    .toEqual(u('root', {data: {quirksMode: false}}, [
+      h('p', [
+        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
+      ]),
+      u('text', '\n')
+    ]))
 
   expect(result.messages[0].message).toEqual('KaTeX parse error: Expected \'EOF\', got \'\\alpa\' at position 1: \\̲a̲l̲p̲a̲')
+})
+
+it('should handle error even fallback rendering failed', () => {
+  const processor = remark()
+    .use(math)
+    .use(remarkHtmlKatex, {
+      errorColor: 'orange'
+    })
+    .use(html)
+
+  const targetText = '$ê$'
+
+  const result = processor.processSync(targetText)
+  const renderedAst = parseHtml(result.toString())
+
+  expect(renderedAst)
+    .toEqual(u('root', {data: {quirksMode: false}}, [
+      h('p', [
+        h('span', {className: 'inlineMath'}, [
+          h('code', {className: 'katex', style: 'color: orange'}, 'ê')
+        ])
+      ]),
+      u('text', '\n')
+    ]))
 })
 
 it('should throw parsing error if `throwOnError` set true', () => {

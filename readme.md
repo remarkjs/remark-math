@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/remark-math.svg)](https://www.npmjs.com/package/remark-math)
 [![Build Status](https://travis-ci.org/Rokt33r/remark-math.svg?branch=master)](https://travis-ci.org/Rokt33r/remark-math)
+[![Chat](https://img.shields.io/gitter/room/wooorm/remark.svg)](https://gitter.im/wooorm/remark)
 
 Math Inline and Block supporting for Remark
 
@@ -129,15 +130,42 @@ Throw if a KaTeX parse error occurs. (default: `false`)
 
 #### `options.errorColor`
 
-This is a same option of KaTeX. As long as `options.throwOnError` is not `true`, Malformed TeX will be colored by `options.errorColor`. (default: #cc0000)
+As long as `options.throwOnError` is not `true`, ParseError  message will be colored by `options.errorColor`. (default: #cc0000)
 
 > [KaTeX#rendering-options](https://github.com/Khan/KaTeX#rendering-options)
 
-#### `options.inlineDoubleDisplay`
+### `inlineMathDouble` (*EXPERIMENTAL: Use with caution*)
 
-Parses inline `$$` math as `inlineMath` but displays it like `\displaystyle` or `math` display mode. (default: `false`)
+#### `options.inlineMathDouble` of `remark-math` (*EXPERIMENTAL*)
+
+Add `inlineMathDouble` class to inline `$$` math. It will have two classes, `inlineMath` and `inlineMathDouble` (default: `false`)
+
+#### `options.inlineMathDoubleDisplay` of `rehype-katex` (*EXPERIMENTAL*)
+
+If an element has `inlineMathDouble` class, set `displayMode` of KaTeX `true`. (default: `false`)
+
+#### Usage
 
 This option, together with a CSS rule like `.inlineMathDouble {display: block; text-align: center;}` allows authors to have equations inside paragraphs on a separate line:
+
+```js
+const unified = require('unified')
+const parse = require('remark-parse')
+const remark2rehype = require('remark-rehype')
+const rehypeKatex = require('rehype-katex')
+const stringify = require('rehype-stringify')
+
+const processor = unified()
+  .use(parse)
+  .use(math, {
+    inlineMathDouble: true
+  })
+  .use(remark2rehype)
+  .use(rehypeKatex, {
+    inlineMathDoubleDisplay: true
+  })
+  .use(stringify)
+```
 
 ![Example](https://cloud.githubusercontent.com/assets/2022803/24314687/26c96bb8-10e3-11e7-928e-f93cff49b456.png)
 
