@@ -1,6 +1,6 @@
 {
   "name": "rehype-katex",
-  "version": "0.2.3",
+  "version": "1.0.0",
   "description": "KaTeX transform plugin for rehype",
   "main": "index.js",
   "repository": {
