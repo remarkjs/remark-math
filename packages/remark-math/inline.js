@@ -8,6 +8,12 @@ const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
 module.exports = function inlinePlugin (opts) {
   function inlineTokenizer (eat, value, silent) {
+    if (value[0] !== '$') {
+      return eat(value)({
+        type: 'text',
+        value: value
+      })
+    }
     if (value.slice(-2) === '\\$') {
       return eat(value)({
         type: 'text',
