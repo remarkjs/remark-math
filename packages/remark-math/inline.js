@@ -40,6 +40,15 @@ module.exports = function inlinePlugin (opts) {
         return true
       }
 
+      const endingDollarInBackticks = match[0].includes('`') && value.slice(match[0].length).includes('`')
+      if (endingDollarInBackticks) {
+        const toEat = value.slice(0, value.indexOf('`'))
+        return eat(toEat)({
+          type: 'text',
+          value: toEat
+        })
+      }
+
       const trimmedContent = match[1].trim()
 
       return eat(match[0])({

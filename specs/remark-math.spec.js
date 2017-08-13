@@ -78,6 +78,51 @@ it('must NOT escape a dollar with double backslashes', () => {
   ]))
 })
 
+it('must not parse a raw starting dollar', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '`$`\\alpha$'
+
+  const ast = processor.parse(targetText)
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('inlineCode', '$'),
+      u('text', '\\alpha$')
+    ])
+  ]))
+})
+
+it('fooo must not parse a raw ending dollar', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '$\\alpha`$` foo'
+
+  const ast = processor.parse(targetText)
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('text', '$\\alpha'),
+      u('inlineCode', '$'),
+      u('text', ' foo')
+    ])
+  ]))
+})
+
+it('fooo must not parse allow inline to contain backticks', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '$`\\alpha`$'
+
+  const ast = processor.parse(targetText)
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('inlineMath', '`\\alpha`')
+    ])
+  ]))
+})
+
 it('must render a super factorial to a math block', () => {
   const processor = remark()
     .use(math)
