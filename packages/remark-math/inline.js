@@ -15,6 +15,7 @@ module.exports = function inlinePlugin (opts) {
       isDouble = false
     }
     const escaped = ESCAPED_INLINE_MATH.exec(value)
+
     if (escaped) {
       /* istanbul ignore if - never used (yet) */
       if (silent) {
@@ -23,6 +24,13 @@ module.exports = function inlinePlugin (opts) {
       return eat(escaped[0])({
         type: 'text',
         value: '$'
+      })
+    }
+
+    if (value.slice(-2) === '\\$') {
+      return eat(value)({
+        type: 'text',
+        value: value.slice(0, -2) + '$'
       })
     }
 
