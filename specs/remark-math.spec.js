@@ -37,7 +37,21 @@ it('must escape a dollar with back slash', () => {
   const processor = remark()
     .use(math)
 
-  const targetText = '\\$\\alpha\\$'
+  const targetText = '$\\alpha\\$'
+
+  const ast = processor.parse(targetText)
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('text', '$\\alpha$')
+    ])
+  ]))
+})
+
+it('must not parse a raw dollar', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '$\\alpha`$`'
 
   const ast = processor.parse(targetText)
   expect(ast).toMatchObject(u('root', [
