@@ -15,6 +15,7 @@ module.exports = function inlinePlugin (opts) {
       isDouble = false
     }
     const escaped = ESCAPED_INLINE_MATH.exec(value)
+
     if (escaped) {
       /* istanbul ignore if - never used (yet) */
       if (silent) {
@@ -26,10 +27,26 @@ module.exports = function inlinePlugin (opts) {
       })
     }
 
+    if (value.slice(-2) === '\\$') {
+      return eat(value)({
+        type: 'text',
+        value: value.slice(0, -2) + '$'
+      })
+    }
+
     if (match) {
       /* istanbul ignore if - never used (yet) */
       if (silent) {
         return true
+      }
+
+      const endingDollarInBackticks = match[0].includes('`') && value.slice(match[0].length).includes('`')
+      if (endingDollarInBackticks) {
+        const toEat = value.slice(0, value.indexOf('`'))
+        return eat(toEat)({
+          type: 'text',
+          value: toEat
+        })
       }
 
       const trimmedContent = match[1].trim()

@@ -33,7 +33,21 @@ it('must parse a math inline and a math block ', () => {
   ]))
 })
 
-it('must escape a dollar with back slash', () => {
+it('must escape a dollar with backslash', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '$\\alpha\\$'
+
+  const ast = processor.parse(targetText)
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('text', '$\\alpha$')
+    ])
+  ]))
+})
+
+it('must escape all dollars with backslashes', () => {
   const processor = remark()
     .use(math)
 
@@ -43,8 +57,7 @@ it('must escape a dollar with back slash', () => {
   expect(ast).toMatchObject(u('root', [
     u('paragraph', [
       u('text', '$'),
-      u('text', '\\alpha'),
-      u('text', '$')
+      u('text', '\\alpha$')
     ])
   ]))
 })
@@ -61,6 +74,51 @@ it('must NOT escape a dollar with double backslashes', () => {
     u('paragraph', [
       u('text', '\\'),
       u('inlineMath', '\\alpha')
+    ])
+  ]))
+})
+
+it('must not parse a raw starting dollar', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '`$`\\alpha$'
+
+  const ast = processor.parse(targetText)
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('inlineCode', '$'),
+      u('text', '\\alpha$')
+    ])
+  ]))
+})
+
+it('fooo must not parse a raw ending dollar', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '$\\alpha`$` foo'
+
+  const ast = processor.parse(targetText)
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('text', '$\\alpha'),
+      u('inlineCode', '$'),
+      u('text', ' foo')
+    ])
+  ]))
+})
+
+it('fooo must not parse allow inline to contain backticks', () => {
+  const processor = remark()
+    .use(math)
+
+  const targetText = '$`\\alpha`$'
+
+  const ast = processor.parse(targetText)
+  expect(ast).toMatchObject(u('root', [
+    u('paragraph', [
+      u('inlineMath', '`\\alpha`')
     ])
   ]))
 })
