@@ -2,3 +2,4 @@ node_modules
 *.log
 coverage
 yarn.lock
+.DS_Store
