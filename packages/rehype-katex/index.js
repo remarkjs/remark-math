@@ -24,6 +24,7 @@ function isTag (element, tag) {
 module.exports = function plugin (opts = {}) {
   if (opts.throwOnError == null) opts.throwOnError = false
   if (opts.errorColor == null) opts.errorColor = '#cc0000'
+  if (opts.macros == null) opts.macros = {}
   return function transform (node, file) {
     visit(node, 'element', function (element) {
       const isInlineMath = isTag(element, 'span') && hasClass(element, 'inlineMath')
@@ -33,7 +34,8 @@ module.exports = function plugin (opts = {}) {
         let renderedValue
         try {
           renderedValue = katex.renderToString(element.children[0].value, {
-            displayMode: isMath
+            displayMode: isMath,
+            macros: opts.macros
           })
         } catch (err) {
           if (opts.throwOnError) {
@@ -46,6 +48,7 @@ module.exports = function plugin (opts = {}) {
             try {
               renderedValue = katex.renderToString(element.children[0].value, {
                 displayMode: isMath,
+                macros: opts.macros,
                 throwOnError: false,
                 errorColor: opts.errorColor
               })

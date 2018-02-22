@@ -99,6 +99,35 @@ it('should put inlineDoubles in katex displaystyle', () => {
     ]))
 })
 
+it('should take macros', () => {
+  const macros = {
+    '\\RR': '\\mathbb{R}'
+  }
+
+  const processor = remark()
+    .use(math)
+    .use(remark2rehype)
+    .use(rehypeKatex, {
+      errorColor: 'orange',
+      macros: macros
+    })
+    .use(stringify)
+
+  const targetText = '$\\RR$'
+
+  const result = processor.processSync(targetText)
+  const renderedAst = parseHtml(result.toString())
+
+  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\RR', {macros: macros})).children
+
+  expect(renderedAst)
+    .toEqual(u('root', {data: {quirksMode: false}}, [
+      h('p', [
+        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
+      ])
+    ]))
+})
+
 it('should handle error', () => {
   const processor = remark()
     .use(math)
