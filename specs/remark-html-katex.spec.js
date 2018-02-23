@@ -86,7 +86,7 @@ it('should handle error even fallback rendering failed', () => {
     })
     .use(html)
 
-  const targetText = '$ê$'
+  const targetText = '$ê&$'
 
   const result = processor.processSync(targetText)
   const renderedAst = parseHtml(result.toString())
@@ -95,7 +95,7 @@ it('should handle error even fallback rendering failed', () => {
     .toEqual(u('root', {data: {quirksMode: false}}, [
       h('p', [
         h('span', {className: 'inlineMath'}, [
-          h('code', {className: 'katex', style: 'color: orange'}, 'ê')
+          h('code', {className: 'katex', style: 'color: orange'}, 'ê&')
         ])
       ]),
       u('text', '\n')
