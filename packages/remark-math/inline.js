@@ -10,7 +10,7 @@ module.exports = function inlinePlugin (opts) {
   function inlineTokenizer (eat, value, silent) {
     let isDouble = true
     let match = INLINE_MATH_DOUBLE.exec(value)
-    if (!match) {
+    if (!match && !opts.disableInlineMathSingle) {
       match = INLINE_MATH.exec(value)
       isDouble = false
     }
