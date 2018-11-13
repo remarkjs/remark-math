@@ -21,7 +21,8 @@ function isTag (element, tag) {
   return element.tagName === tag
 }
 
-module.exports = function plugin (opts = {}) {
+module.exports = function plugin (opts) {
+  if (opts == null) opts = {}
   if (opts.throwOnError == null) opts.throwOnError = false
   if (opts.errorColor == null) opts.errorColor = '#cc0000'
   if (opts.macros == null) opts.macros = {}

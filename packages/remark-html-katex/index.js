@@ -13,7 +13,8 @@ function parseMathHtml (html) {
     .parse(html)
 }
 
-module.exports = function plugin (opts = {}) {
+module.exports = function plugin (opts) {
+  if (opts == null) opts = {}
   if (opts.throwOnError == null) opts.throwOnError = false
   return function transform (node, file) {
     function renderContent (element) {
