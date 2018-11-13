@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'development',
   entry: {
     main: './examples/webpack/entry.js'
   },

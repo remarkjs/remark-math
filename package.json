@@ -32,9 +32,9 @@
   "homepage": "https://github.com/Rokt33r/remark-math#readme",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
-    "css-loader": "^0.28.4",
+    "css-loader": "^1.0.1",
     "eslint-plugin-jest": "^20.0.3",
-    "file-loader": "^0.11.2",
+    "file-loader": "^2.0.0",
     "github-markdown-css": "^2.6.0",
     "hastscript": "^3.0.1",
     "jest": "^23.6.0",
@@ -50,8 +50,9 @@
     "style-loader": "^0.18.2",
     "unified": "^6.1.5",
     "unist-builder": "^1.0.2",
-    "webpack": "^2.6.1",
-    "webpack-dev-server": "^2.4.5"
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {},
   "standard": {
