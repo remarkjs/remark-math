@@ -33,15 +33,11 @@ module.exports = function plugin (opts) {
             position.start(element)
           )
 
-          try {
-            renderedValue = katex.renderToString(element.value, {
-              displayMode: isMath,
-              throwOnError: false,
-              errorColor: opts.errorColor
-            })
-          } catch (err) {
-            renderedValue = '<code class="katex" style="color: ' + opts.errorColor + '">' + element.value + '</code>'
-          }
+          renderedValue = katex.renderToString(element.value, {
+            displayMode: isMath,
+            throwOnError: false,
+            errorColor: opts.errorColor
+          })
         }
       }
 

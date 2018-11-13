@@ -75,7 +75,7 @@ it('should handle error', () => {
       u('text', '\n')
     ]))
 
-  expect(result.messages[0].message).toEqual('KaTeX parse error: Expected \'EOF\', got \'\\alpa\' at position 1: \\̲a̲l̲p̲a̲')
+  expect(result.messages[0].message).toEqual('KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲')
 })
 
 it('should handle error even fallback rendering failed', () => {
@@ -95,7 +95,11 @@ it('should handle error even fallback rendering failed', () => {
     .toEqual(u('root', {data: {quirksMode: false}}, [
       h('p', [
         h('span', {className: 'inlineMath'}, [
-          h('code', {className: 'katex', style: 'color: orange'}, 'ê&')
+          h('span', {
+            className: 'katex-error',
+            style: 'color:orange',
+            title: 'ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲'
+          }, 'ê&')
         ])
       ]),
       u('text', '\n')
@@ -109,10 +113,16 @@ it('should throw parsing error if `throwOnError` set true', () => {
       throwOnError: true
     })
     .use(html)
+  expect.assertions(1)
 
   const targetText = '$\\alpa$'
 
-  expect(() => {
+  try {
     processor.processSync(targetText)
-  }).toThrow('KaTeX parse error: Expected \'EOF\', got \'\\alpa\'')
+  } catch (error) {
+    expect(error).toMatchObject({
+      name: 'ParseError',
+      message: 'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
+    })
+  }
 })

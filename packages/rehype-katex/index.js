@@ -46,16 +46,13 @@ module.exports = function plugin (opts) {
               err.message,
               position.start(element)
             )
-            try {
-              renderedValue = katex.renderToString(element.children[0].value, {
-                displayMode: isMath,
-                macros: opts.macros,
-                throwOnError: false,
-                errorColor: opts.errorColor
-              })
-            } catch (err) {
-              renderedValue = '<code class="katex" style="color: ' + opts.errorColor + '">' + element.children[0].value + '</code>'
-            }
+
+            renderedValue = katex.renderToString(element.children[0].value, {
+              displayMode: isMath,
+              macros: opts.macros,
+              throwOnError: false,
+              errorColor: opts.errorColor
+            })
           }
         }
 
