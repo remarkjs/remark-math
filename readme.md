@@ -132,7 +132,19 @@ Throw if a KaTeX parse error occurs. (default: `false`)
 
 As long as `options.throwOnError` is not `true`, ParseError  message will be colored by `options.errorColor`. (default: #cc0000)
 
-> [KaTeX#rendering-options](https://github.com/Khan/KaTeX#rendering-options)
+> [Options - Katex](https://katex.org/docs/options.html)
+
+#### `options.macros`
+
+A collection of custom macro.
+
+> [Options - Katex](https://katex.org/docs/options.html)
+
+#### `options.strict`
+
+`boolean` or `string` or `function` (default: `"warn"`). If `false` or `"ignore`", allow features that make writing LaTeX convenient but are not actually supported by (Xe)LaTeX (similar to MathJax). If `true` or `"error"` (LaTeX faithfulness mode), throw an error for any such transgressions. If `"warn"` (the default), warn about such behavior via `console.warn`. Provide a custom function `handler(errorCode, errorMsg, token)` to customize behavior depending on the type of transgression (summarized by the string code `errorCode` and detailed in `errorMsg`); this function can also return `"ignore"`, `"error"`, or `"warn"` to use a built-in behavior.
+
+> [Options - Katex](https://katex.org/docs/options.html)
 
 ### `inlineMathDouble` (*EXPERIMENTAL: Use with caution*)
 
