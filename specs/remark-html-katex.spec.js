@@ -49,6 +49,35 @@ it('should parse into katex', () => {
     ]))
 })
 
+it('should take macros', () => {
+  const macros = {
+    '\\RR': '\\mathbb{R}'
+  }
+
+  const processor = remark()
+    .use(math)
+    .use(remarkHtmlKatex, {
+      errorColor: 'orange',
+      macros: macros
+    })
+    .use(html)
+
+  const targetText = '$\\RR$'
+
+  const result = processor.processSync(targetText)
+  const renderedAst = parseHtml(result.toString())
+
+  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\RR', {macros: macros})).children
+
+  expect(renderedAst)
+    .toEqual(u('root', {data: {quirksMode: false}}, [
+      h('p', [
+        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
+      ]),
+      u('text', '\n')
+    ]))
+})
+
 it('should handle error', () => {
   const processor = remark()
     .use(math)
@@ -82,7 +111,8 @@ it('should handle error even fallback rendering failed', () => {
   const processor = remark()
     .use(math)
     .use(remarkHtmlKatex, {
-      errorColor: 'orange'
+      errorColor: 'orange',
+      strict: 'ignore'
     })
     .use(html)
 

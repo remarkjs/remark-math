@@ -160,7 +160,8 @@ it('should handle error even fallback rendering failed', () => {
     .use(math)
     .use(remark2rehype)
     .use(rehypeKatex, {
-      errorColor: 'orange'
+      errorColor: 'orange',
+      strict: 'ignore'
     })
     .use(stringify)
 

@@ -36,7 +36,8 @@ module.exports = function plugin (opts) {
         try {
           renderedValue = katex.renderToString(element.children[0].value, {
             displayMode: isMath,
-            macros: opts.macros
+            macros: opts.macros,
+            strict: opts.strict
           })
         } catch (err) {
           if (opts.throwOnError) {
@@ -51,7 +52,8 @@ module.exports = function plugin (opts) {
               displayMode: isMath,
               macros: opts.macros,
               throwOnError: false,
-              errorColor: opts.errorColor
+              errorColor: opts.errorColor,
+              strict: 'ignore'
             })
           }
         }

@@ -16,13 +16,17 @@ function parseMathHtml (html) {
 module.exports = function plugin (opts) {
   if (opts == null) opts = {}
   if (opts.throwOnError == null) opts.throwOnError = false
+  if (opts.errorColor == null) opts.errorColor = '#cc0000'
+  if (opts.macros == null) opts.macros = {}
   return function transform (node, file) {
     function renderContent (element) {
       let renderedValue
       const isMath = element.type === 'math'
       try {
         renderedValue = katex.renderToString(element.value, {
-          displayMode: isMath
+          macros: opts.macros,
+          displayMode: isMath,
+          strict: opts.strict
         })
       } catch (err) {
         if (opts.throwOnError) {
@@ -35,8 +39,10 @@ module.exports = function plugin (opts) {
 
           renderedValue = katex.renderToString(element.value, {
             displayMode: isMath,
+            macros: opts.macros,
             throwOnError: false,
-            errorColor: opts.errorColor
+            errorColor: opts.errorColor,
+            strict: 'ignore'
           })
         }
       }
