@@ -37,7 +37,7 @@
     "file-loader": "^0.11.2",
     "github-markdown-css": "^2.6.0",
     "hastscript": "^3.0.1",
-    "jest": "^20.0.4",
+    "jest": "^23.6.0",
     "katex": "^0.9.0",
     "lerna": "^2.0.0-rc.5",
     "rehype-parse": "^4.0.0",
