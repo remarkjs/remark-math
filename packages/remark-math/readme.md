@@ -90,6 +90,22 @@ unified()
 *EXPERIMENTAL*.
 Add an extra `inlineMathDouble` class to inline `$$` math (default: `false`).
 
+#### Notes
+
+##### Escaping
+
+You can escape dollar signs with a back slash (`\`):
+
+```markdown
+\$\alpha\$
+
+$\alpha\$$
+
+$$
+\beta\$
+$$
+```
+
 ## Security
 
 Use of `remark-math` itself doesn’t open you up to [cross-site scripting
