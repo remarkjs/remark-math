@@ -26,10 +26,10 @@
   },
   "dependencies": {
     "katex": "^0.10.0",
-    "rehype-parse": "^3.0.0",
-    "unified": "^6.1.1",
+    "rehype-parse": "^6.0.0",
+    "unified": "^8.0.0",
     "unist-util-position": "^3.0.0",
-    "unist-util-visit": "^1.1.1"
+    "unist-util-visit": "^2.0.0"
   },
   "files": [
     "index.js"
