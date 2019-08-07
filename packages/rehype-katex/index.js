@@ -60,7 +60,7 @@ module.exports = function plugin (opts) {
 
         const inlineMathAst = parseMathHtml(renderedValue).children[0]
 
-        Object.assign(element.properties, {className: element.properties.className})
+        Object.assign(element.properties, { className: element.properties.className })
         element.children = [inlineMathAst]
       }
     })

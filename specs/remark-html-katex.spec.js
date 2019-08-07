@@ -15,7 +15,7 @@ function remark () {
 
 function parseHtml (html) {
   return unified()
-    .use(rehypeParse, {fragment: true, position: false})
+    .use(rehypeParse, { fragment: true, position: false })
     .parse(html)
 }
 
@@ -36,15 +36,15 @@ it('should parse into katex', () => {
   const renderedAst = parseHtml(result)
 
   const expectedInlineMathChildren = parseHtml(katex.renderToString('\\alpha')).children
-  const expectedMath = parseHtml(katex.renderToString('\\alpha\\beta', {displayMode: true})).children
+  const expectedMath = parseHtml(katex.renderToString('\\alpha\\beta', { displayMode: true })).children
 
   expect(renderedAst)
-    .toEqual(u('root', {data: {quirksMode: false}}, [
+    .toEqual(u('root', { data: { quirksMode: false } }, [
       h('p', [
-        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
+        h('span', { className: 'inlineMath' }, expectedInlineMathChildren)
       ]),
       u('text', '\n'),
-      h('div', {className: 'math'}, expectedMath),
+      h('div', { className: 'math' }, expectedMath),
       u('text', '\n')
     ]))
 })
@@ -67,12 +67,12 @@ it('should take macros', () => {
   const result = processor.processSync(targetText)
   const renderedAst = parseHtml(result.toString())
 
-  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\RR', {macros: macros})).children
+  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\RR', { macros: macros })).children
 
   expect(renderedAst)
-    .toEqual(u('root', {data: {quirksMode: false}}, [
+    .toEqual(u('root', { data: { quirksMode: false } }, [
       h('p', [
-        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
+        h('span', { className: 'inlineMath' }, expectedInlineMathChildren)
       ]),
       u('text', '\n')
     ]))
@@ -97,9 +97,9 @@ it('should handle error', () => {
   })).children
 
   expect(renderedAst)
-    .toEqual(u('root', {data: {quirksMode: false}}, [
+    .toEqual(u('root', { data: { quirksMode: false } }, [
       h('p', [
-        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
+        h('span', { className: 'inlineMath' }, expectedInlineMathChildren)
       ]),
       u('text', '\n')
     ]))
@@ -122,9 +122,9 @@ it('should handle error even fallback rendering failed', () => {
   const renderedAst = parseHtml(result.toString())
 
   expect(renderedAst)
-    .toEqual(u('root', {data: {quirksMode: false}}, [
+    .toEqual(u('root', { data: { quirksMode: false } }, [
       h('p', [
-        h('span', {className: 'inlineMath'}, [
+        h('span', { className: 'inlineMath' }, [
           h('span', {
             className: 'katex-error',
             style: 'color:orange',

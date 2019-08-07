@@ -6,7 +6,7 @@ const u = require('unist-builder')
 
 function remark () {
   return unified()
-    .use(parse, {position: false})
+    .use(parse, { position: false })
     .use(stringify)
 }
 
