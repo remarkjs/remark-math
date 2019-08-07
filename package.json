@@ -4,13 +4,11 @@
   "description": "Math Inline and Block supporting for Remark",
   "scripts": {
     "postinstall": "lerna bootstrap --no-ci",
+    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
     "test": "jest --coverage",
     "test:api": "jest",
     "test:watch": "jest --watch",
-    "pretest": "npm run lint --silent",
-    "lint": "standard --fix",
-    "demo:webpack": "webpack-dev-server --config examples/webpack/webpack.config.js",
-    "demo:nodejs": "node examples/nodejs/process.js",
+    "pretest": "npm run format",
     "release": "lerna publish"
   },
   "repository": {
@@ -32,39 +30,24 @@
   },
   "homepage": "https://github.com/Rokt33r/remark-math#readme",
   "devDependencies": {
-    "babel-eslint": "^10.0.0",
-    "css-loader": "^3.0.0",
-    "eslint-plugin-jest": "^22.0.0",
-    "file-loader": "^4.0.0",
-    "github-markdown-css": "^3.0.0",
     "hastscript": "^5.0.0",
     "jest": "^24.0.0",
     "katex": "^0.10.0",
     "lerna": "^3.0.0",
+    "prettier": "^1.0.0",
     "rehype-parse": "^6.0.0",
     "rehype-stringify": "^6.0.0",
+    "remark-cli": "^7.0.0",
     "remark-html": "^10.0.0",
     "remark-parse": "^7.0.0",
+    "remark-preset-wooorm": "^6.0.1",
     "remark-rehype": "^5.0.0",
     "remark-stringify": "^7.0.0",
-    "standard": "^13.0.0",
-    "style-loader": "^1.0.0",
     "unified": "^8.0.0",
     "unist-builder": "^1.0.0",
-    "webpack": "^4.0.0",
-    "webpack-cli": "^3.0.0",
-    "webpack-dev-server": "^3.0.0"
+    "xo": "^0.24.0"
   },
   "dependencies": {},
-  "standard": {
-    "parser": "babel-eslint",
-    "plugins": [
-      "jest"
-    ],
-    "envs": [
-      "jest"
-    ]
-  },
   "jest": {
     "collectCoverage": false,
     "collectCoverageFrom": [
@@ -78,5 +61,30 @@
         "statements": 100
       }
     }
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "semi": false,
+    "trailingComma": "none"
+  },
+  "xo": {
+    "prettier": true,
+    "esnext": false,
+    "rules": {
+      "complexity": "off",
+      "no-eq-null": "off",
+      "eqeqeq": [
+        2,
+        "allow-null"
+      ]
+    }
+  },
+  "remarkConfig": {
+    "plugins": [
+      "preset-wooorm"
+    ]
   }
 }

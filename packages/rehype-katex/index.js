@@ -4,7 +4,9 @@ const unified = require('unified')
 const parse = require('rehype-parse')
 const position = require('unist-util-position')
 
-function parseMathHtml (html) {
+module.exports = plugin
+
+function parseMathHtml(html) {
   return unified()
     .use(parse, {
       fragment: true,
@@ -13,23 +15,32 @@ function parseMathHtml (html) {
     .parse(html)
 }
 
-function hasClass (element, className) {
-  return element.properties.className && element.properties.className.includes(className)
+function hasClass(element, className) {
+  return (
+    element.properties.className &&
+    element.properties.className.includes(className)
+  )
 }
 
-function isTag (element, tag) {
+function isTag(element, tag) {
   return element.tagName === tag
 }
 
-module.exports = function plugin (opts) {
+function plugin(opts) {
   if (opts == null) opts = {}
   if (opts.throwOnError == null) opts.throwOnError = false
   if (opts.errorColor == null) opts.errorColor = '#cc0000'
   if (opts.macros == null) opts.macros = {}
-  return function transform (node, file) {
-    visit(node, 'element', function (element) {
-      const isInlineMath = isTag(element, 'span') && hasClass(element, 'inlineMath')
-      const isMath = (opts.inlineMathDoubleDisplay && hasClass(element, 'inlineMathDouble')) || (isTag(element, 'div') && hasClass(element, 'math'))
+  return transform
+
+  function transform(node, file) {
+    visit(node, 'element', function(element) {
+      const isInlineMath =
+        isTag(element, 'span') && hasClass(element, 'inlineMath')
+      const isMath =
+        (opts.inlineMathDoubleDisplay &&
+          hasClass(element, 'inlineMathDouble')) ||
+        (isTag(element, 'div') && hasClass(element, 'math'))
 
       if (isInlineMath || isMath) {
         let renderedValue
@@ -39,14 +50,11 @@ module.exports = function plugin (opts) {
             macros: opts.macros,
             strict: opts.strict
           })
-        } catch (err) {
+        } catch (error) {
           if (opts.throwOnError) {
-            throw err
+            throw error
           } else {
-            file.message(
-              err.message,
-              position.start(element)
-            )
+            file.message(error.message, position.start(element))
 
             renderedValue = katex.renderToString(element.children[0].value, {
               displayMode: isMath,
@@ -60,7 +68,9 @@ module.exports = function plugin (opts) {
 
         const inlineMathAst = parseMathHtml(renderedValue).children[0]
 
-        Object.assign(element.properties, { className: element.properties.className })
+        Object.assign(element.properties, {
+          className: element.properties.className
+        })
         element.children = [inlineMathAst]
       }
     })

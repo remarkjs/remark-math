@@ -31,5 +31,6 @@
     "index.js",
     "block.js",
     "inline.js"
-  ]
+  ],
+  "xo": false
 }

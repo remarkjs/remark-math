@@ -1,6 +1,6 @@
-const math = require('../packages/remark-math')
+/* eslint-env jest */
+
 const katex = require('katex')
-const rehypeKatex = require('../packages/rehype-katex')
 const unified = require('unified')
 const parse = require('remark-parse')
 const rehypeParse = require('rehype-parse')
@@ -8,15 +8,16 @@ const remark2rehype = require('remark-rehype')
 const stringify = require('rehype-stringify')
 const u = require('unist-builder')
 const h = require('hastscript')
+const rehypeKatex = require('../packages/rehype-katex')
+const math = require('../packages/remark-math')
 
-function remark () {
-  return unified()
-    .use(parse)
+function remark() {
+  return unified().use(parse)
 }
 
-function parseHtml (html) {
+function parseHtml(html) {
   return unified()
-    .use(rehypeParse, { fragment: true, position: false })
+    .use(rehypeParse, {fragment: true, position: false})
     .parse(html)
 }
 
@@ -38,23 +39,27 @@ it('should parse into katex', () => {
   const result = processor.processSync(targetText).toString()
   const renderedAst = parseHtml(result)
 
-  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\alpha')).children
-  const expectedMath = parseHtml(katex.renderToString('\\alpha\\beta', { displayMode: true })).children
+  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\alpha'))
+    .children
+  const expectedMath = parseHtml(
+    katex.renderToString('\\alpha\\beta', {displayMode: true})
+  ).children
 
-  expect(renderedAst)
-    .toEqual(u('root', { data: { quirksMode: false } }, [
+  expect(renderedAst).toEqual(
+    u('root', {data: {quirksMode: false}}, [
       h('p', [
-        h('span', { className: 'inlineMath' }, expectedInlineMathChildren)
+        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
       ]),
       u('text', '\n'),
-      h('div', { className: 'math' }, expectedMath),
+      h('div', {className: 'math'}, expectedMath),
       u('text', '\n'),
       h('p', [
         u('text', 'foo '),
-        h('span', { className: 'inlineMath' }, expectedInlineMathChildren),
+        h('span', {className: 'inlineMath'}, expectedInlineMathChildren),
         u('text', ' bar')
       ])
-    ]))
+    ])
+  )
 })
 
 it('should put inlineDoubles in katex displaystyle', () => {
@@ -79,24 +84,34 @@ it('should put inlineDoubles in katex displaystyle', () => {
   const result = processor.processSync(targetText).toString()
   const renderedAst = parseHtml(result)
 
-  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\alpha')).children
-  const expectedMath = parseHtml(katex.renderToString('\\alpha\\beta', { displayMode: true })).children
-  const expectedInlineMathDoubleChildren = parseHtml(katex.renderToString('\\alpha', { displayMode: true })).children
+  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\alpha'))
+    .children
+  const expectedMath = parseHtml(
+    katex.renderToString('\\alpha\\beta', {displayMode: true})
+  ).children
+  const expectedInlineMathDoubleChildren = parseHtml(
+    katex.renderToString('\\alpha', {displayMode: true})
+  ).children
 
-  expect(renderedAst)
-    .toEqual(u('root', { data: { quirksMode: false } }, [
+  expect(renderedAst).toEqual(
+    u('root', {data: {quirksMode: false}}, [
       h('p', [
-        h('span', { className: 'inlineMath' }, expectedInlineMathChildren)
+        h('span', {className: 'inlineMath'}, expectedInlineMathChildren)
       ]),
       u('text', '\n'),
-      h('div', { className: 'math' }, expectedMath),
+      h('div', {className: 'math'}, expectedMath),
       u('text', '\n'),
       h('p', [
         u('text', 'foo '),
-        h('span', { className: ['inlineMath', 'inlineMathDouble'] }, expectedInlineMathDoubleChildren),
+        h(
+          'span',
+          {className: ['inlineMath', 'inlineMathDouble']},
+          expectedInlineMathDoubleChildren
+        ),
         u('text', ' bar')
       ])
-    ]))
+    ])
+  )
 })
 
 it('should take macros', () => {
@@ -118,14 +133,15 @@ it('should take macros', () => {
   const result = processor.processSync(targetText)
   const renderedAst = parseHtml(result.toString())
 
-  const expectedInlineMathChildren = parseHtml(katex.renderToString('\\RR', { macros: macros })).children
+  const expectedInlineMathChildren = parseHtml(
+    katex.renderToString('\\RR', {macros: macros})
+  ).children
 
-  expect(renderedAst)
-    .toEqual(u('root', { data: { quirksMode: false } }, [
-      h('p', [
-        h('span', { className: 'inlineMath' }, expectedInlineMathChildren)
-      ])
-    ]))
+  expect(renderedAst).toEqual(
+    u('root', {data: {quirksMode: false}}, [
+      h('p', [h('span', {className: 'inlineMath'}, expectedInlineMathChildren)])
+    ])
+  )
 })
 
 it('should handle error', () => {
@@ -142,17 +158,18 @@ it('should handle error', () => {
   const result = processor.processSync(targetText)
   const renderedAst = parseHtml(result.toString())
 
-  const expectedInlineMath = parseHtml(katex.renderToString('\\alpa', {
-    throwOnError: false,
-    errorColor: 'orange'
-  })).children
+  const expectedInlineMath = parseHtml(
+    katex.renderToString('\\alpa', {
+      throwOnError: false,
+      errorColor: 'orange'
+    })
+  ).children
 
-  expect(renderedAst)
-    .toEqual(u('root', { data: { quirksMode: false } }, [
-      h('p', [
-        h('span', { className: 'inlineMath' }, expectedInlineMath)
-      ])
-    ]))
+  expect(renderedAst).toEqual(
+    u('root', {data: {quirksMode: false}}, [
+      h('p', [h('span', {className: 'inlineMath'}, expectedInlineMath)])
+    ])
+  )
 })
 
 it('should handle error even fallback rendering failed', () => {
@@ -170,18 +187,24 @@ it('should handle error even fallback rendering failed', () => {
   const result = processor.processSync(targetText)
   const renderedAst = parseHtml(result.toString())
 
-  expect(renderedAst)
-    .toEqual(u('root', { data: { quirksMode: false } }, [
+  expect(renderedAst).toEqual(
+    u('root', {data: {quirksMode: false}}, [
       h('p', [
-        h('span', { className: 'inlineMath' }, [
-          h('span', {
-            className: 'katex-error',
-            style: 'color:orange',
-            title: 'ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲'
-          }, 'ê&')
+        h('span', {className: 'inlineMath'}, [
+          h(
+            'span',
+            {
+              className: 'katex-error',
+              style: 'color:orange',
+              title:
+                "ParseError: KaTeX parse error: Expected 'EOF', got '&' at position 2: ê&̲"
+            },
+            'ê&'
+          )
         ])
       ])
-    ]))
+    ])
+  )
 })
 
 it('should throw parsing error if `throwOnError` set true', () => {
@@ -201,7 +224,8 @@ it('should throw parsing error if `throwOnError` set true', () => {
   } catch (error) {
     expect(error).toMatchObject({
       name: 'ParseError',
-      message: 'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
+      message:
+        'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
     })
   }
 })

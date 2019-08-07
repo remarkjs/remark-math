@@ -1,4 +1,4 @@
-# remark-html-katex
+# remark-math
 
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
@@ -8,26 +8,21 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**remark**][remark] plugin to transform `inlineMath` and `math` nodes with
-[KaTeX][] for [`remark-html`][remark-html].
-
-> This package integrates with [`remark-html`][remark-html].
-> It’s better to work with [**rehype**][rehype], which is specifically made
-> for HTML, and to use [`rehype-katex`][rehype-katex] instead of this package.
+[**remark**][remark] plugin to parse and stringify math.
 
 ## Install
 
 [npm][]:
 
 ```sh
-npm install remark-html-katex
+npm install remark-math
 ```
 
 ## Use
 
 Say we have the following file, `example.md`:
 
-```html
+```markdown
 Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following equation.
 
 $$
@@ -42,14 +37,16 @@ const vfile = require('to-vfile')
 const unified = require('unified')
 const markdown = require('remark-parse')
 const math = require('remark-math')
-const htmlKatex = require('remark-html-katex')
-const html = require('remark-html')
+const remark2rehype = require('remark-rehype')
+const katex = require('rehype-katex')
+const stringify = require('rehype-stringify')
 
 unified()
   .use(markdown)
   .use(math)
-  .use(htmlKatex)
-  .use(html)
+  .use(remark2rehype)
+  .use(katex)
+  .use(stringify)
   .process(vfile.readSync('example.md'), function(err, file) {
     if (err) throw err
     console.log(String(file))
@@ -65,40 +62,40 @@ Now, running `node example` yields:
 
 ## API
 
-### `remark().use(htmlKatex[, options])`
+### `remark().use(math[, options])`
 
-Transform `inlineMath` and `math` nodes with [KaTeX][] for
-[`remark-html`][remark-html].
+Parse and stringify math.
+
+Get’s useful when combined with [`rehype-katex`][rehype-katex] or
+[`remark-html-katex`][remark-html-katex].
+
+You can also support only inline, or online block math by importing them
+directly:
+
+```js
+const mathInline = require('remark-math/inline')
+
+// …
+
+unified()
+  // …
+  .use(mathInline)
+  // …
+```
 
 #### `options`
 
-##### `options.throwOnError`
+##### `options.inlineMathDouble`
 
-Throw if a KaTeX parse error occurs (`boolean`, default: `false`).
-See [KaTeX options][katex-options].
-
-##### `options.errorColor`
-
-Color to render invalid LaTeX as (`string`, default: `#cc0000`).
-See [KaTeX options][katex-options].
-
-##### `options.macros`
-
-A collection of custom macros (`Object`, default: `{}`).
-See [KaTeX options][katex-options].
-
-##### `options.strict`
-
-See [KaTeX options][katex-options].
+*EXPERIMENTAL*.
+Add an extra `inlineMathDouble` class to inline `$$` math (default: `false`).
 
 ## Security
 
-Use of `remark-html-katex` renders user content with [KaTeX][], so any
-vulnerability in KaTeX can open you to a [cross-site scripting (XSS)][xss]
-attack.
+Use of `remark-math` itself doesn’t open you up to [cross-site scripting
+(XSS)][xss] attacks.
 
-Always be wary of user input and use the [`sanitize`][remark-html-sanitize]
-option of `remark-html`.
+Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
 
 ## Contribute
 
@@ -124,13 +121,13 @@ abide by its terms.
 
 [coverage]: https://codecov.io/github/remarkjs/remark-math
 
-[downloads-badge]: https://img.shields.io/npm/dm/remark-html-katex.svg
+[downloads-badge]: https://img.shields.io/npm/dm/remark-math.svg
 
-[downloads]: https://www.npmjs.com/package/remark-html-katex
+[downloads]: https://www.npmjs.com/package/remark-math
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/remark-html-katex.svg
+[size-badge]: https://img.shields.io/bundlephobia/minzip/remark-math.svg
 
-[size]: https://bundlephobia.com/result?p=remark-html-katex
+[size]: https://bundlephobia.com/result?p=remark-math
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -158,16 +155,10 @@ abide by its terms.
 
 [remark]: https://github.com/remarkjs/remark
 
-[remark-html]: https://github.com/remarkjs/remark-html
-
-[remark-html-sanitize]: https://github.com/remarkjs/remark-html#optionssanitize
-
-[rehype]: https://github.com/rehypejs/rehype
-
 [xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
 
-[katex]: https://github.com/Khan/KaTeX
-
-[katex-options]: https://katex.org/docs/options.html
-
 [rehype-katex]: https://github.com/remarkjs/remark-math/tree/master/packages/rehype-katex
+
+[remark-html-katex]: https://github.com/remarkjs/remark-math/tree/master/packages/remark-html-katex
+
+[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize

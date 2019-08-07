@@ -1,222 +1,180 @@
-# Remark Math
+# remark-math
 
-[![npm](https://img.shields.io/npm/v/remark-math.svg)](https://www.npmjs.com/package/remark-math)
-[![Build Status](https://travis-ci.org/Rokt33r/remark-math.svg?branch=master)](https://travis-ci.org/Rokt33r/remark-math)
-[![Chat](https://img.shields.io/gitter/room/wooorm/remark.svg)](https://gitter.im/wooorm/remark)
+[![Build][build-badge]][build]
+[![Coverage][coverage-badge]][coverage]
+[![Downloads][downloads-badge]][downloads]
+[![Size][size-badge]][size]
+[![Sponsors][sponsors-badge]][collective]
+[![Backers][backers-badge]][collective]
+[![Chat][chat-badge]][chat]
 
-Math Inline and Block supporting for Remark
+[**remark**][remark] and [**rehype**][rehype] plugins to support math!
 
-## What does Remark Math?
+## Install
 
-`remark-math` parses `$` for `inlineMath` node and `$$` for `math` node.
-
-Also, you can transform the tex content of `inlineMath` and `math` nodes into html by `rehype-katex` or `remark-html-katex`.
-
-![intro](resources/intro.png)
-
-## Usages
-
-There are two examples for server-side([`examples/nodejs`](examples/nodejs)) and browser-side([`examples/webpack`](examples/webpack), via webpack).
-
-> You can run the demo by `npm run demo:nodejs` and `npm run demo:webpack`.
-
-### Basic usages(Using `rehype-katex`, a little verbose but recommended)
-
-Install dependencies
+[npm][]:
 
 ```sh
-npm i -S remark remark-math remark-rehype rehype-katex rehype-stringify
+npm install remark-math rehype-katex
 ```
 
-```js
-const remark = require('remark')
-const math = require('remark-math')
-const remark2rehype = require('remark-rehype')
-const katex = require('rehype-katex')
-const stringify = require('rehype-stringify')
+## Use
 
-// Raw String => MDAST => HAST => transformed HAST => HTML
-const processor = remark()
-  .use(math)
-  .use(remark2rehype)
-  .use(katex)
-  .use(stringify)
+Say we have the following file, `example.md`:
 
-// https://en.wikipedia.org/wiki/Lift_(force)#Lift_coefficient
-const rawString = `Lift($L$) can be determined by Lift Coeeficient ($C_L$) like the following equation.
+```markdown
+Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following equation.
 
 $$
-L = \\frac{1}{2} \\rho v^2 S C_L
+L = \frac{1}{2} \rho v^2 S C_L
 $$
-`
-
-const result = processor.processSync(rawString).toString()
-/* result
-<p>
-  Lift(<span class="inlineMath"><span class="katex">...</span></span>) can be determined by Lift Coeeficient (<span class="inlineMath"><span class="katex">...</span></span>) like the following equation.
-</p>
-<div class="math">
-  <span class="katex-display"><span class="katex">...</span></span>
-</div>
-*/
 ```
 
-### Another usages(Using `remark-html-katex`)
-
-```sh
-npm i -S remark remark-math remark-html-katex remark-html
-```
+And our script, `example.js`, looks as follows:
 
 ```js
-const remark = require('remark')
-const math = require('remark-math')
-const katex = require('remark-html-katex') // Use remark-html-katex
-const html = require('remark-html')
-
-// Raw String => MDAST => transformed MDAST => HTML
-const processor = remark()
-  .use(math)
-  .use(katex)
-  .use(html)
-```
-
-### Using only math inline(or math block)
-
-You can access separated processors by `remark-math/inline` and `remark-math/block`
-
-```js
-const remark = require('remark')
-const remark2rehype = require('remark-rehype')
-const katex = require('rehype-katex')
-const stringify = require('rehype-stringify')
-
-const mathInline = require('remark-math/inline')
-// const mathBlock = require('remark-math/block')
-
-// Parse only inline
-const processor = remark()
-  .use(mathInline)
-  .use(remark2rehype)
-  .use(katex)
-  .use(stringify)
-```
-
-## API
-
-### `remark-math`
-
-`remark-math` does not handle any option.
-
-### `rehype-katex` and `remark-html-katex`
-
-```js
-const katex = require('rehype-katex')
-
-const processor = remark()
-  .use(math)
-  .use(remark2rehype)
-  .use(katex, {
-    throwOnError: false,
-    errorColor: '#FF0000',
-    inlineDoubleDisplay: false
-  })
-  .use(stringify)
-
-```
-
-#### `options.throwOnError`
-
-Throw if a KaTeX parse error occurs. (default: `false`)
-
-#### `options.errorColor`
-
-As long as `options.throwOnError` is not `true`, ParseError  message will be colored by `options.errorColor`. (default: #cc0000)
-
-> [Options - Katex](https://katex.org/docs/options.html)
-
-#### `options.macros`
-
-A collection of custom macro.
-
-> [Options - Katex](https://katex.org/docs/options.html)
-
-#### `options.strict`
-
-`boolean` or `string` or `function` (default: `"warn"`). If `false` or `"ignore`", allow features that make writing LaTeX convenient but are not actually supported by (Xe)LaTeX (similar to MathJax). If `true` or `"error"` (LaTeX faithfulness mode), throw an error for any such transgressions. If `"warn"` (the default), warn about such behavior via `console.warn`. Provide a custom function `handler(errorCode, errorMsg, token)` to customize behavior depending on the type of transgression (summarized by the string code `errorCode` and detailed in `errorMsg`); this function can also return `"ignore"`, `"error"`, or `"warn"` to use a built-in behavior.
-
-> [Options - Katex](https://katex.org/docs/options.html)
-
-### `inlineMathDouble` (*EXPERIMENTAL: Use with caution*)
-
-#### `options.inlineMathDouble` of `remark-math` (*EXPERIMENTAL*)
-
-Add `inlineMathDouble` class to inline `$$` math. It will have two classes, `inlineMath` and `inlineMathDouble` (default: `false`)
-
-#### `options.inlineMathDoubleDisplay` of `rehype-katex` (*EXPERIMENTAL*)
-
-If an element has `inlineMathDouble` class, set `displayMode` of KaTeX `true`. (default: `false`)
-
-#### Usage
-
-This option, together with a CSS rule like `.inlineMathDouble {display: block; text-align: center;}` allows authors to have equations inside paragraphs on a separate line:
-
-```js
+const vfile = require('to-vfile')
 const unified = require('unified')
-const parse = require('remark-parse')
+const markdown = require('remark-parse')
+const math = require('remark-math')
 const remark2rehype = require('remark-rehype')
-const rehypeKatex = require('rehype-katex')
+const katex = require('rehype-katex')
 const stringify = require('rehype-stringify')
 
-const processor = unified()
-  .use(parse)
-  .use(math, {
-    inlineMathDouble: true
-  })
+unified()
+  .use(markdown)
+  .use(math)
   .use(remark2rehype)
-  .use(rehypeKatex, {
-    inlineMathDoubleDisplay: true
-  })
+  .use(katex)
   .use(stringify)
+  .process(vfile.readSync('example.md'), function(err, file) {
+    if (err) throw err
+    console.log(String(file))
+  })
 ```
 
-![Example](https://cloud.githubusercontent.com/assets/2022803/24314687/26c96bb8-10e3-11e7-928e-f93cff49b456.png)
+Now, running `node example` yields:
 
-## Specs
-
-### Escaped Dollars
-
-Dollar signs can be escaped by back slash, `\`.
-
-```
-\$\alpha\$
+```html
+<p>Lift(<span class="inlineMath"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">L</span></span></span></span></span>) can be determined by Lift Coefficient (<span class="inlineMath"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>C</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">C_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>) like the following equation.</p>
+<div class="math"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ρ</mi><msup><mi>v</mi><mn>2</mn></msup><mi>S</mi><msub><mi>C</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">L = \frac{1}{2} \rho v^2 S C_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathdefault">ρ</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></div>
 ```
 
-![Escaped dollars](resources/escaped-dollars.png)
+Wow, that’s a lot!
+But in a browser, that looks like this:
 
-### Escaped dollars in math block/inline ([Super factorial](https://en.wikipedia.org/wiki/Factorial#Superfactorial))
+![][intro]
 
-```
-$\alpha\$$
+## Packages
 
-$$
-\beta\$
-$$
-```
+This repo houses three packages:
 
-![Super factorials](resources/super-factorial.png)
+*   [`remark-math`][remark-math]
+    — Parses `$` as `inlineMath` and `$$` as `math` nodes
+*   [`rehype-katex`][rehype-katex]
+    — Transforms math nodes with [KaTeX][]
+    (recommended)
+*   [`remark-html-katex`][remark-html-katex]
+    — Transforms math nodes with [KaTeX][] for [`remark-html`][remark-html]
+    (discouraged)
 
-### Double dollars in inline
+See the above packages for more information.
 
-Some TeX packages and Markdown processors use double dollars, `$$`, as a inline token. Remark Math will parse it also properly.
+## Security
 
-```
-$$\alpha$$
-```
+Use of `rehype-katex` or `remark-html-katex` renders user content with
+[KaTeX][], so any vulnerability in KaTeX can open you to a
+[cross-site scripting (XSS)][xss] attack.
 
-![Double dollars as a inline token](resources/double-dollars.png)
+Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
+
+## Related
+
+*   [`remark-github`][remark-github]
+    — Auto-link references like in GitHub issues, PRs, and comments
+*   [`remark-frontmatter`][remark-frontmatter]
+    — Support frontmatter (YAML, TOML, and more)
+*   [`remark-breaks`][remark-breaks]
+    – Support hard breaks without needing spaces (like on issues)
+
+## Contribute
+
+See [`contributing.md`][contributing] in [`remarkjs/.github`][health] for ways
+to get started.
+See [`support.md`][support] for ways to get help.
+
+This project has a [Code of Conduct][coc].
+By interacting with this repository, organisation, or community you agree to
+abide by its terms.
 
 ## License
 
-MIT © Junyoung Choi
+[MIT][license] © [Junyoung Choi][author]
+
+<!-- Definitions -->
+
+[build-badge]: https://img.shields.io/travis/remarkjs/remark-math/master.svg
+
+[build]: https://travis-ci.org/remarkjs/remark-math
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
+
+[coverage]: https://codecov.io/github/remarkjs/remark-math
+
+[downloads-badge]: https://img.shields.io/npm/dm/remark-math.svg
+
+[downloads]: https://www.npmjs.com/package/remark-math
+
+[size-badge]: https://img.shields.io/bundlephobia/minzip/remark-math.svg
+
+[size]: https://bundlephobia.com/result?p=remark-math
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[collective]: https://opencollective.com/unified
+
+[chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
+
+[chat]: https://spectrum.chat/unified/remark
+
+[npm]: https://docs.npmjs.com/cli/install
+
+[health]: https://github.com/remarkjs/.github
+
+[contributing]: https://github.com/remarkjs/.github/blob/master/contributing.md
+
+[support]: https://github.com/remarkjs/.github/blob/master/support.md
+
+[coc]: https://github.com/remarkjs/.github/blob/master/code-of-conduct.md
+
+[license]: license
+
+[author]: https://rokt33r.github.io
+
+[remark]: https://github.com/remarkjs/remark
+
+[remark-html]: https://github.com/remarkjs/remark-html
+
+[remark-github]: https://github.com/remarkjs/remark-github
+
+[remark-frontmatter]: https://github.com/remarkjs/remark-frontmatter
+
+[remark-breaks]: https://github.com/remarkjs/remark-breaks
+
+[rehype]: https://github.com/rehypejs/rehype
+
+[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
 
 [katex]: https://github.com/Khan/KaTeX
+
+[xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+
+[intro]: resources/intro.png
+
+[remark-math]: ./packages/remark-math
+
+[rehype-katex]: ./packages/rehype-katex
+
+[remark-html-katex]: ./packages/remark-html-katex

@@ -1,19 +1,38 @@
-function locator (value, fromIndex) {
-  return value.indexOf('$', fromIndex)
-}
+module.exports = inlinePlugin
 
 const ESCAPED_INLINE_MATH = /^\\\$/
 const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
-module.exports = function inlinePlugin (opts) {
-  function inlineTokenizer (eat, value, silent) {
+function inlinePlugin(opts) {
+  inlineTokenizer.locator = locator
+
+  const Parser = this.Parser
+
+  // Inject inlineTokenizer
+  const inlineTokenizers = Parser.prototype.inlineTokenizers
+  const inlineMethods = Parser.prototype.inlineMethods
+  inlineTokenizers.math = inlineTokenizer
+  inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'math')
+
+  const Compiler = this.Compiler
+
+  // Stringify for math inline
+  if (Compiler != null) {
+    const visitors = Compiler.prototype.visitors
+    visitors.inlineMath = function(node) {
+      return '$' + node.value + '$'
+    }
+  }
+
+  function inlineTokenizer(eat, value, silent) {
     let isDouble = true
     let match = INLINE_MATH_DOUBLE.exec(value)
     if (!match) {
       match = INLINE_MATH.exec(value)
       isDouble = false
     }
+
     const escaped = ESCAPED_INLINE_MATH.exec(value)
 
     if (escaped) {
@@ -21,6 +40,7 @@ module.exports = function inlinePlugin (opts) {
       if (silent) {
         return true
       }
+
       return eat(escaped[0])({
         type: 'text',
         value: '$'
@@ -40,7 +60,8 @@ module.exports = function inlinePlugin (opts) {
         return true
       }
 
-      const endingDollarInBackticks = match[0].includes('`') && value.slice(match[0].length).includes('`')
+      const endingDollarInBackticks =
+        match[0].includes('`') && value.slice(match[0].length).includes('`')
       if (endingDollarInBackticks) {
         const toEat = value.slice(0, value.indexOf('`'))
         return eat(toEat)({
@@ -57,7 +78,9 @@ module.exports = function inlinePlugin (opts) {
         data: {
           hName: 'span',
           hProperties: {
-            className: 'inlineMath' + (isDouble && opts.inlineMathDouble ? ' inlineMathDouble' : '')
+            className:
+              'inlineMath' +
+              (isDouble && opts.inlineMathDouble ? ' inlineMathDouble' : '')
           },
           hChildren: [
             {
@@ -69,23 +92,8 @@ module.exports = function inlinePlugin (opts) {
       })
     }
   }
-  inlineTokenizer.locator = locator
+}
 
-  const Parser = this.Parser
-
-  // Inject inlineTokenizer
-  const inlineTokenizers = Parser.prototype.inlineTokenizers
-  const inlineMethods = Parser.prototype.inlineMethods
-  inlineTokenizers.math = inlineTokenizer
-  inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'math')
-
-  const Compiler = this.Compiler
-
-  // Stringify for math inline
-  if (Compiler != null) {
-    const visitors = Compiler.prototype.visitors
-    visitors.inlineMath = function (node) {
-      return '$' + node.value + '$'
-    }
-  }
+function locator(value, fromIndex) {
+  return value.indexOf('$', fromIndex)
 }

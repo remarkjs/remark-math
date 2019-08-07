@@ -33,5 +33,6 @@
   },
   "files": [
     "index.js"
-  ]
+  ],
+  "xo": false
 }
