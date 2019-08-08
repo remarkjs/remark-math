@@ -77,19 +77,10 @@ Transform `inlineMath` and `math` nodes with [KaTeX][] for
 Throw if a KaTeX parse error occurs (`boolean`, default: `false`).
 See [KaTeX options][katex-options].
 
-##### `options.errorColor`
+##### `options.<*>`
 
-Color to render invalid LaTeX as (`string`, default: `#cc0000`).
-See [KaTeX options][katex-options].
-
-##### `options.macros`
-
-A collection of custom macros (`Object`, default: `{}`).
-See [KaTeX options][katex-options].
-
-##### `options.strict`
-
-See [KaTeX options][katex-options].
+All other options, except for `displayMode`, are passed to
+[KaTeX][katex-options].
 
 ## Security
 
