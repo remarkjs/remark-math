@@ -20,7 +20,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: ['inlineMath']},
+              hProperties: {className: ['math', 'math-inline']},
               hChildren: [u('text', '\\alpha')]
             }
           },
@@ -32,7 +32,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: ['math']},
+            hProperties: {className: ['math', 'math-display']},
             hChildren: [u('text', '\\beta+\\gamma')]
           }
         },
@@ -82,7 +82,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: ['inlineMath']},
+              hProperties: {className: ['math', 'math-inline']},
               hChildren: [u('text', '\\alpha')]
             }
           },
@@ -123,7 +123,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: ['inlineMath']},
+              hProperties: {className: ['math', 'math-inline']},
               hChildren: [u('text', '`\\alpha`')]
             }
           },
@@ -146,7 +146,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: ['inlineMath']},
+              hProperties: {className: ['math', 'math-inline']},
               hChildren: [u('text', '\\alpha\\$')]
             }
           },
@@ -168,7 +168,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: ['math']},
+            hProperties: {className: ['math', 'math-display']},
             hChildren: [u('text', '\\alpha\\$')]
           }
         },
@@ -190,7 +190,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: ['math']},
+            hProperties: {className: ['math', 'math-display']},
             hChildren: [u('text', '\\alpha')]
           }
         },
@@ -212,7 +212,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: ['inlineMath']},
+              hProperties: {className: ['math', 'math-inline']},
               hChildren: [u('text', '\\alpha')]
             }
           },
@@ -234,7 +234,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: ['math']},
+            hProperties: {className: ['math', 'math-display']},
             hChildren: [u('text', '\\alpha')]
           }
         },
@@ -255,7 +255,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: ['math']},
+            hProperties: {className: ['math', 'math-display']},
             hChildren: [u('text', '  \\alpha')]
           }
         },
@@ -298,7 +298,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: ['math']},
+            hProperties: {className: ['math', 'math-display']},
             hChildren: [u('text', '\\alpha')]
           }
         },
@@ -319,7 +319,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: ['math']},
+            hProperties: {className: ['math', 'math-display']},
             hChildren: [u('text', '\\alpha')]
           }
         },
@@ -342,7 +342,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: ['inlineMath', 'inlineMathDouble']},
+              hProperties: {className: ['math', 'math-inline', 'math-display']},
               hChildren: [u('text', '\\alpha')]
             }
           },
@@ -350,7 +350,7 @@ test('remark-math', function(t) {
         )
       ])
     ]),
-    'should add a `inlineMathDouble` class to inline math with double dollars if `inlineMathDouble: true`'
+    'should add a `math-display` class to inline math with double dollars if `inlineMathDouble: true`'
   )
 
   t.deepEqual(
@@ -376,7 +376,7 @@ test('remark-math', function(t) {
       .processSync('$$\\alpha$$')
       .toString(),
     '$\\alpha$\n',
-    'should stirngify inline math with double dollars using one dollar by default'
+    'should stringify inline math with double dollars using one dollar by default'
   )
 
   t.deepEqual(

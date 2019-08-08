@@ -33,11 +33,11 @@ test('remark-html-katex', function(t) {
       .use(stringify)
       .processSync(
         [
-          '<p>Inline math <span class="inlineMath">' +
+          '<p>Inline math <span class="math math-inline">' +
             katex.renderToString('\\alpha') +
             '</span>.</p>',
           '<p>Block math:</p>',
-          '<div class="math">' +
+          '<div class="math math-display">' +
             katex.renderToString('\\gamma', {displayMode: true}) +
             '</div>',
           ''
@@ -61,7 +61,7 @@ test('remark-html-katex', function(t) {
       .use(parseHtml, {fragment: true, position: false})
       .use(stringify)
       .processSync(
-        '<p><span class="inlineMath">' +
+        '<p><span class="math math-inline">' +
           katex.renderToString('\\RR', {macros: macros}) +
           '</span></p>\n'
       )
@@ -81,7 +81,7 @@ test('remark-html-katex', function(t) {
       .use(parseHtml, {fragment: true, position: false})
       .use(stringify)
       .processSync(
-        '<p><span class="inlineMath">' +
+        '<p><span class="math math-inline">' +
           katex.renderToString('\\alpa', {
             throwOnError: false,
             errorColor: 'orange'
@@ -148,7 +148,7 @@ test('remark-html-katex', function(t) {
       .use(parseHtml, {fragment: true, position: false})
       .use(stringify)
       .processSync(
-        '<p><span class="inlineMath"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span></p>\n'
+        '<p><span class="math math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span></p>\n'
       )
       .toString(),
     'should support `strict: ignore`'

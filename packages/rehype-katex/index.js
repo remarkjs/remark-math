@@ -25,12 +25,10 @@ function rehypeKatex(options) {
     function onelement(element) {
       const tagName = element.tagName
       const classes = element.properties.className || []
-      const inline = tagName === 'span' && classes.includes('inlineMath')
+      const inline = tagName === 'span' && classes.includes('math-inline')
       const displayMode =
-        (double &&
-          tagName === 'span' &&
-          classes.includes('inlineMathDouble')) ||
-        (tagName === 'div' && classes.includes('math'))
+        (double && tagName === 'span' && classes.includes('math-display')) ||
+        (tagName === 'div' && classes.includes('math-display'))
 
       if (!inline && !displayMode) {
         return

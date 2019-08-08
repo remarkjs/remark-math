@@ -11,6 +11,8 @@ const C_DOLLAR = '$'
 const MIN_FENCE_COUNT = 2
 const CODE_INDENT_COUNT = 4
 
+const classList = ['math', 'math-display']
+
 function mathBlock() {
   const parser = this.Parser
   const compiler = this.Compiler
@@ -223,7 +225,7 @@ function attachParser(parser) {
       value: trimmedContent,
       data: {
         hName: 'div',
-        hProperties: {className: ['math']},
+        hProperties: {className: classList.concat()},
         hChildren: [{type: 'text', value: trimmedContent}]
       }
     })

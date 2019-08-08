@@ -6,7 +6,8 @@ const ESCAPED_INLINE_MATH = /^\\\$/
 const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
-const doubleClassName = 'inlineMathDouble'
+const classList = ['math', 'math-inline']
+const mathDisplay = 'math-display'
 
 function mathInline(options) {
   const parser = this.Parser
@@ -81,8 +82,8 @@ function attachParser(parser, options) {
         data: {
           hName: 'span',
           hProperties: {
-            className: ['inlineMath'].concat(
-              isDouble && options.inlineMathDouble ? [doubleClassName] : []
+            className: classList.concat(
+              isDouble && options.inlineMathDouble ? [mathDisplay] : []
             )
           },
           hChildren: [{type: 'text', value: trimmedContent}]
@@ -103,7 +104,7 @@ function attachCompiler(compiler) {
       (node.data && node.data.hProperties && node.data.hProperties.className) ||
       []
 
-    if (classes.includes(doubleClassName)) {
+    if (classes.includes(mathDisplay)) {
       fence = '$$'
     }
 
