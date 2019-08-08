@@ -14,19 +14,18 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "hastscript": "^5.0.0",
-    "jest": "^24.0.0",
-    "katex": "^0.10.0",
     "lerna": "^3.0.0",
+    "nyc": "^14.0.0",
     "prettier": "^1.0.0",
     "rehype-parse": "^6.0.0",
     "rehype-stringify": "^6.0.0",
     "remark-cli": "^7.0.0",
     "remark-html": "^10.0.0",
     "remark-parse": "^7.0.0",
-    "remark-preset-wooorm": "^6.0.1",
+    "remark-preset-wooorm": "^6.0.0",
     "remark-rehype": "^5.0.0",
     "remark-stringify": "^7.0.0",
+    "tape": "^4.0.0",
     "unified": "^8.0.0",
     "unist-builder": "^1.0.0",
     "xo": "^0.24.0"
@@ -34,20 +33,17 @@
   "scripts": {
     "postinstall": "lerna bootstrap --no-ci",
     "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
-    "test-coverage": "jest --coverage",
-    "test-api": "jest",
+    "test-api": "tape \"packages/*/test.js\"",
+    "test-coverage": "nyc --reporter lcov tape \"packages/*/test.js\"",
+    "#test-api": "node test",
+    "#test-coverage": "nyc --reporter lcov tape test/index.js",
     "test": "npm run format && npm run test-coverage"
   },
-  "jest": {
-    "collectCoverage": true,
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    }
+  "nyc": {
+    "check-coverage": true,
+    "lines": 100,
+    "functions": 100,
+    "branches": 100
   },
   "prettier": {
     "tabWidth": 2,
