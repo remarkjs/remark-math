@@ -152,7 +152,7 @@ abide by its terms.
 
 [coc]: https://github.com/remarkjs/.github/blob/master/code-of-conduct.md
 
-[license]: https://github.com/remarkjs/remark-math/license
+[license]: https://github.com/remarkjs/remark-math/blob/master/license
 
 [author]: https://rokt33r.github.io
 
