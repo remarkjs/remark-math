@@ -76,8 +76,7 @@ Transform `<span class=inlineMath>` and `<div class=math>` with [KaTeX][].
 
 ##### `options.inlineMathDoubleDisplay`
 
-*EXPERIMENTAL*.
-If an element has `inlineMathDouble` class, set `displayMode` of KaTeX `true`
+If an element has an `inlineMathDouble` class, set `displayMode` of KaTeX `true`
 (default: `false`).
 
 ##### `options.throwOnError`

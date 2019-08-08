@@ -87,7 +87,6 @@ unified()
 
 ##### `options.inlineMathDouble`
 
-*EXPERIMENTAL*.
 Add an extra `inlineMathDouble` class to inline `$$` math (default: `false`).
 
 #### Notes
