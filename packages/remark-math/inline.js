@@ -6,6 +6,8 @@ const ESCAPED_INLINE_MATH = /^\\\$/
 const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
+const doubleClassName = 'inlineMathDouble'
+
 function mathInline(options) {
   const parser = this.Parser
   const compiler = this.Compiler
@@ -80,7 +82,7 @@ function attachParser(parser, options) {
           hName: 'span',
           hProperties: {
             className: ['inlineMath'].concat(
-              isDouble && options.inlineMathDouble ? ['inlineMathDouble'] : []
+              isDouble && options.inlineMathDouble ? [doubleClassName] : []
             )
           },
           hChildren: [{type: 'text', value: trimmedContent}]
@@ -96,6 +98,15 @@ function attachCompiler(compiler) {
   proto.visitors.inlineMath = compileInlineMath
 
   function compileInlineMath(node) {
-    return '$' + node.value + '$'
+    let fence = '$'
+    const classes =
+      (node.data && node.data.hProperties && node.data.hProperties.className) ||
+      []
+
+    if (classes.includes(doubleClassName)) {
+      fence = '$$'
+    }
+
+    return fence + node.value + fence
   }
 }

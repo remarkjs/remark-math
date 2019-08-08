@@ -359,36 +359,35 @@ test('remark-math', function(t) {
       .use(math)
       .stringify(
         u('root', [
-          u('paragraph', [
-            u('text', 'Math '),
-            u(
-              'inlineMath',
-              {
-                data: {
-                  hName: 'span',
-                  hProperties: {className: ['inlineMath']},
-                  hChildren: [u('text', '\\alpha')]
-                }
-              },
-              '\\alpha'
-            )
-          ]),
-          u(
-            'math',
-            {
-              data: {
-                hName: 'div',
-                hProperties: {className: ['math']},
-                hChildren: [u('text', '\\beta+\\gamma')]
-              }
-            },
-            '\\beta+\\gamma'
-          )
+          u('paragraph', [u('text', 'Math '), u('inlineMath', '\\alpha')]),
+          u('math', '\\beta+\\gamma')
         ])
       )
       .toString(),
     'Math $\\alpha$\n\n$$\n\\beta+\\gamma\n$$\n',
     'should stringify a tree'
+  )
+
+  t.deepEqual(
+    unified()
+      .use(parse, {position: false})
+      .use(stringify)
+      .use(math)
+      .processSync('$$\\alpha$$')
+      .toString(),
+    '$\\alpha$\n',
+    'should stirngify inline math with double dollars using one dollar by default'
+  )
+
+  t.deepEqual(
+    unified()
+      .use(parse, {position: false})
+      .use(stringify)
+      .use(math, {inlineMathDouble: true})
+      .processSync('$$\\alpha$$')
+      .toString(),
+    '$$\\alpha$$\n',
+    'should stirngify inline math with double dollars using one dollar if `inlineMathDouble: true`'
   )
 
   t.end()
