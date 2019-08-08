@@ -1,29 +1,33 @@
 {
   "name": "rehype-katex",
   "version": "1.2.0",
-  "description": "KaTeX transform plugin for rehype",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Rokt33r/remark-math.git"
-  },
+  "description": "rehype plugin to transform inline and block math with KaTeX",
+  "license": "MIT",
   "keywords": [
-    "markdown",
+    "unified",
     "remark",
+    "rehype",
+    "plugin",
+    "mdast",
+    "markdown",
+    "hast",
+    "html",
     "math",
     "katex",
     "latex",
     "tex"
   ],
-  "author": "Junyoung Choi <fluke8259@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Rokt33r/remark-math/issues"
-  },
-  "homepage": "https://github.com/Rokt33r/remark-math#readme",
-  "peerDependencies": {
-    "remark-math": ">=1.0.0"
-  },
+  "repository": "https://github.com/remarkjs/remark-math/tree/master/packages/rehype-katex",
+  "bugs": "https://github.com/remarkjs/remark-math/issues",
+  "author": "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
+  "contributors": [
+    "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+  ],
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
   "dependencies": {
     "katex": "^0.10.0",
     "rehype-parse": "^6.0.0",
@@ -31,8 +35,9 @@
     "unist-util-position": "^3.0.0",
     "unist-util-visit": "^2.0.0"
   },
-  "files": [
-    "index.js"
-  ],
+  "peerDependencies": {
+    "remark-math": ">=1.0.0"
+  },
+  "devDependencies": {},
   "xo": false
 }

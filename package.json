@@ -1,34 +1,18 @@
 {
   "name": "remark-math",
   "private": true,
-  "description": "Math Inline and Block supporting for Remark",
-  "scripts": {
-    "postinstall": "lerna bootstrap --no-ci",
-    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
-    "test": "jest --coverage",
-    "test:api": "jest",
-    "test:watch": "jest --watch",
-    "pretest": "npm run format",
-    "release": "lerna publish"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Rokt33r/remark-math.git"
-  },
-  "keywords": [
-    "markdown",
-    "remark",
-    "math",
-    "katex",
-    "latex",
-    "tex"
+  "repository": "https://github.com/remarkjs/remark-math",
+  "bugs": "https://github.com/remarkjs/remark-math/issues",
+  "author": "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
+  "contributors": [
+    "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+    "Victor Felder <victor@draft.li>",
+    "Xiaoru Li <dev@xiaoru.li>",
+    "John Jeng <j3@sagemath.com>",
+    "Daniel Perez Alvarez <unindented@gmail.com>"
   ],
-  "author": "Junyoung Choi <fluke8259@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Rokt33r/remark-math/issues"
-  },
-  "homepage": "https://github.com/Rokt33r/remark-math#readme",
+  "dependencies": {},
   "devDependencies": {
     "hastscript": "^5.0.0",
     "jest": "^24.0.0",
@@ -47,12 +31,15 @@
     "unist-builder": "^1.0.0",
     "xo": "^0.24.0"
   },
-  "dependencies": {},
+  "scripts": {
+    "postinstall": "lerna bootstrap --no-ci",
+    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
+    "test-coverage": "jest --coverage",
+    "test-api": "jest",
+    "test": "npm run format && npm run test-coverage"
+  },
   "jest": {
-    "collectCoverage": false,
-    "collectCoverageFrom": [
-      "packages/**/*.js"
-    ],
+    "collectCoverage": true,
     "coverageThreshold": {
       "global": {
         "branches": 100,

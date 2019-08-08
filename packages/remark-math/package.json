@@ -1,36 +1,38 @@
 {
   "name": "remark-math",
   "version": "1.0.6",
-  "description": "Math Inline and Block parser plugin for Remark",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Rokt33r/remark-math.git"
-  },
+  "description": "remark plugin to parse and stringify math",
+  "license": "MIT",
   "keywords": [
-    "markdown",
+    "unified",
     "remark",
+    "plugin",
+    "mdast",
+    "markdown",
     "math",
     "katex",
     "latex",
     "tex"
   ],
-  "author": "Junyoung Choi <fluke8259@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Rokt33r/remark-math/issues"
-  },
-  "homepage": "https://github.com/Rokt33r/remark-math#readme",
-  "peerDependencies": {
-    "remark-parse": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
-  },
-  "dependencies": {
-    "trim-trailing-lines": "^1.1.0"
-  },
+  "repository": "https://github.com/remarkjs/remark-math/tree/master/packages/remark-math",
+  "bugs": "https://github.com/remarkjs/remark-math/issues",
+  "author": "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
+  "contributors": [
+    "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+  ],
   "files": [
     "index.js",
     "block.js",
     "inline.js"
   ],
+  "main": "index.js",
+  "dependencies": {
+    "trim-trailing-lines": "^1.1.0"
+  },
+  "peerDependencies": {
+    "remark-parse": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
+  },
+  "devDependencies": {},
   "xo": false
 }
