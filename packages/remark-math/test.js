@@ -353,5 +353,43 @@ test('remark-math', function(t) {
     'should add a `inlineMathDouble` class to inline math with double dollars if `inlineMathDouble: true`'
   )
 
+  t.deepEqual(
+    unified()
+      .use(stringify)
+      .use(math)
+      .stringify(
+        u('root', [
+          u('paragraph', [
+            u('text', 'Math '),
+            u(
+              'inlineMath',
+              {
+                data: {
+                  hName: 'span',
+                  hProperties: {className: ['inlineMath']},
+                  hChildren: [u('text', '\\alpha')]
+                }
+              },
+              '\\alpha'
+            )
+          ]),
+          u(
+            'math',
+            {
+              data: {
+                hName: 'div',
+                hProperties: {className: ['math']},
+                hChildren: [u('text', '\\beta+\\gamma')]
+              }
+            },
+            '\\beta+\\gamma'
+          )
+        ])
+      )
+      .toString(),
+    'Math $\\alpha$\n\n$$\n\\beta+\\gamma\n$$\n',
+    'should stringify a tree'
+  )
+
   t.end()
 })

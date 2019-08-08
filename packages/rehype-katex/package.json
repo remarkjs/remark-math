@@ -29,10 +29,10 @@
   ],
   "main": "index.js",
   "dependencies": {
+    "hast-util-to-text": "^1.0.0",
     "katex": "^0.10.0",
     "rehype-parse": "^6.0.0",
     "unified": "^8.0.0",
-    "unist-util-position": "^3.0.0",
     "unist-util-visit": "^2.0.0"
   },
   "peerDependencies": {

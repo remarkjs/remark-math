@@ -103,17 +103,18 @@ test('remark-html-katex', function(t) {
       {
         message:
           'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
-        name: '2:1',
+        name: '2:1-2:8',
         reason:
           'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
         line: 2,
         column: 1,
         location: {
           start: {line: 2, column: 1, offset: 6},
-          end: {line: null, column: null}
+          end: {line: 2, column: 8, offset: 13},
+          indent: []
         },
-        source: null,
-        ruleId: null,
+        source: 'remark-html-katex',
+        ruleId: 'parseerror',
         fatal: false
       }
     ],

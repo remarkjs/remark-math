@@ -154,17 +154,17 @@ test('rehype-katex', function(t) {
       {
         message:
           'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
-        name: '2:4',
+        name: '2:4-2:41',
         reason:
           'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
         line: 2,
         column: 4,
         location: {
           start: {line: 2, column: 4, offset: 16},
-          end: {line: null, column: null}
+          end: {line: 2, column: 41, offset: 53}
         },
-        source: null,
-        ruleId: null,
+        source: 'rehype-katex',
+        ruleId: 'parseerror',
         fatal: false
       }
     ],

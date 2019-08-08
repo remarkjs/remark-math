@@ -74,30 +74,21 @@ Transform `<span class=inlineMath>` and `<div class=math>` with [KaTeX][].
 
 #### `options`
 
-##### `options.throwOnError`
-
-Throw if a KaTeX parse error occurs (`boolean`, default: `false`).
-See [KaTeX options][katex-options].
-
-##### `options.errorColor`
-
-Color to render invalid LaTeX as (`string`, default: `#cc0000`).
-See [KaTeX options][katex-options].
-
-##### `options.macros`
-
-A collection of custom macros (`Object`, default: `{}`).
-See [KaTeX options][katex-options].
-
-##### `options.strict`
-
-See [KaTeX options][katex-options].
-
 ##### `options.inlineMathDoubleDisplay`
 
 *EXPERIMENTAL*.
 If an element has `inlineMathDouble` class, set `displayMode` of KaTeX `true`
 (default: `false`).
+
+##### `options.throwOnError`
+
+Throw if a KaTeX parse error occurs (`boolean`, default: `false`).
+See [KaTeX options][katex-options].
+
+##### `options.<*>`
+
+All other options, except for `displayMode`, are passed to
+[KaTeX][katex-options].
 
 ## Security
 

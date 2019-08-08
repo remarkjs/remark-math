@@ -1,33 +1,42 @@
-module.exports = inlinePlugin
+var util = require('./util')
+
+module.exports = mathInline
 
 const ESCAPED_INLINE_MATH = /^\\\$/
 const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
 
-function inlinePlugin(opts) {
-  inlineTokenizer.locator = locator
+function mathInline(options) {
+  const parser = this.Parser
+  const compiler = this.Compiler
 
-  const Parser = this.Parser
-
-  // Inject inlineTokenizer
-  const inlineTokenizers = Parser.prototype.inlineTokenizers
-  const inlineMethods = Parser.prototype.inlineMethods
-  inlineTokenizers.math = inlineTokenizer
-  inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'math')
-
-  const Compiler = this.Compiler
-
-  // Stringify for math inline
-  if (Compiler != null) {
-    const visitors = Compiler.prototype.visitors
-    visitors.inlineMath = function(node) {
-      return '$' + node.value + '$'
-    }
+  if (util.isRemarkParser(parser)) {
+    attachParser(parser, options)
   }
 
-  function inlineTokenizer(eat, value, silent) {
+  if (util.isRemarkCompiler(compiler)) {
+    attachCompiler(compiler, options)
+  }
+}
+
+function attachParser(parser, options) {
+  const proto = parser.prototype
+  const inlineMethods = proto.inlineMethods
+
+  mathInlineTokenizer.locator = locator
+
+  proto.inlineTokenizers.math = mathInlineTokenizer
+
+  inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'math')
+
+  function locator(value, fromIndex) {
+    return value.indexOf('$', fromIndex)
+  }
+
+  function mathInlineTokenizer(eat, value, silent) {
     let isDouble = true
     let match = INLINE_MATH_DOUBLE.exec(value)
+
     if (!match) {
       match = INLINE_MATH.exec(value)
       isDouble = false
@@ -41,17 +50,11 @@ function inlinePlugin(opts) {
         return true
       }
 
-      return eat(escaped[0])({
-        type: 'text',
-        value: '$'
-      })
+      return eat(escaped[0])({type: 'text', value: '$'})
     }
 
     if (value.slice(-2) === '\\$') {
-      return eat(value)({
-        type: 'text',
-        value: value.slice(0, -2) + '$'
-      })
+      return eat(value)({type: 'text', value: value.slice(0, -2) + '$'})
     }
 
     if (match) {
@@ -60,14 +63,12 @@ function inlinePlugin(opts) {
         return true
       }
 
-      const endingDollarInBackticks =
-        match[0].includes('`') && value.slice(match[0].length).includes('`')
-      if (endingDollarInBackticks) {
+      if (
+        match[0].includes('`') &&
+        value.slice(match[0].length).includes('`')
+      ) {
         const toEat = value.slice(0, value.indexOf('`'))
-        return eat(toEat)({
-          type: 'text',
-          value: toEat
-        })
+        return eat(toEat)({type: 'text', value: toEat})
       }
 
       const trimmedContent = match[1].trim()
@@ -79,7 +80,7 @@ function inlinePlugin(opts) {
           hName: 'span',
           hProperties: {
             className: ['inlineMath'].concat(
-              isDouble && opts.inlineMathDouble ? ['inlineMathDouble'] : []
+              isDouble && options.inlineMathDouble ? ['inlineMathDouble'] : []
             )
           },
           hChildren: [{type: 'text', value: trimmedContent}]
@@ -89,6 +90,12 @@ function inlinePlugin(opts) {
   }
 }
 
-function locator(value, fromIndex) {
-  return value.indexOf('$', fromIndex)
+function attachCompiler(compiler) {
+  const proto = compiler.prototype
+
+  proto.visitors.inlineMath = compileInlineMath
+
+  function compileInlineMath(node) {
+    return '$' + node.value + '$'
+  }
 }

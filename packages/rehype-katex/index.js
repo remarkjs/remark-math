@@ -1,77 +1,67 @@
 const visit = require('unist-util-visit')
-const katex = require('katex')
+const katex = require('katex').renderToString
 const unified = require('unified')
 const parse = require('rehype-parse')
-const position = require('unist-util-position')
+const toText = require('hast-util-to-text')
 
-module.exports = plugin
+module.exports = rehypeKatex
 
-function parseMathHtml(html) {
-  return unified()
-    .use(parse, {fragment: true, position: false})
-    .parse(html)
-}
+const assign = Object.assign
 
-function hasClass(element, className) {
-  return (
-    element.properties.className &&
-    element.properties.className.includes(className)
-  )
-}
+const parseHtml = unified().use(parse, {fragment: true, position: false})
 
-function isTag(element, tag) {
-  return element.tagName === tag
-}
+const source = 'rehype-katex'
 
-function plugin(opts) {
-  if (opts == null) opts = {}
-  if (opts.throwOnError == null) opts.throwOnError = false
-  if (opts.errorColor == null) opts.errorColor = '#cc0000'
-  if (opts.macros == null) opts.macros = {}
-  return transform
+function rehypeKatex(options) {
+  const opts = options || {}
+  const double = opts.inlineMathDoubleDisplay || false
+  const throwOnError = opts.throwOnError || false
 
-  function transform(node, file) {
-    visit(node, 'element', function(element) {
-      const isInlineMath =
-        isTag(element, 'span') && hasClass(element, 'inlineMath')
-      const isMath =
-        (opts.inlineMathDoubleDisplay &&
-          hasClass(element, 'inlineMathDouble')) ||
-        (isTag(element, 'div') && hasClass(element, 'math'))
+  return transformMath
 
-      if (isInlineMath || isMath) {
-        let renderedValue
-        try {
-          renderedValue = katex.renderToString(element.children[0].value, {
-            displayMode: isMath,
-            macros: opts.macros,
-            strict: opts.strict
-          })
-        } catch (error) {
-          if (opts.throwOnError) {
-            throw error
-          } else {
-            file.message(error.message, position.start(element))
+  function transformMath(tree, file) {
+    visit(tree, 'element', onelement)
 
-            renderedValue = katex.renderToString(element.children[0].value, {
-              displayMode: isMath,
-              macros: opts.macros,
-              throwOnError: false,
-              errorColor: opts.errorColor,
-              strict: 'ignore'
-            })
-          }
-        }
+    function onelement(element) {
+      const tagName = element.tagName
+      const classes = element.properties.className || []
+      const inline = tagName === 'span' && classes.includes('inlineMath')
+      const displayMode =
+        (double &&
+          tagName === 'span' &&
+          classes.includes('inlineMathDouble')) ||
+        (tagName === 'div' && classes.includes('math'))
 
-        const inlineMathAst = parseMathHtml(renderedValue).children[0]
-
-        Object.assign(element.properties, {
-          className: element.properties.className
-        })
-
-        element.children = [inlineMathAst]
+      if (!inline && !displayMode) {
+        return
       }
-    })
-    return node
+
+      const value = toText(element)
+
+      let result
+
+      try {
+        result = katex(
+          value,
+          assign({}, options, {displayMode: displayMode, throwOnError: true})
+        )
+      } catch (error) {
+        const fn = throwOnError ? 'fail' : 'message'
+        const origin = [source, error.name.toLowerCase()].join(':')
+
+        file[fn](error.message, element.position, origin)
+
+        result = katex(
+          value,
+          assign({}, options, {
+            displayMode: displayMode,
+            throwOnError: false,
+            strict: 'ignore'
+          })
+        )
+      }
+
+      element.children = parseHtml.parse(result).children
+    }
   }
 }

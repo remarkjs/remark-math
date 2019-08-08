@@ -24,7 +24,8 @@
   "files": [
     "index.js",
     "block.js",
-    "inline.js"
+    "inline.js",
+    "util.js"
   ],
   "main": "index.js",
   "dependencies": {

@@ -1,9 +1,9 @@
 const inlinePlugin = require('./inline')
 const blockPlugin = require('./block')
 
-module.exports = mathPlugin
+module.exports = math
 
-function mathPlugin(opts) {
+function math(opts) {
   if (opts == null) opts = {}
   blockPlugin.call(this, opts)
   inlinePlugin.call(this, opts)

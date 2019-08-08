@@ -1,28 +1,41 @@
-var trim = require('trim-trailing-lines')
+const trim = require('trim-trailing-lines')
+const util = require('./util')
 
-module.exports = blockPlugin
+module.exports = mathBlock
 
-var C_NEWLINE = '\n'
-var C_TAB = '\t'
-var C_SPACE = ' '
-var C_DOLLAR = '$'
+const C_NEWLINE = '\n'
+const C_TAB = '\t'
+const C_SPACE = ' '
+const C_DOLLAR = '$'
 
-var MIN_FENCE_COUNT = 2
-var CODE_INDENT_COUNT = 4
+const MIN_FENCE_COUNT = 2
+const CODE_INDENT_COUNT = 4
 
-function blockPlugin() {
-  const Parser = this.Parser
+function mathBlock() {
+  const parser = this.Parser
+  const compiler = this.Compiler
 
-  // Inject blockTokenizer
-  const blockTokenizers = Parser.prototype.blockTokenizers
-  const blockMethods = Parser.prototype.blockMethods
-  blockTokenizers.math = blockTokenizer
+  if (util.isRemarkParser(parser)) {
+    attachParser(parser)
+  }
+
+  if (util.isRemarkCompiler(compiler)) {
+    attachCompiler(compiler)
+  }
+}
+
+function attachParser(parser) {
+  const proto = parser.prototype
+  const blockMethods = proto.blockMethods
+  const interruptParagraph = proto.interruptParagraph
+  const interruptList = proto.interruptList
+  const interruptBlockquote = proto.interruptBlockquote
+
+  proto.blockTokenizers.math = mathBlockTokenizer
+
   blockMethods.splice(blockMethods.indexOf('fencedCode') + 1, 0, 'math')
 
   // Inject math to interrupt rules
-  const interruptParagraph = Parser.prototype.interruptParagraph
-  const interruptList = Parser.prototype.interruptList
-  const interruptBlockquote = Parser.prototype.interruptBlockquote
   interruptParagraph.splice(interruptParagraph.indexOf('fencedCode') + 1, 0, [
     'math'
   ])
@@ -31,17 +44,7 @@ function blockPlugin() {
     'math'
   ])
 
-  const Compiler = this.Compiler
-
-  // Stringify for math block
-  if (Compiler != null) {
-    const visitors = Compiler.prototype.visitors
-    visitors.math = function(node) {
-      return '$$\n' + node.value + '\n$$'
-    }
-  }
-
-  function blockTokenizer(eat, value, silent) {
+  function mathBlockTokenizer(eat, value, silent) {
     var length = value.length + 1
     var index = 0
     var subvalue = ''
@@ -224,5 +227,15 @@ function blockPlugin() {
         hChildren: [{type: 'text', value: trimmedContent}]
       }
     })
+  }
+}
+
+function attachCompiler(compiler) {
+  const proto = compiler.prototype
+
+  proto.visitors.math = compileBlockMath
+
+  function compileBlockMath(node) {
+    return '$$\n' + node.value + '\n$$'
   }
 }
