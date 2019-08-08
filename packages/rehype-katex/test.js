@@ -81,7 +81,7 @@ test('rehype-katex', function(t) {
   t.deepEqual(
     unified()
       .use(parseHtml, {fragment: true, position: false})
-      .use(rehypeKatex, {inlineMathDoubleDisplay: true})
+      .use(rehypeKatex)
       .use(stringify)
       .processSync(
         '<p>Double math <span class="math-inline math-display">\\alpha</span>.</p>'
@@ -96,7 +96,7 @@ test('rehype-katex', function(t) {
           '</span>.</p>'
       )
       .toString(),
-    'should transform `.math-inline.math-display` math with `displayMode: true` if `inlineMathDoubleDisplay: true`'
+    'should transform `.math-inline.math-display` math with `displayMode: true`'
   )
 
   var macros = {'\\RR': '\\mathbb{R}'}

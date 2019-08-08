@@ -14,7 +14,6 @@ const source = 'rehype-katex'
 
 function rehypeKatex(options) {
   const opts = options || {}
-  const double = opts.inlineMathDoubleDisplay || false
   const throwOnError = opts.throwOnError || false
 
   return transformMath
@@ -23,12 +22,9 @@ function rehypeKatex(options) {
     visit(tree, 'element', onelement)
 
     function onelement(element) {
-      const tagName = element.tagName
       const classes = element.properties.className || []
-      const inline = tagName === 'span' && classes.includes('math-inline')
-      const displayMode =
-        (double && tagName === 'span' && classes.includes('math-display')) ||
-        (tagName === 'div' && classes.includes('math-display'))
+      const inline = classes.includes('math-inline')
+      const displayMode = classes.includes('math-display')
 
       if (!inline && !displayMode) {
         return

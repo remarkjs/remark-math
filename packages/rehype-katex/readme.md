@@ -75,11 +75,6 @@ Transform `<span class="math-inline">` and `<div class="math-display">` with
 
 #### `options`
 
-##### `options.inlineMathDoubleDisplay`
-
-If an element has an `math-display` class, set `displayMode` of KaTeX `true`
-(default: `false`).
-
 ##### `options.throwOnError`
 
 Throw if a KaTeX parse error occurs (`boolean`, default: `false`).
