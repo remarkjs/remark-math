@@ -69,7 +69,7 @@ Parse and stringify math.
 Get’s useful when combined with [`rehype-katex`][rehype-katex] or
 [`remark-html-katex`][remark-html-katex].
 
-You can also support only inline, or online block math by importing them
+You can also support only inline, or online block math, by importing them
 directly:
 
 ```js
