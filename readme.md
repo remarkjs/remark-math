@@ -61,7 +61,9 @@ Now, running `node example` yields:
 ```
 
 Wow, that’s a lot!
-But in a browser, that looks like this:
+But in a browser, that looks something like this:
+
+![][screenshot]
 
 ## Packages
 
@@ -174,3 +176,5 @@ abide by its terms.
 [rehype-katex]: ./packages/rehype-katex
 
 [remark-html-katex]: ./packages/remark-html-katex
+
+[screenshot]: screenshot.png
