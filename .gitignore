@@ -1,6 +1,6 @@
-node_modules
-*.log
-coverage
-yarn.lock
 .DS_Store
+*.log
+coverage/
+node_modules/
 package-lock.json
+yarn.lock
