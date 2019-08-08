@@ -63,8 +63,6 @@ Now, running `node example` yields:
 Wow, that’s a lot!
 But in a browser, that looks like this:
 
-![][intro]
-
 ## Packages
 
 This repo houses three packages:
@@ -170,8 +168,6 @@ abide by its terms.
 [katex]: https://github.com/Khan/KaTeX
 
 [xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
-
-[intro]: resources/intro.png
 
 [remark-math]: ./packages/remark-math
 
