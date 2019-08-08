@@ -78,16 +78,11 @@ function inlinePlugin(opts) {
         data: {
           hName: 'span',
           hProperties: {
-            className:
-              'inlineMath' +
-              (isDouble && opts.inlineMathDouble ? ' inlineMathDouble' : '')
+            className: ['inlineMath'].concat(
+              isDouble && opts.inlineMathDouble ? ['inlineMathDouble'] : []
+            )
           },
-          hChildren: [
-            {
-              type: 'text',
-              value: trimmedContent
-            }
-          ]
+          hChildren: [{type: 'text', value: trimmedContent}]
         }
       })
     }

@@ -8,10 +8,7 @@ module.exports = plugin
 
 function parseMathHtml(html) {
   return unified()
-    .use(parse, {
-      fragment: true,
-      position: false
-    })
+    .use(parse, {fragment: true, position: false})
     .parse(html)
 }
 
@@ -71,6 +68,7 @@ function plugin(opts) {
         Object.assign(element.properties, {
           className: element.properties.className
         })
+
         element.children = [inlineMathAst]
       }
     })

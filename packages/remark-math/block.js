@@ -220,15 +220,8 @@ function blockPlugin() {
       value: trimmedContent,
       data: {
         hName: 'div',
-        hProperties: {
-          className: 'math'
-        },
-        hChildren: [
-          {
-            type: 'text',
-            value: trimmedContent
-          }
-        ]
+        hProperties: {className: ['math']},
+        hChildren: [{type: 'text', value: trimmedContent}]
       }
     })
   }

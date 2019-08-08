@@ -20,7 +20,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: 'inlineMath'},
+              hProperties: {className: ['inlineMath']},
               hChildren: [u('text', '\\alpha')]
             }
           },
@@ -32,7 +32,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: 'math'},
+            hProperties: {className: ['math']},
             hChildren: [u('text', '\\beta+\\gamma')]
           }
         },
@@ -82,7 +82,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: 'inlineMath'},
+              hProperties: {className: ['inlineMath']},
               hChildren: [u('text', '\\alpha')]
             }
           },
@@ -123,7 +123,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: 'inlineMath'},
+              hProperties: {className: ['inlineMath']},
               hChildren: [u('text', '`\\alpha`')]
             }
           },
@@ -146,7 +146,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: 'inlineMath'},
+              hProperties: {className: ['inlineMath']},
               hChildren: [u('text', '\\alpha\\$')]
             }
           },
@@ -168,7 +168,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: 'math'},
+            hProperties: {className: ['math']},
             hChildren: [u('text', '\\alpha\\$')]
           }
         },
@@ -190,7 +190,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: 'math'},
+            hProperties: {className: ['math']},
             hChildren: [u('text', '\\alpha')]
           }
         },
@@ -212,7 +212,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: 'inlineMath'},
+              hProperties: {className: ['inlineMath']},
               hChildren: [u('text', '\\alpha')]
             }
           },
@@ -234,7 +234,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: 'math'},
+            hProperties: {className: ['math']},
             hChildren: [u('text', '\\alpha')]
           }
         },
@@ -255,7 +255,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: 'math'},
+            hProperties: {className: ['math']},
             hChildren: [u('text', '  \\alpha')]
           }
         },
@@ -298,7 +298,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: 'math'},
+            hProperties: {className: ['math']},
             hChildren: [u('text', '\\alpha')]
           }
         },
@@ -319,7 +319,7 @@ test('remark-math', function(t) {
         {
           data: {
             hName: 'div',
-            hProperties: {className: 'math'},
+            hProperties: {className: ['math']},
             hChildren: [u('text', '\\alpha')]
           }
         },
@@ -342,7 +342,7 @@ test('remark-math', function(t) {
           {
             data: {
               hName: 'span',
-              hProperties: {className: 'inlineMath inlineMathDouble'},
+              hProperties: {className: ['inlineMath', 'inlineMathDouble']},
               hChildren: [u('text', '\\alpha')]
             }
           },
