@@ -16,8 +16,12 @@
 [npm][]:
 
 ```sh
+npm install katex
 npm install rehype-katex
 ```
+
+KaTeX is a [*peer dependency*](https://nodejs.org/en/blog/npm/peer-dependencies/) of
+this package, therefore, you will need it installed before using the plugin.
 
 ## Use
 
@@ -91,6 +95,20 @@ Use of `rehype-katex` renders user content with [KaTeX][], so any vulnerability
 in KaTeX can open you to a [cross-site scripting (XSS)][xss] attack.
 
 Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
+
+## Plugins
+
+KaTeX uses globals to load it’s plugins.
+As KaTeX is a peer dependency of `rehype-katex`, you can load
+plugins very easily by simply requiring them.
+Here is an example for the `mhchem` extension:
+
+```javascript
+require('katex/dist/contrib/mhchem')
+```
+
+Loading can happen anytime in you code, but will be included for all
+the calls you make to the processor *after the require* instruction.
 
 ## Contribute
 
