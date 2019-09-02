@@ -1,15 +1,15 @@
-const trim = require('trim-trailing-lines')
 const util = require('./util')
 
 module.exports = mathBlock
 
-const C_NEWLINE = '\n'
-const C_TAB = '\t'
-const C_SPACE = ' '
-const C_DOLLAR = '$'
+const lineFeed = 10 //  '\n'
+const space = 32 // ' '
+const dollarSign = 36 // '$'
 
-const MIN_FENCE_COUNT = 2
-const CODE_INDENT_COUNT = 4
+const lineFeedChar = '\n'
+const dollarSignChar = '$'
+
+const minFenceCount = 2
 
 const classList = ['math', 'math-display']
 
@@ -47,186 +47,158 @@ function attachParser(parser) {
   ])
 
   function mathBlockTokenizer(eat, value, silent) {
-    var length = value.length + 1
+    var length = value.length
     var index = 0
-    var subvalue = ''
-    var fenceCount
-    var marker
-    var character
-    var queue
-    var content
-    var exdentedContent
-    var closing
-    var exdentedClosing
-    var indent
-    var now
+    let code
+    let content
+    let lineEnd
+    let lineIndex
+    let openingFenceIndentSize
+    let openingFenceSize
+    let openingFenceContentStart
+    let closingFence
+    let closingFenceSize
+    let lineContentStart
+    let lineContentEnd
 
-    /* Eat initial spacing. */
-    while (index < length) {
-      character = value.charAt(index)
-
-      if (character !== C_SPACE && character !== C_TAB) {
-        break
-      }
-
-      subvalue += character
+    // Skip initial spacing.
+    while (index < length && value.charCodeAt(index) === space) {
       index++
     }
 
-    indent = index
+    openingFenceIndentSize = index
 
-    /* Eat the fence. */
-    character = value.charAt(index)
-
-    if (character !== C_DOLLAR) {
-      return
-    }
-
-    index++
-    marker = character
-    fenceCount = 1
-    subvalue += character
-
-    while (index < length) {
-      character = value.charAt(index)
-
-      if (character !== marker) {
-        break
-      }
-
-      subvalue += character
-      fenceCount++
+    // Skip the fence.
+    while (index < length && value.charCodeAt(index) === dollarSign) {
       index++
     }
 
-    if (fenceCount < MIN_FENCE_COUNT) {
+    openingFenceSize = index - openingFenceIndentSize
+
+    // Exit if there is not enough of a fence.
+    if (openingFenceSize < minFenceCount) {
       return
     }
 
-    /* Eat everything after the fence. */
+    // Skip spacing after the fence.
+    while (index < length && value.charCodeAt(index) === space) {
+      index++
+    }
+
+    openingFenceContentStart = index
+
+    // Eat everything after the fence.
     while (index < length) {
-      character = value.charAt(index)
+      code = value.charCodeAt(index)
 
-      if (character === C_NEWLINE) {
-        break
-      }
-
-      if (character === C_DOLLAR) {
+      // We don’t allow dollar signs here, as that could interfere with inline
+      // math.
+      if (code === dollarSign) {
         return
       }
 
-      subvalue += character
+      if (code === lineFeed) {
+        break
+      }
+
       index++
     }
 
-    character = value.charAt(index)
+    if (value.charCodeAt(index) !== lineFeed) {
+      return
+    }
 
     if (silent) {
       return true
     }
 
-    now = eat.now()
-    now.column += subvalue.length
-    now.offset += subvalue.length
+    content = []
 
-    queue = ''
-    closing = ''
-    exdentedClosing = ''
-    content = ''
-    exdentedContent = ''
-
-    /* Eat content. */
-    while (index < length) {
-      character = value.charAt(index)
-      content += closing
-      exdentedContent += exdentedClosing
-      closing = ''
-      exdentedClosing = ''
-
-      if (character !== C_NEWLINE) {
-        content += character
-        exdentedClosing += character
-        index++
-        continue
-      }
-
-      /* Add the newline to `subvalue` if its the first
-       * character.  Otherwise, add it to the `closing`
-       * queue. */
-      if (content) {
-        closing += character
-        exdentedClosing += character
-      } else {
-        subvalue += character
-      }
-
-      queue = ''
-      index++
-
-      while (index < length) {
-        character = value.charAt(index)
-
-        if (character !== C_SPACE) {
-          break
-        }
-
-        queue += character
-        index++
-      }
-
-      closing += queue
-      exdentedClosing += queue.slice(indent)
-
-      if (queue.length >= CODE_INDENT_COUNT) {
-        continue
-      }
-
-      queue = ''
-
-      while (index < length) {
-        character = value.charAt(index)
-
-        if (character !== marker) {
-          break
-        }
-
-        queue += character
-        index++
-      }
-
-      closing += queue
-      exdentedClosing += queue
-
-      if (queue.length < fenceCount) {
-        continue
-      }
-
-      queue = ''
-
-      while (index < length) {
-        character = value.charAt(index)
-
-        if (character === C_NEWLINE) {
-          break
-        }
-
-        closing += character
-        exdentedClosing += character
-        index++
-      }
-
-      break
+    if (openingFenceContentStart !== index) {
+      content.push(value.slice(openingFenceContentStart, index))
     }
 
-    subvalue += content + closing
-    const trimmedContent = trim(exdentedContent)
-    return eat(subvalue)({
+    index++
+    lineEnd = value.indexOf(lineFeedChar, index + 1)
+    lineEnd = lineEnd === -1 ? length : lineEnd
+
+    while (index < length) {
+      closingFence = false
+      lineContentStart = index
+      lineContentEnd = lineEnd
+      lineIndex = lineEnd
+      closingFenceSize = 0
+
+      // First, let’s see if this is a valid closing fence.
+      // Skip trailing white space
+      while (
+        lineIndex > lineContentStart &&
+        value.charCodeAt(lineIndex - 1) === space
+      ) {
+        lineIndex--
+      }
+
+      // Skip the fence.
+      while (
+        lineIndex > lineContentStart &&
+        value.charCodeAt(lineIndex - 1) === dollarSign
+      ) {
+        closingFenceSize++
+        lineIndex--
+      }
+
+      // Check if this is a valid closing fence line.
+      if (
+        openingFenceSize <= closingFenceSize &&
+        value.indexOf(dollarSignChar, lineContentStart) === lineIndex
+      ) {
+        closingFence = true
+        lineContentEnd = lineIndex
+      }
+
+      // Sweet, next, we need to trim the line.
+      // Skip initial spacing.
+      while (
+        lineContentStart <= lineContentEnd &&
+        lineContentStart - index < openingFenceIndentSize &&
+        value.charCodeAt(lineContentStart) === space
+      ) {
+        lineContentStart++
+      }
+
+      // If this is a closing fence, skip final spacing.
+      if (closingFence) {
+        while (
+          lineContentEnd > lineContentStart &&
+          value.charCodeAt(lineContentEnd - 1) === space
+        ) {
+          lineContentEnd--
+        }
+      }
+
+      // If this is a content line, or if there is content before the fence:
+      if (!closingFence || lineContentStart !== lineContentEnd) {
+        content.push(value.slice(lineContentStart, lineContentEnd))
+      }
+
+      if (closingFence) {
+        break
+      }
+
+      index = lineEnd + 1
+      lineEnd = value.indexOf(lineFeedChar, index + 1)
+      lineEnd = lineEnd === -1 ? length : lineEnd
+    }
+
+    content = content.join('\n')
+
+    return eat(value.slice(0, lineEnd))({
       type: 'math',
-      value: trimmedContent,
+      value: content,
       data: {
         hName: 'div',
         hProperties: {className: classList.concat()},
-        hChildren: [{type: 'text', value: trimmedContent}]
+        hChildren: [{type: 'text', value: content}]
       }
     })
   }

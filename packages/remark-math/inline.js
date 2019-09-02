@@ -2,9 +2,12 @@ var util = require('./util')
 
 module.exports = mathInline
 
-const ESCAPED_INLINE_MATH = /^\\\$/
-const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/
-const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/
+const tab = 9 // '\t'
+const space = 32 // ' '
+const dollarSign = 36 // '$'
+const digit0 = 48 // '0'
+const digit9 = 57 // '9'
+const backslash = 92 // '\\'
 
 const classList = ['math', 'math-inline']
 const mathDisplay = 'math-display'
@@ -37,59 +40,114 @@ function attachParser(parser, options) {
   }
 
   function mathInlineTokenizer(eat, value, silent) {
-    let isDouble = true
-    let match = INLINE_MATH_DOUBLE.exec(value)
+    const length = value.length
+    let double = false
+    let escaped = false
+    let index = 0
+    let prev
+    let code
+    let next
+    let contentStart
+    let contentEnd
+    let valueEnd
+    let content
 
-    if (!match) {
-      match = INLINE_MATH.exec(value)
-      isDouble = false
+    if (value.charCodeAt(index) === backslash) {
+      escaped = true
+      index++
     }
 
-    const escaped = ESCAPED_INLINE_MATH.exec(value)
+    if (value.charCodeAt(index) !== dollarSign) {
+      return
+    }
 
+    index++
+
+    // Support escaped dollars.
     if (escaped) {
       /* istanbul ignore if - never used (yet) */
       if (silent) {
         return true
       }
 
-      return eat(escaped[0])({type: 'text', value: '$'})
+      return eat(value.slice(0, index))({type: 'text', value: '$'})
     }
 
-    if (value.slice(-2) === '\\$') {
-      return eat(value)({type: 'text', value: value.slice(0, -2) + '$'})
+    if (value.charCodeAt(index) === dollarSign) {
+      double = true
+      index++
     }
 
-    if (match) {
-      /* istanbul ignore if - never used (yet) */
-      if (silent) {
-        return true
-      }
+    next = value.charCodeAt(index)
 
-      if (
-        match[0].includes('`') &&
-        value.slice(match[0].length).includes('`')
-      ) {
-        const toEat = value.slice(0, value.indexOf('`'))
-        return eat(toEat)({type: 'text', value: toEat})
-      }
+    // Opening fence cannot be followed by a space or a tab.
+    if (next === space || next === tab) {
+      return
+    }
 
-      const trimmedContent = match[1].trim()
+    contentStart = index
 
-      return eat(match[0])({
-        type: 'inlineMath',
-        value: trimmedContent,
-        data: {
-          hName: 'span',
-          hProperties: {
-            className: classList.concat(
-              isDouble && options.inlineMathDouble ? [mathDisplay] : []
-            )
-          },
-          hChildren: [{type: 'text', value: trimmedContent}]
+    while (index < length) {
+      code = next
+      next = value.charCodeAt(index + 1)
+
+      if (code === dollarSign) {
+        prev = value.charCodeAt(index - 1)
+
+        // Closing fence cannot be preceded by a space or a tab, or followed by
+        // a digit.
+        // If a double marker was used to open, the closing fence must consist
+        // of two dollars as well.
+        if (
+          prev !== space &&
+          prev !== tab &&
+          // eslint-disable-next-line no-self-compare
+          (next !== next || next < digit0 || next > digit9) &&
+          (!double || next === dollarSign)
+        ) {
+          contentEnd = index - 1
+
+          index++
+
+          if (double) {
+            index++
+          }
+
+          valueEnd = index
+          break
         }
-      })
+      } else if (code === backslash) {
+        index++
+        next = value.charCodeAt(index + 1)
+      }
+
+      index++
     }
+
+    if (valueEnd === undefined) {
+      return
+    }
+
+    /* istanbul ignore if - never used (yet) */
+    if (silent) {
+      return true
+    }
+
+    content = value.slice(contentStart, contentEnd + 1)
+
+    return eat(value.slice(0, valueEnd))({
+      type: 'inlineMath',
+      value: content,
+      data: {
+        hName: 'span',
+        hProperties: {
+          className: classList.concat(
+            double && options.inlineMathDouble ? [mathDisplay] : []
+          )
+        },
+        hChildren: [{type: 'text', value: content}]
+      }
+    })
   }
 }
 
