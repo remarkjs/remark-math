@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-unassigned-import */
 const test = require('tape')
 const katex = require('katex')
 const unified = require('unified')
@@ -202,6 +203,40 @@ test('rehype-katex', function(t) {
       )
       .toString(),
     'should support `strict: ignore`'
+  )
+
+  // Pregenerate a result without mhchem
+  const noMhchemResult = unified()
+    .use(parseHtml, {fragment: true, position: false})
+    .use(rehypeKatex)
+    .use(stringify)
+    .processSync(
+      [
+        '<p>mhchem plugin:</p>',
+        '<div class="math-display">\\ce{CO2 + C -> 2 CO}</div>'
+      ].join('\n')
+    )
+    .toString()
+
+  // Add mhchem to KaTeX
+  require('katex/dist/contrib/mhchem')
+
+  // Assert the results are differents with and without mhchem
+  t.notEqual(
+    noMhchemResult,
+    unified()
+      .use(parseHtml, {fragment: true, position: false})
+      .use(stringify)
+      .processSync(
+        [
+          '<p>mhchem plugin:</p>',
+          '<div class="math-display">' +
+            katex.renderToString('\\ce{CO2 + C -> 2 CO}', {displayMode: true}) +
+            '</div>'
+        ].join('\n')
+      )
+      .toString(),
+    'should allow plugins'
   )
 
   t.end()
