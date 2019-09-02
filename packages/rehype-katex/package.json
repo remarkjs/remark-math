@@ -30,14 +30,16 @@
   "main": "index.js",
   "dependencies": {
     "hast-util-to-text": "^1.0.0",
-    "katex": "^0.10.0",
     "rehype-parse": "^6.0.0",
     "unified": "^8.0.0",
     "unist-util-visit": "^2.0.0"
   },
   "peerDependencies": {
-    "remark-math": ">=1.0.0"
+    "remark-math": ">=1.0.0",
+    "katex": ">=0.10.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "katex": "^0.10.0"
+  },
   "xo": false
 }
