@@ -65,6 +65,13 @@ But in a browser, that looks something like this:
 
 ![][screenshot]
 
+> Note: you should also use `katex.css` somewhere on the page to style math
+> properly:
+>
+> ```html
+> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css" integrity="sha384-BdGj8xC2eZkQaxoQ8nSLefg4AV4/AwB3Fj+8SUSo7pnKP6Eoy18liIKTPn9oBYNG" crossorigin="anonymous">
+> ```
+
 ## Packages
 
 This repo houses three packages:
