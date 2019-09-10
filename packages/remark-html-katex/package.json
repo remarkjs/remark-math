@@ -32,9 +32,6 @@
     "unified": "^8.0.0",
     "unist-util-visit": "^2.0.0"
   },
-  "peerDependencies": {
-    "remark-math": ">=1.0.0"
-  },
   "devDependencies": {},
   "xo": false
 }
