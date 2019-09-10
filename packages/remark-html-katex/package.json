@@ -1,6 +1,6 @@
 {
   "name": "remark-html-katex",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "remark plugin to transform inline and block math with KaTeX",
   "license": "MIT",
   "keywords": [
