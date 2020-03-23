@@ -17,6 +17,10 @@
   ],
   "repository": "https://github.com/remarkjs/remark-math/tree/master/packages/remark-math",
   "bugs": "https://github.com/remarkjs/remark-math/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/unified"
+  },
   "author": "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
   "contributors": [
     "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
