@@ -44,7 +44,7 @@ function attachParser(parser, options) {
     let double = false
     let escaped = false
     let index = 0
-    let prev
+    let previous
     let code
     let next
     let contentStart
@@ -92,15 +92,15 @@ function attachParser(parser, options) {
       next = value.charCodeAt(index + 1)
 
       if (code === dollarSign) {
-        prev = value.charCodeAt(index - 1)
+        previous = value.charCodeAt(index - 1)
 
         // Closing fence cannot be preceded by a space or a tab, or followed by
         // a digit.
         // If a double marker was used to open, the closing fence must consist
         // of two dollars as well.
         if (
-          prev !== space &&
-          prev !== tab &&
+          previous !== space &&
+          previous !== tab &&
           // eslint-disable-next-line no-self-compare
           (next !== next || next < digit0 || next > digit9) &&
           (!double || next === dollarSign)

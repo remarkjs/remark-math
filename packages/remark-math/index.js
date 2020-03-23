@@ -3,8 +3,8 @@ const blockPlugin = require('./block')
 
 module.exports = math
 
-function math(opts) {
-  if (opts == null) opts = {}
-  blockPlugin.call(this, opts)
-  inlinePlugin.call(this, opts)
+function math(options) {
+  var settings = options || {}
+  blockPlugin.call(this, settings)
+  inlinePlugin.call(this, settings)
 }

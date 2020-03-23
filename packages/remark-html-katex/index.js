@@ -12,8 +12,8 @@ const parseHtml = unified().use(parse, {fragment: true, position: false})
 const source = 'remark-html-katex'
 
 function htmlKatex(options) {
-  const opts = options || {}
-  const throwOnError = opts.throwOnError || false
+  const settings = options || {}
+  const throwOnError = settings.throwOnError || false
 
   return transform
 
@@ -27,7 +27,7 @@ function htmlKatex(options) {
       try {
         result = katex(
           node.value,
-          assign({}, options, {displayMode: displayMode, throwOnError: true})
+          assign({}, settings, {displayMode: displayMode, throwOnError: true})
         )
       } catch (error) {
         const fn = throwOnError ? 'fail' : 'message'
@@ -37,7 +37,7 @@ function htmlKatex(options) {
 
         result = katex(
           node.value,
-          assign({}, options, {
+          assign({}, settings, {
             displayMode: displayMode,
             throwOnError: false,
             strict: 'ignore'

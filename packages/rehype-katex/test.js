@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const test = require('tape')
 const katex = require('katex')
 const unified = require('unified')
@@ -9,7 +8,7 @@ const stringify = require('rehype-stringify')
 const math = require('../remark-math')
 const rehypeKatex = require('.')
 
-test('rehype-katex', function(t) {
+test('rehype-katex', function (t) {
   t.deepEqual(
     unified()
       .use(parseHtml, {fragment: true, position: false})

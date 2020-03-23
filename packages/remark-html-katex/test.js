@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const test = require('tape')
 const katex = require('katex')
 const unified = require('unified')
@@ -9,7 +8,7 @@ const html = require('remark-html')
 const math = require('../remark-math')
 const htmlKatex = require('.')
 
-test('remark-html-katex', function(t) {
+test('remark-html-katex', function (t) {
   t.deepEqual(
     unified()
       .use(parseMarkdown, {position: false})

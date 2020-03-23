@@ -13,8 +13,8 @@ const parseHtml = unified().use(parse, {fragment: true, position: false})
 const source = 'rehype-katex'
 
 function rehypeKatex(options) {
-  const opts = options || {}
-  const throwOnError = opts.throwOnError || false
+  const settings = options || {}
+  const throwOnError = settings.throwOnError || false
 
   return transformMath
 
@@ -37,7 +37,7 @@ function rehypeKatex(options) {
       try {
         result = katex(
           value,
-          assign({}, options, {displayMode: displayMode, throwOnError: true})
+          assign({}, settings, {displayMode: displayMode, throwOnError: true})
         )
       } catch (error) {
         const fn = throwOnError ? 'fail' : 'message'
@@ -47,7 +47,7 @@ function rehypeKatex(options) {
 
         result = katex(
           value,
-          assign({}, options, {
+          assign({}, settings, {
             displayMode: displayMode,
             throwOnError: false,
             strict: 'ignore'

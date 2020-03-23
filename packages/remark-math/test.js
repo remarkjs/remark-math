@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const test = require('tape')
 const unified = require('unified')
 const parse = require('remark-parse')
@@ -8,7 +7,7 @@ const stringify = require('remark-stringify')
 const u = require('unist-builder')
 const math = require('.')
 
-test('remark-math', function(t) {
+test('remark-math', function (t) {
   const toHtml = unified()
     .use(parse)
     .use(math, {inlineMathDouble: true})
@@ -51,45 +50,30 @@ test('remark-math', function(t) {
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('\\$\\alpha$'),
+    unified().use(parse, {position: false}).use(math).parse('\\$\\alpha$'),
     u('root', [u('paragraph', [u('text', '$'), u('text', '\\alpha$')])]),
     'should ignore an escaped opening dollar sign'
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('$\\alpha\\$'),
+    unified().use(parse, {position: false}).use(math).parse('$\\alpha\\$'),
     u('root', [u('paragraph', [u('text', '$\\alpha'), u('text', '$')])]),
     'should ignore an escaped closing dollar sign'
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('\\$\\alpha$'),
+    unified().use(parse, {position: false}).use(math).parse('\\$\\alpha$'),
     u('root', [u('paragraph', [u('text', '$'), u('text', '\\alpha$')])]),
     'should ignore an escaped opening dollar sign'
   )
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('$\\alpha\\$'),
+    unified().use(parse, {position: false}).use(math).parse('$\\alpha\\$'),
     u('root', [u('paragraph', [u('text', '$\\alpha'), u('text', '$')])]),
     'should ignore an escaped closing dollar sign'
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('\\\\$\\alpha$'),
+    unified().use(parse, {position: false}).use(math).parse('\\\\$\\alpha$'),
     u('root', [
       u('paragraph', [
         u('text', '\\'),
@@ -110,19 +94,13 @@ test('remark-math', function(t) {
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('`$`\\alpha$'),
+    unified().use(parse, {position: false}).use(math).parse('`$`\\alpha$'),
     u('root', [u('paragraph', [u('inlineCode', '$'), u('text', '\\alpha$')])]),
     'should ignore dollar signs in inline code (#1)'
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('$\\alpha`$`'),
+    unified().use(parse, {position: false}).use(math).parse('$\\alpha`$`'),
     u('root', [
       u('paragraph', [
         u(
@@ -143,10 +121,7 @@ test('remark-math', function(t) {
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('$`\\alpha`$'),
+    unified().use(parse, {position: false}).use(math).parse('$`\\alpha`$'),
     u('root', [
       u('paragraph', [
         u(
@@ -166,10 +141,7 @@ test('remark-math', function(t) {
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('$\\alpha\\$$'),
+    unified().use(parse, {position: false}).use(math).parse('$\\alpha\\$$'),
     u('root', [
       u('paragraph', [
         u(
@@ -232,10 +204,7 @@ test('remark-math', function(t) {
   )
 
   t.deepEqual(
-    unified()
-      .use(parse, {position: false})
-      .use(math)
-      .parse('$$\\alpha$$'),
+    unified().use(parse, {position: false}).use(math).parse('$$\\alpha$$'),
     u('root', [
       u('paragraph', [
         u(
