@@ -34,7 +34,7 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "hast-util-to-text": "^1.0.0",
+    "hast-util-to-text": "^2.0.0",
     "katex": "^0.11.0",
     "rehype-parse": "^6.0.0",
     "unified": "^8.0.0",
