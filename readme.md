@@ -81,6 +81,8 @@ This repo houses three packages:
 *   [`rehype-katex`][rehype-katex]
     — Transforms math nodes with [KaTeX][]
     (recommended)
+*   [`rehype-mathjax`][rehype-mathjax]
+    — Transforms math nodes with [MathJax][]
 *   [`remark-html-katex`][remark-html-katex]
     — Transforms math nodes with [KaTeX][] for [`remark-html`][remark-html]
     (discouraged)
@@ -176,11 +178,15 @@ abide by its terms.
 
 [katex]: https://github.com/Khan/KaTeX
 
+[mathjax]: https://mathjax.org/
+
 [xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
 
 [remark-math]: ./packages/remark-math
 
 [rehype-katex]: ./packages/rehype-katex
+
+[rehype-mathjax]: ./packages/rehype-mathjax
 
 [remark-html-katex]: ./packages/remark-html-katex
 
