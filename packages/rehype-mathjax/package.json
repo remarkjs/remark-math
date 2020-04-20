@@ -35,11 +35,11 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "hast-util-from-dom": "^2.0.5",
-    "hast-util-to-html": "^7.1.0",
+    "hast-util-from-dom": "^2.0.0",
+    "hast-util-to-html": "^7.0.0",
     "hast-util-to-text": "^2.0.0",
-    "jsdom": "^16.2.2",
-    "mathjax-full": "^3.0.5",
+    "jsdom": "^16.0.0",
+    "mathjax-full": "^3.0.0",
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.0"
   },
