@@ -55,6 +55,7 @@
     "prettier": true,
     "esnext": false,
     "rules": {
+      "new-cap": "off",
       "unicorn/string-content": "off",
       "complexity": "off",
       "no-eq-null": "off",
