@@ -27,7 +27,7 @@ npm install rehype-mathjax
 const rehypeMathJaxCHTML = require('rehype-mathjax/chtml') // Import CommonHTML ouput processor
 // const rehypeMathJaxSVG = require('rehype-mathjax/svg') // Import SVG output processor
 // const {rehypeMathJaxCHTML, rehypeMathJaxSVG}  = require('rehype-mathjax') // Import both processors
-unified().use(rehypeMathjaxCHMTL, options)
+unified().use(rehypeMathJaxCHMTL, options)
 ```
 
 *   `options`: MathJax ouput options for 
