@@ -6,18 +6,26 @@ const {browserAdaptor} = require('mathjax-full/js/adaptors/browserAdaptor')
 const {RegisterHTMLHandler} = require('mathjax-full/js/handlers/html')
 const {AllPackages} = require('mathjax-full/js/input/tex/AllPackages')
 
+exports.styleSheet = styleSheet
+exports.render = render
+
 const adaptor = browserAdaptor()
-Reflect.apply(RegisterHTMLHandler, null, [adaptor])
+RegisterHTMLHandler(adaptor)
 const tex = new TeX({packages: AllPackages})
 const svg = new SVG({fontCache: 'none'})
 const mathDocument = mathjax.document('', {InputJax: tex, OutputJax: svg})
-const stylesheet = adaptor.textContent(svg.styleSheet(mathDocument))
 
-module.exports.stylesheet = () => ({
-  type: 'element',
-  tagName: 'style',
-  properties: {},
-  children: [{type: 'text', value: stylesheet}]
-})
-module.exports.render = (math, options) =>
-  fromDom(mathDocument.convert(math, options))
+function styleSheet() {
+  return {
+    type: 'element',
+    tagName: 'style',
+    properties: {},
+    children: [
+      {type: 'text', value: adaptor.textContent(svg.styleSheet(mathDocument))}
+    ]
+  }
+}
+
+function render(math, options) {
+  return fromDom(mathDocument.convert(math, options))
+}
