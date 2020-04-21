@@ -1,32 +1,19 @@
 const test = require('tape')
-const {SVGRenderer, CHTMLRenderer} = require('./renderer')
+const CHTMLRenderer = require('./renderer/chtml')
+const SVGRenderer = require('./renderer/svg')
 const unified = require('unified')
 const parseMarkdown = require('remark-parse')
 const remark2rehype = require('remark-rehype')
 const parseHtml = require('rehype-parse')
 const stringify = require('rehype-stringify')
 const math = require('../remark-math')
-const rehypeMathjax = require('.')
 const toHtml = require('hast-util-to-html')
 
 test('rehype-mathjax', function (t) {
-  t.throws(
-    () => {
-      unified()
-        .use(parseHtml, {fragment: true, position: false})
-        .use(rehypeMathjax, '', {})
-        .use(stringify)
-        .processSync('')
-        .toString()
-    },
-    "'' is neither 'chtml' nor 'svg'",
-    "'' is neither 'chtml' nor 'svg'"
-  )
-
-  for (const output of ['chtml', 'svg']) {
+  for (const output of ['./chtml', './svg']) {
     let renderer
     let options
-    if (output === 'chtml') {
+    if (output === './chtml') {
       options = {}
       renderer = new CHTMLRenderer(options)
     } else {
@@ -37,7 +24,7 @@ test('rehype-mathjax', function (t) {
     t.deepEqual(
       unified()
         .use(parseHtml, {fragment: true, position: false})
-        .use(rehypeMathjax, output, options)
+        .use(require(output), options)
         .use(stringify)
         .processSync(
           [
@@ -71,7 +58,7 @@ test('rehype-mathjax', function (t) {
         .use(parseMarkdown, {position: false})
         .use(math)
         .use(remark2rehype)
-        .use(rehypeMathjax, output, options)
+        .use(require(output), options)
         .use(stringify)
         .processSync(
           [
@@ -107,7 +94,7 @@ test('rehype-mathjax', function (t) {
     t.deepEqual(
       unified()
         .use(parseHtml, {fragment: true, position: false})
-        .use(rehypeMathjax, output, options)
+        .use(require(output), options)
         .use(stringify)
         .processSync(
           '<p>Double math <span class="math-inline math-display">\\alpha</span>.</p>'
@@ -129,7 +116,7 @@ test('rehype-mathjax', function (t) {
     t.deepEqual(
       unified()
         .use(parseHtml, {fragment: true, position: false})
-        .use(rehypeMathjax, output, options)
+        .use(require(output), options)
         .use(stringify)
         .processSync('<p>No math</p>')
         .toString(),
@@ -140,28 +127,21 @@ test('rehype-mathjax', function (t) {
         .toString(),
       `Should not be insert stylesheet if it is no math with ${output}`
     )
+    t.deepEqual(
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(require(output))
+        .use(stringify)
+        .processSync('')
+        .toString(),
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(stringify)
+        .processSync('')
+        .toString(),
+      `Default options is \`{}\``
+    )
   }
-
-  const renderer = new CHTMLRenderer()
-  t.deepEqual(
-    unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(rehypeMathjax, 'chtml')
-      .use(stringify)
-      .processSync('<span class="math math-inline">x</span>')
-      .toString(),
-    unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(stringify)
-      .processSync(
-        '<span class="math math-inline">' +
-          toHtml(renderer.render('x', {display: false})) +
-          '</span>' +
-          toHtml(renderer.styleSheet)
-      )
-      .toString(),
-    `Default options is \`{}\``
-  )
 
   t.end()
 })
