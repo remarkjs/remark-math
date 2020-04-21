@@ -1,5 +1,5 @@
 const test = require('tape')
-const renderer = require('./renderer')
+const {SVGRenderer, CHTMLRenderer} = require('./renderer')
 const unified = require('unified')
 const parseMarkdown = require('remark-parse')
 const remark2rehype = require('remark-rehype')
@@ -10,111 +10,157 @@ const rehypeMathjax = require('.')
 const toHtml = require('hast-util-to-html')
 
 test('rehype-mathjax', function (t) {
-  t.deepEqual(
-    unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(rehypeMathjax)
-      .use(stringify)
-      .processSync(
-        [
-          '<p>Inline math <span class="math-inline">\\alpha</span>.</p>',
-          '<p>Block math:</p>',
-          '<div class="math-display">\\gamma</div>'
-        ].join('\n')
-      )
-      .toString(),
-    unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(stringify)
-      .processSync(
-        [
-          '<p>Inline math <span class="math-inline">' +
-            toHtml(renderer.render('\\alpha', {display: false})) +
-            '</span>.</p>',
-          '<p>Block math:</p>',
-          '<div class="math-display">' +
-            toHtml(renderer.render('\\gamma', {display: true})) +
-            '</div>' +
-            toHtml(renderer.styleSheet())
-        ].join('\n')
-      )
-      .toString(),
-    'should transform math with mathjax'
+  t.throws(
+    () => {
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(rehypeMathjax, '', {})
+        .use(stringify)
+        .processSync('')
+        .toString()
+    },
+    "'' is neither 'chtml' nor 'svg'",
+    "'' is neither 'chtml' nor 'svg'"
   )
 
-  t.deepEqual(
-    unified()
-      .use(parseMarkdown, {position: false})
-      .use(math)
-      .use(remark2rehype)
-      .use(rehypeMathjax)
-      .use(stringify)
-      .processSync(
-        [
-          'Inline math $\\alpha$.',
-          '',
-          'Block math:',
-          '',
-          '$$',
-          '\\gamma',
-          '$$'
-        ].join('\n')
-      )
-      .toString(),
-    unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(stringify)
-      .processSync(
-        [
-          '<p>Inline math <span class="math math-inline">' +
-            toHtml(renderer.render('\\alpha', {display: false})) +
-            '</span>.</p>',
-          '<p>Block math:</p>',
-          '<div class="math math-display">' +
-            toHtml(renderer.render('\\gamma', {display: true})) +
-            '</div>' +
-            toHtml(renderer.styleSheet())
-        ].join('\n')
-      )
-      .toString(),
-    'should integrate with `remark-math`'
-  )
+  for (const output of ['chtml', 'svg']) {
+    let renderer
+    let options
+    if (output === 'chtml') {
+      options = {}
+      renderer = new CHTMLRenderer(options)
+    } else {
+      options = {fontCache: 'none'}
+      renderer = new SVGRenderer(options)
+    }
 
-  t.deepEqual(
-    unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(rehypeMathjax)
-      .use(stringify)
-      .processSync(
-        '<p>Double math <span class="math-inline math-display">\\alpha</span>.</p>'
-      )
-      .toString(),
-    unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(stringify)
-      .processSync(
-        '<p>Double math <span class="math-inline math-display">' +
-          toHtml(renderer.render('\\alpha', {display: true})) +
-          '</span>.</p>' +
-          toHtml(renderer.styleSheet())
-      )
-      .toString(),
-    'should transform `.math-inline.math-display` math with `displayMode: true`'
-  )
+    t.deepEqual(
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(rehypeMathjax, output, options)
+        .use(stringify)
+        .processSync(
+          [
+            '<p>Inline math <span class="math-inline">\\alpha</span>.</p>',
+            '<p>Block math:</p>',
+            '<div class="math-display">\\gamma</div>'
+          ].join('\n')
+        )
+        .toString(),
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(stringify)
+        .processSync(
+          [
+            '<p>Inline math <span class="math-inline">' +
+              toHtml(renderer.render('\\alpha', {display: false})) +
+              '</span>.</p>',
+            '<p>Block math:</p>',
+            '<div class="math-display">' +
+              toHtml(renderer.render('\\gamma', {display: true})) +
+              '</div>' +
+              toHtml(renderer.styleSheet)
+          ].join('\n')
+        )
+        .toString(),
+      `should transform math with mathjax with ${output}`
+    )
 
+    t.deepEqual(
+      unified()
+        .use(parseMarkdown, {position: false})
+        .use(math)
+        .use(remark2rehype)
+        .use(rehypeMathjax, output, options)
+        .use(stringify)
+        .processSync(
+          [
+            'Inline math $\\alpha$.',
+            '',
+            'Block math:',
+            '',
+            '$$',
+            '\\gamma',
+            '$$'
+          ].join('\n')
+        )
+        .toString(),
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(stringify)
+        .processSync(
+          [
+            '<p>Inline math <span class="math math-inline">' +
+              toHtml(renderer.render('\\alpha', {display: false})) +
+              '</span>.</p>',
+            '<p>Block math:</p>',
+            '<div class="math math-display">' +
+              toHtml(renderer.render('\\gamma', {display: true})) +
+              '</div>' +
+              toHtml(renderer.styleSheet)
+          ].join('\n')
+        )
+        .toString(),
+      `should integrate with 'remark-math' with ${output}`
+    )
+
+    t.deepEqual(
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(rehypeMathjax, output, options)
+        .use(stringify)
+        .processSync(
+          '<p>Double math <span class="math-inline math-display">\\alpha</span>.</p>'
+        )
+        .toString(),
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(stringify)
+        .processSync(
+          '<p>Double math <span class="math-inline math-display">' +
+            toHtml(renderer.render('\\alpha', {display: true})) +
+            '</span>.</p>' +
+            toHtml(renderer.styleSheet)
+        )
+        .toString(),
+      `should transform \`.math-inline.math-display\` math with \`displayMode: true\` with ${output}`
+    )
+
+    t.deepEqual(
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(rehypeMathjax, output, options)
+        .use(stringify)
+        .processSync('<p>No math</p>')
+        .toString(),
+      unified()
+        .use(parseHtml, {fragment: true, position: false})
+        .use(stringify)
+        .processSync('<p>No math</p>')
+        .toString(),
+      `Should not be insert stylesheet if it is no math with ${output}`
+    )
+  }
+
+  const renderer = new CHTMLRenderer()
   t.deepEqual(
     unified()
       .use(parseHtml, {fragment: true, position: false})
-      .use(rehypeMathjax)
+      .use(rehypeMathjax, 'chtml')
       .use(stringify)
-      .processSync('<p>No math</p>')
+      .processSync('<span class="math math-inline">x</span>')
       .toString(),
     unified()
       .use(parseHtml, {fragment: true, position: false})
       .use(stringify)
-      .processSync('<p>No math</p>')
+      .processSync(
+        '<span class="math math-inline">' +
+          toHtml(renderer.render('x', {display: false})) +
+          '</span>' +
+          toHtml(renderer.styleSheet)
+      )
       .toString(),
-    'Should not be insert stylesheet if it is no math'
+    `Default options is \`{}\``
   )
 
   t.end()
