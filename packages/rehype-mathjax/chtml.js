@@ -1,14 +1,14 @@
 const visit = require('unist-util-visit')
 const toText = require('hast-util-to-text')
-const CHTMLRenderer = require('./renderer/chtml')
+const ChtmlRenderer = require('./renderer/chtml')
 
-module.exports = rehypeMathJaxCHTML
+module.exports = rehypeMathJaxChtml
 
-function rehypeMathJaxCHTML(options = {}) {
+function rehypeMathJaxChtml(options = {}) {
   return transformMath
 
   function transformMath(tree) {
-    const renderer = new CHTMLRenderer(options)
+    const renderer = new ChtmlRenderer(options)
 
     let found = false
 

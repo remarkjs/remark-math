@@ -1,2 +1,2 @@
-exports.rehypeMathJaxCHTML = require('./chtml')
-exports.rehypeMathJaxSVG = require('./svg')
+exports.rehypeMathJaxChtml = require('./chtml')
+exports.rehypeMathJaxSvg = require('./svg')

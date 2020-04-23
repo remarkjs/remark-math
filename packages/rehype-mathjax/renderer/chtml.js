@@ -4,7 +4,7 @@ const {CHTML} = require('mathjax-full/js/output/chtml')
 const {AllPackages} = require('mathjax-full/js/input/tex/AllPackages')
 const AbstractRenderer = require('./node')
 
-class CHTMLRenderer extends AbstractRenderer {
+class ChtmlRenderer extends AbstractRenderer {
   constructor(options) {
     super()
     this.InputJax = new TeX({packages: AllPackages})
@@ -16,4 +16,4 @@ class CHTMLRenderer extends AbstractRenderer {
   }
 }
 
-module.exports = CHTMLRenderer
+module.exports = ChtmlRenderer

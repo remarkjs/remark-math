@@ -24,13 +24,13 @@ npm install rehype-mathjax
 ### API
 
 ```js
-const rehypeMathJaxCHTML = require('rehype-mathjax/chtml') // Import CommonHTML ouput processor
-// const rehypeMathJaxSVG = require('rehype-mathjax/svg') // Import SVG output processor
-// const {rehypeMathJaxCHTML, rehypeMathJaxSVG}  = require('rehype-mathjax') // Import both processors
-unified().use(rehypeMathjaxCHMTL, options)
+const rehypeMathJaxChtml = require('rehype-mathjax/chtml') // Import CommonHTML ouput processor
+// const rehypeMathJaxSvg = require('rehype-mathjax/svg') // Import SVG output processor
+// const {rehypeMathJaxChtml, rehypeMathJaxSvg}  = require('rehype-mathjax') // Import both processors
+unified().use(rehypeMathJaxChtml, options)
 ```
 
-*   `options`: MathJax ouput options for 
+*   `options`: MathJax ouput options for
     [CommonHTML ouput processor](http://docs.mathjax.org/en/latest/options/output/chtml.html)
     and [SVG ouput processor](http://docs.mathjax.org/en/latest/options/output/svg.html)
 
@@ -54,7 +54,7 @@ And our script, `example.js`, looks as follows:
 ```js
 unified()
   .use(parse, {fragment: true})
-  .use(rehypeMathJaxCHTML, {fontURL: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.5/es5/output/chtml/fonts/woff-v2/'})
+  .use(rehypeMathJaxChtml, {fontURL: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.5/es5/output/chtml/fonts/woff-v2/'})
   .use(stringify)
   .process(vfile.readSync('example.html'), function (err, file) {
     if (err) throw err

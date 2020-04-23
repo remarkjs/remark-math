@@ -1,6 +1,6 @@
 const visit = require('unist-util-visit')
 const toText = require('hast-util-to-text')
-const SVGRenderer = require('./renderer/svg')
+const SvgRenderer = require('./renderer/svg')
 
 module.exports = rehypeMathJaxSVG
 
@@ -8,7 +8,7 @@ function rehypeMathJaxSVG(options = {}) {
   return transformMath
 
   function transformMath(tree) {
-    const renderer = new SVGRenderer(options)
+    const renderer = new SvgRenderer(options)
 
     let found = false
 

@@ -4,7 +4,7 @@ const {SVG} = require('mathjax-full/js/output/svg')
 const {AllPackages} = require('mathjax-full/js/input/tex/AllPackages')
 const AbstractRenderer = require('./node')
 
-class SVGRenderer extends AbstractRenderer {
+class SvgRenderer extends AbstractRenderer {
   constructor(options) {
     super()
     this.InputJax = new TeX({packages: AllPackages})
@@ -16,4 +16,4 @@ class SVGRenderer extends AbstractRenderer {
   }
 }
 
-module.exports = SVGRenderer
+module.exports = SvgRenderer
