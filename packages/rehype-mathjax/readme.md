@@ -24,15 +24,21 @@ npm install rehype-mathjax
 ### API
 
 ```js
-// const rehypeMathJaxChtml = require('rehype-mathjax/chtml') // Import CommonHTML ouput processor
-// const rehypeMathJaxSvg = require('rehype-mathjax/svg') // Import SVG output processor
+// const rehypeMathJaxNone = require('rehype-mathjax/none') // Import the processor that do nothing
+// const rehypeMathJaxChtml = require('rehype-mathjax/chtml') // Import the CommonHTML ouput processor
+// const rehypeMathJaxSvg = require('rehype-mathjax/svg') // Import the SVG output processor
 const rehypeMathJax  = require('rehype-mathjax') // Import default output processor as SVG output processor
 unified().use(rehypeMathJax, options)
 ```
 
 *   `options`: MathJax ouput options for
-    [CommonHTML ouput processor](http://docs.mathjax.org/en/latest/options/output/chtml.html)
-    and [SVG ouput processor](http://docs.mathjax.org/en/latest/options/output/svg.html)
+    [CommonHTML ouput processor](http://docs.mathjax.org/en/latest/options/output/chtml.html),
+    [SVG ouput processor](http://docs.mathjax.org/en/latest/options/output/svg.html),
+    and the options `{displayMath: ['\\[', '\\]'], inlineMath: ['\\(', '\\)']}` for `rehypeMathJaxNone`
+
+*   `rehypeMathJaxNone` wraps formulas with parentheses
+    given by `displayMath` option and `inlineMath` option
+    instead of rendering them
 
 ### Example
 
