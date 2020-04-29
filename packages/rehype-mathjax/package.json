@@ -27,7 +27,7 @@
   "browser": {
     "./renderer/node": "./renderer/browser"
   },
-  "author": "TANIGUCHI Masaya <taniguchi.masaya@yandex.com> (https://docs.casa)",
+  "author": "TANIGUCHI Masaya <mew@cat.ovh> (https://docs.casa)",
   "files": [
     "renderer.js",
     "browser-renderer.js",
