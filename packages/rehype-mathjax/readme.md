@@ -23,9 +23,14 @@ npm install rehype-mathjax
 
 ### API
 
-Rehype MathJax provides three plugins that are corresponding to the output formats of MathJax.
-`rehypeMathJaxBrowser` generates the raw string with parentheses  such as `\\(`, `\\)`, `\\[`, and `\\]`, which is the fastest processor and requires to load MathJax library from somewhere for client side rendering.
-`rehypeMathJaxChtml` generates CommonHTML, which is a dialect of HTML designed by MathJax.
+Rehype MathJax provides three plugins that are corresponding to
+the output formats of MathJax.
+`rehypeMathJaxBrowser` generates the raw string with parentheses
+such as `\\(`, `\\)`, `\\[`, and `\\]`, which is the
+fastest processor and requires to load MathJax
+library from somewhere for client side rendering.
+`rehypeMathJaxChtml` generates CommonHTML, which is a dialect
+of HTML designed by MathJax.
 `rehypeMathJaxSvg` generates SVG, which is default of this plugin.
 
 ```js
@@ -84,8 +89,6 @@ unified()
 
 Now, running `node example` yields:
 
-<details>
-<summary>Example Output</summary>
 ```html
 <p>
   Lift(<span class="math math-inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="1.541ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 681 683" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path id="MJX-1-TEX-I-1D43F" d="M228 637Q194 637 192 641Q191 643 191 649Q191 673 202 682Q204 683 217 683Q271 680 344 680Q485 680 506 683H518Q524 677 524 674T522 656Q517 641 513 637H475Q406 636 394 628Q387 624 380 600T313 336Q297 271 279 198T252 88L243 52Q243 48 252 48T311 46H328Q360 46 379 47T428 54T478 72T522 106T564 161Q580 191 594 228T611 270Q616 273 628 273H641Q647 264 647 262T627 203T583 83T557 9Q555 4 553 3T537 0T494 -1Q483 -1 418 -1T294 0H116Q32 0 32 10Q32 17 34 24Q39 43 44 45Q48 46 59 46H65Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Q285 635 228 637Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="mi"><use xlink:href="#MJX-1-TEX-I-1D43F"></use></g></g></g></svg></mjx-container></span>) can be determined by Lift Coefficient
@@ -184,7 +187,6 @@ mjx-tool > mjx-tip {
 g[data-mml-node="maction"][data-toggle] {
   cursor: pointer;
 }
-
 mjx-status {
   display: block;
   position: fixed;
@@ -209,7 +211,6 @@ foreignObject[data-mjx-xml] {
 }
 </style>
 ```
-</details>
 
 ## API
 
