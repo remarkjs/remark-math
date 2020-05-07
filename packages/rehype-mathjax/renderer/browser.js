@@ -1,32 +1,18 @@
-const fromDom = require('hast-util-from-dom')
-const {browserAdaptor} = require('mathjax-full/js/adaptors/browserAdaptor')
-const {RegisterHTMLHandler} = require('mathjax-full/js/handlers/html')
-
-class AbstractRenderer {
-  constructor() {
-    this.adaptor = browserAdaptor()
-    RegisterHTMLHandler(this.adaptor)
+class BrowserRenderer {
+  constructor(options) {
+    this.displayMath = options.displayMath
+    this.inlineMath = options.inlineMath
   }
 
   get styleSheet() {
-    return {
-      type: 'element',
-      tagName: 'style',
-      properties: {},
-      children: [
-        {
-          type: 'text',
-          value: this.adaptor.textContent(
-            this.OutputJax.styleSheet(this.mathDocument)
-          )
-        }
-      ]
-    }
+    return {type: 'text', value: ''}
   }
 
-  render(latex, options) {
-    return fromDom(this.mathDocument.convert(latex, options))
+  render(math, options) {
+    return options.display
+      ? {type: 'text', value: this.displayMath.join(math)}
+      : {type: 'text', value: this.inlineMath.join(math)}
   }
 }
 
-module.exports = AbstractRenderer
+module.exports = BrowserRenderer

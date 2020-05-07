@@ -1,7 +1,7 @@
 const test = require('tape')
 const ChtmlRenderer = require('./renderer/chtml')
 const SvgRenderer = require('./renderer/svg')
-const NoneRenderer = require('./renderer/none')
+const BrowserRenderer = require('./renderer/browser')
 const unified = require('unified')
 const parseMarkdown = require('remark-parse')
 const remark2rehype = require('remark-rehype')
@@ -11,7 +11,7 @@ const math = require('../remark-math')
 const toHtml = require('hast-util-to-html')
 
 test('rehype-mathjax', function (t) {
-  for (const output of ['./chtml', './svg', './none']) {
+  for (const output of ['./chtml', './svg', './browser']) {
     let renderer
     let options
     if (output === './chtml') {
@@ -22,7 +22,7 @@ test('rehype-mathjax', function (t) {
       renderer = new SvgRenderer(options)
     } else {
       options = {displayMath: ['\\[', '\\]'], inlineMath: ['\\(', '\\)']}
-      renderer = new NoneRenderer(options)
+      renderer = new BrowserRenderer(options)
     }
 
     t.deepEqual(
