@@ -1,4 +1,4 @@
-const createPlugin = require('./renderer/create-plugin')
+const createPlugin = require('./lib/core')
 
 module.exports = createPlugin('rehypeMathJaxBrowser', renderBrowser)
 

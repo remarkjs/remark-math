@@ -25,7 +25,7 @@
     "url": "https://opencollective.com/unified"
   },
   "browser": {
-    "./renderer/adaptor.js": "./renderer/adaptor.browser.js"
+    "./lib/adaptor.js": "./lib/adaptor.browser.js"
   },
   "author": "TANIGUCHI Masaya <mew@cat.ovh> (https://docs.casa)",
   "files": [
