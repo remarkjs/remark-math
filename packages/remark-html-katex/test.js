@@ -46,7 +46,7 @@ test('remark-html-katex', function (t) {
     'should transform math with katex'
   )
 
-  var macros = {'\\RR': '\\mathbb{R}'}
+  const macros = {'\\RR': '\\mathbb{R}'}
 
   t.deepEqual(
     unified()
