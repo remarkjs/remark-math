@@ -50,7 +50,7 @@ test('rehype-mathjax', function (t) {
             '<div class="math-display">' +
               toHtml(renderer.render('\\gamma', {display: true})) +
               '</div>' +
-              toHtml(renderer.styleSheet)
+              (renderer.styleSheet ? toHtml(renderer.styleSheet()) : '')
           ].join('\n')
         )
         .toString(),
@@ -88,7 +88,7 @@ test('rehype-mathjax', function (t) {
             '<div class="math math-display">' +
               toHtml(renderer.render('\\gamma', {display: true})) +
               '</div>' +
-              toHtml(renderer.styleSheet)
+              (renderer.styleSheet ? toHtml(renderer.styleSheet()) : '')
           ].join('\n')
         )
         .toString(),
@@ -111,7 +111,7 @@ test('rehype-mathjax', function (t) {
           '<p>Double math <span class="math-inline math-display">' +
             toHtml(renderer.render('\\alpha', {display: true})) +
             '</span>.</p>' +
-            toHtml(renderer.styleSheet)
+            (renderer.styleSheet ? toHtml(renderer.styleSheet()) : '')
         )
         .toString(),
       `should transform \`.math-inline.math-display\` math with \`displayMode: true\` with ${output}`

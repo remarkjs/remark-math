@@ -1,18 +1,13 @@
-class BrowserRenderer {
-  constructor(options) {
-    this.displayMath = options.displayMath
-    this.inlineMath = options.inlineMath
-  }
+module.exports = renderer
 
-  get styleSheet() {
-    return {type: 'text', value: ''}
-  }
+function renderer(options) {
+  return {render: render}
 
-  render(math, options) {
-    return options.display
-      ? {type: 'text', value: this.displayMath.join(math)}
-      : {type: 'text', value: this.inlineMath.join(math)}
+  function render(value, renderOptions) {
+    var delimiters = renderOptions.display
+      ? options.displayMath
+      : options.inlineMath
+
+    return {type: 'text', value: delimiters.join(value)}
   }
 }
-
-module.exports = BrowserRenderer

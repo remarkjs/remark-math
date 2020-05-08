@@ -1,15 +1,15 @@
 const visit = require('unist-util-visit')
 const toText = require('hast-util-to-text')
-const BrowserRenderer = require('./renderer/browser')
+const renderer = require('./renderer/browser')
 
 module.exports = rehypeMathJaxBrowser
 
 function rehypeMathJaxBrowser(options) {
-  const renderer = new BrowserRenderer({
+  var render = renderer({
     displayMath: ['\\[', '\\]'],
     inlineMath: ['\\(', '\\)'],
     ...options
-  })
+  }).render
 
   return transformMath
 
@@ -25,7 +25,7 @@ function rehypeMathJaxBrowser(options) {
         return
       }
 
-      element.children = [renderer.render(toText(element), {display: display})]
+      element.children = [render(toText(element), {display: display})]
 
       return visit.SKIP
     }
