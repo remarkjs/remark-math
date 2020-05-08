@@ -77,7 +77,7 @@ mjx-container[jax="SVG"] > svg {
 
 ## API
 
-### `rehype().use(rehypeMathJax)`
+### `rehype().use(rehypeMathJax[, options])`
 
 Transform `<span class="math-inline">` and `<div class="math-display">` with
 [MathJax][].
