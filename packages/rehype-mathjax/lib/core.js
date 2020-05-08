@@ -1,5 +1,4 @@
 const visit = require('unist-util-visit')
-const toText = require('hast-util-to-text')
 
 module.exports = createPlugin
 
@@ -8,7 +7,7 @@ function createPlugin(displayName, createRenderer) {
 
   return attacher
 
-  function attacher(options = {}) {
+  function attacher(options) {
     const renderer = createRenderer(options)
 
     transform.displayName = displayName + 'Transform'
@@ -24,8 +23,8 @@ function createPlugin(displayName, createRenderer) {
         tree.children.push(renderer.styleSheet())
       }
 
-      function onelement(element) {
-        const classes = element.properties.className || []
+      function onelement(node) {
+        const classes = node.properties.className || []
         const inline = classes.includes('math-inline')
         const display = classes.includes('math-display')
 
@@ -34,9 +33,7 @@ function createPlugin(displayName, createRenderer) {
         }
 
         found = true
-        element.children = [
-          renderer.render(toText(element), {display: display})
-        ]
+        renderer.render(node, {display: display})
 
         return visit.SKIP
       }
