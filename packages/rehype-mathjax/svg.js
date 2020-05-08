@@ -2,9 +2,9 @@ const visit = require('unist-util-visit')
 const toText = require('hast-util-to-text')
 const SvgRenderer = require('./renderer/svg')
 
-module.exports = rehypeMathJaxSVG
+module.exports = rehypeMathJaxSvg
 
-function rehypeMathJaxSVG(options = {}) {
+function rehypeMathJaxSvg(options = {}) {
   return transformMath
 
   function transformMath(tree) {
