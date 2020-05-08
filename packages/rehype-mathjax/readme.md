@@ -23,16 +23,41 @@ npm install rehype-mathjax
 
 ### API
 
+Rehype MathJax provides three plugins that are corresponding to
+the output formats of MathJax.
+`rehypeMathJaxBrowser` generates the raw string with parentheses
+such as `\\(`, `\\)`, `\\[`, and `\\]`, which is the
+fastest processor and requires to load MathJax
+library from somewhere for client side rendering.
+`rehypeMathJaxChtml` generates CommonHTML, which is a dialect
+of HTML designed by MathJax.
+`rehypeMathJaxSvg` generates SVG, which is default of this plugin.
+
 ```js
-// const rehypeMathJaxChtml = require('rehype-mathjax/chtml') // Import CommonHTML ouput processor
-// const rehypeMathJaxSvg = require('rehype-mathjax/svg') // Import SVG output processor
-const rehypeMathJax  = require('rehype-mathjax') // Import default output processor as SVG output processor
+// Import the processor that generate raw string for client side rendering.
+const rehypeMathJaxBrowser = require('rehype-mathjax/browser')
+
+// Import the CommonHTML ouput processor
+const rehypeMathJaxChtml = require('rehype-mathjax/chtml')
+
+// Import the SVG output processor
+const rehypeMathJaxSvg = require('rehype-mathjax/svg')
+
+// Import default output processor as SVG output processor
+const rehypeMathJax  = require('rehype-mathjax')
+
+// Set plugin to unified
 unified().use(rehypeMathJax, options)
 ```
 
 *   `options`: MathJax ouput options for
-    [CommonHTML ouput processor](http://docs.mathjax.org/en/latest/options/output/chtml.html)
-    and [SVG ouput processor](http://docs.mathjax.org/en/latest/options/output/svg.html)
+    [CommonHTML ouput processor](http://docs.mathjax.org/en/latest/options/output/chtml.html),
+    [SVG ouput processor](http://docs.mathjax.org/en/latest/options/output/svg.html),
+    and the options `{displayMath: ['\\[', '\\]'], inlineMath: ['\\(', '\\)']}` for `rehypeMathJaxBrowser`
+
+*   `rehypeMathJaxBrowser` wraps formulas with parentheses
+    given by `displayMath` option and `inlineMath` option
+    instead of rendering them
 
 ### Example
 
@@ -162,7 +187,6 @@ mjx-tool > mjx-tip {
 g[data-mml-node="maction"][data-toggle] {
   cursor: pointer;
 }
-
 mjx-status {
   display: block;
   position: fixed;
@@ -190,7 +214,7 @@ foreignObject[data-mjx-xml] {
 
 ## API
 
-### `rehype().use(mathjax)`
+### `rehype().use(rehypeMathJax)`
 
 Transform `<span class="math-inline">` and `<div class="math-display">` with
 [MathJax][].

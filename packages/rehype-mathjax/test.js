@@ -1,6 +1,7 @@
 const test = require('tape')
-const CHTMLRenderer = require('./renderer/chtml')
-const SVGRenderer = require('./renderer/svg')
+const ChtmlRenderer = require('./renderer/chtml')
+const SvgRenderer = require('./renderer/svg')
+const BrowserRenderer = require('./renderer/browser')
 const unified = require('unified')
 const parseMarkdown = require('remark-parse')
 const remark2rehype = require('remark-rehype')
@@ -10,15 +11,18 @@ const math = require('../remark-math')
 const toHtml = require('hast-util-to-html')
 
 test('rehype-mathjax', function (t) {
-  for (const output of ['./chtml', './svg']) {
+  for (const output of ['./chtml', './svg', './browser']) {
     let renderer
     let options
     if (output === './chtml') {
       options = {}
-      renderer = new CHTMLRenderer(options)
-    } else {
+      renderer = new ChtmlRenderer(options)
+    } else if (output === './svg') {
       options = {fontCache: 'none'}
-      renderer = new SVGRenderer(options)
+      renderer = new SvgRenderer(options)
+    } else {
+      options = {displayMath: ['\\[', '\\]'], inlineMath: ['\\(', '\\)']}
+      renderer = new BrowserRenderer(options)
     }
 
     t.deepEqual(
