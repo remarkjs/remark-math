@@ -28,6 +28,10 @@
     "./lib/adaptor.js": "./lib/adaptor.browser.js"
   },
   "author": "TANIGUCHI Masaya <mew@cat.ovh> (https://docs.casa)",
+  "contributors": [
+    "TANIGUCHI Masaya <mew@cat.ovh> (https://docs.casa)",
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+  ],
   "files": [
     "lib/",
     "browser.js",
@@ -35,6 +39,7 @@
     "svg.js",
     "index.js"
   ],
+  "main": "index.js",
   "dependencies": {
     "hast-util-from-dom": "^2.0.0",
     "hast-util-to-html": "^7.0.0",
