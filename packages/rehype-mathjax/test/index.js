@@ -90,7 +90,6 @@ test('rehype-mathjax', function (t) {
     'should transform documents without math'
   )
 
-  // To do: broken.
   t.equal(
     unified()
       .use(parseHtml)
