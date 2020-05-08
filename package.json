@@ -56,8 +56,9 @@
     "prettier": true,
     "esnext": false,
     "rules": {
-      "new-cap": "off",
+      "unicorn/no-fn-reference-in-iterator": "off",
       "unicorn/string-content": "off",
+      "new-cap": "off",
       "complexity": "off",
       "no-eq-null": "off",
       "eqeqeq": [

@@ -148,24 +148,10 @@ test('rehype-katex', function (t) {
       .use(stringify)
       .processSync(
         '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
-      ).messages,
+      )
+      .messages.map(String),
     [
-      {
-        message:
-          'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
-        name: '2:4-2:42',
-        reason:
-          'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
-        line: 2,
-        column: 4,
-        location: {
-          start: {line: 2, column: 4, offset: 16},
-          end: {line: 2, column: 42, offset: 54}
-        },
-        source: 'rehype-katex',
-        ruleId: 'parseerror',
-        fatal: false
-      }
+      '2:4-2:42: KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
     ],
     'should create a message for errors'
   )
