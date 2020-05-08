@@ -88,18 +88,18 @@ big memory and size footprint: SVG, CHTML, and browser:
 ###### SVG
 
 Render math as [SVG][mathjax-svg] (`require('rehype-mathjax/svg')`, default).
-About 570kb minzipped.
+About 566kb minzipped.
 
 ###### CHTML
 
 Render math as [CHTML][mathjax-chtml] (`require('rehype-mathjax/chtml')`).
-About 150kb minzipped.
+About 154kb minzipped.
 Needs a `fontURL` to be passed.
 
 ###### Browser
 
 Tiny wrapper to render MathJax client-side (`require('rehype-mathjax/browser')`).
-About 3kb minzipped.
+About 1kb minzipped.
 
 Uses `options.displayMath` (default: `\[` and `\]`) for display, and
 `options.inlineMath` (default: `\(` and `\)`) for inline math.
