@@ -29,11 +29,12 @@
   },
   "author": "TANIGUCHI Masaya <mew@cat.ovh> (https://docs.casa)",
   "files": [
-    "renderer.js",
-    "browser-renderer.js",
+    "lib/",
+    "browser.js",
+    "chtml.js",
+    "svg.js",
     "index.js"
   ],
-  "main": "index.js",
   "dependencies": {
     "hast-util-from-dom": "^2.0.0",
     "hast-util-to-html": "^7.0.0",
