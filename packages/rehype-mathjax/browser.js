@@ -1,33 +1,21 @@
-const visit = require('unist-util-visit')
-const toText = require('hast-util-to-text')
-const renderer = require('./renderer/browser')
+const createPlugin = require('./renderer/create-plugin')
 
-module.exports = rehypeMathJaxBrowser
+module.exports = createPlugin('rehypeMathJaxBrowser', renderBrowser)
 
-function rehypeMathJaxBrowser(options) {
-  var render = renderer({
+function renderBrowser(options) {
+  const config = {
     displayMath: ['\\[', '\\]'],
     inlineMath: ['\\(', '\\)'],
     ...options
-  }).render
+  }
 
-  return transformMath
+  return {render: render}
 
-  function transformMath(tree) {
-    visit(tree, 'element', onelement)
+  function render(value, renderOptions) {
+    const delimiters = renderOptions.display
+      ? config.displayMath
+      : config.inlineMath
 
-    function onelement(element) {
-      const classes = element.properties.className || []
-      const inline = classes.includes('math-inline')
-      const display = classes.includes('math-display')
-
-      if (!inline && !display) {
-        return
-      }
-
-      element.children = [render(toText(element), {display: display})]
-
-      return visit.SKIP
-    }
+    return {type: 'text', value: delimiters.join(value)}
   }
 }

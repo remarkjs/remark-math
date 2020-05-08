@@ -6,9 +6,9 @@ const createAdaptor = require('./adaptor')
 module.exports = renderer
 
 function renderer(input, output) {
-  var adaptor = createAdaptor()
+  const adaptor = createAdaptor()
   register(adaptor)
-  var doc = mathjax.document('', {InputJax: input, OutputJax: output})
+  const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 
   return {render: render, styleSheet: styleSheet}
 
@@ -17,7 +17,7 @@ function renderer(input, output) {
   }
 
   function styleSheet() {
-    var value = adaptor.textContent(output.styleSheet(doc))
+    const value = adaptor.textContent(output.styleSheet(doc))
 
     return {
       type: 'element',
