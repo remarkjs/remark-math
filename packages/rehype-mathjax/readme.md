@@ -101,8 +101,8 @@ Needs a `fontURL` to be passed.
 Tiny wrapper to render MathJax client-side (`require('rehype-mathjax/browser')`).
 About 1kb minzipped.
 
-Uses `options.displayMath` (default: `\[` and `\]`) for display, and
-`options.inlineMath` (default: `\(` and `\)`) for inline math.
+Uses `options.displayMath` (default: `['\\[', '\\]']`) for display, and
+`options.inlineMath` (default: `['\\(', '\\)']`) for inline math.
 
 You need to load MathJax on the client yourself and start it with corresponding
 markers.
@@ -110,13 +110,14 @@ Options are not passed to MathJax: do that yourself on the client.
 
 #### `options`
 
-All options are passed to [MathJax][mathjax-options].
+All options, except when using the browser plugin, are passed to
+[MathJax][mathjax-options].
 
 ## Security
 
-Use of `rehype-mathjax` renders user content with [MathJax][],
-so any vulnerability in MathJax can open you
-to a [cross-site scripting (XSS)][xss] attack.
+Use of `rehype-mathjax` renders user content with [MathJax][], so any
+vulnerability in MathJax can open you to a [cross-site scripting (XSS)][xss]
+attack.
 
 Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
 
