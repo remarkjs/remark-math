@@ -19,6 +19,9 @@ function rehypeKatex(options) {
   return transformMath
 
   function transformMath(tree, file) {
+    
+    let macros = {};
+    
     visit(tree, 'element', onelement)
 
     function onelement(element) {
@@ -37,7 +40,11 @@ function rehypeKatex(options) {
       try {
         result = katex(
           value,
-          assign({}, settings, {displayMode: displayMode, throwOnError: true})
+          assign({}, settings, {
+            displayMode: displayMode,
+            throwOnError: true,
+            macros
+          })
         )
       } catch (error) {
         const fn = throwOnError ? 'fail' : 'message'
@@ -50,7 +57,8 @@ function rehypeKatex(options) {
           assign({}, settings, {
             displayMode: displayMode,
             throwOnError: false,
-            strict: 'ignore'
+            strict: 'ignore',
+            macros
           })
         )
       }
