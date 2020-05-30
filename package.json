@@ -24,7 +24,7 @@
     "remark-html": "^11.0.0",
     "remark-parse": "^8.0.0",
     "remark-preset-wooorm": "^7.0.0",
-    "remark-rehype": "^6.0.0",
+    "remark-rehype": "^7.0.0",
     "remark-stringify": "^8.0.0",
     "tape": "^5.0.0",
     "unified": "^9.0.0",
