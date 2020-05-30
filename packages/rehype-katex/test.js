@@ -98,7 +98,7 @@ test('rehype-katex', function (t) {
     'should transform `.math-inline.math-display` math with `displayMode: true`'
   )
 
-  var macros = {'\\RR': '\\mathbb{R}'}
+  const macros = {'\\RR': '\\mathbb{R}'}
 
   t.deepEqual(
     unified()
