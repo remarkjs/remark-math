@@ -27,10 +27,18 @@ test('rehype-mathjax', function (t) {
     'should render SVG'
   )
 
+  t.throws(
+    function () {
+      unified().use(chtml).freeze()
+    },
+    /rehype-mathjax: missing `fontURL` in options/,
+    'should crash for CHTML w/o `fontURL`'
+  )
+
   t.equal(
     unified()
       .use(parseHtml, {fragment: true})
-      .use(chtml)
+      .use(chtml, {fontURL: 'place/to/fonts'})
       .use(stringify)
       .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
