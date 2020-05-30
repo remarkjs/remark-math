@@ -74,20 +74,21 @@ But in a browser, that looks something like this:
 
 ## Packages
 
-This repo houses three packages:
+This repo houses four packages:
 
 *   [`remark-math`][remark-math]
     — Parses `$` as `inlineMath` and `$$` as `math` nodes
 *   [`rehype-katex`][rehype-katex]
     — Transforms math nodes with [KaTeX][]
-    (recommended)
+    (✨ recommended)
 *   [`rehype-mathjax`][rehype-mathjax]
     — Transforms math nodes with [MathJax][]
+    (✨ recommended)
 *   [`remark-html-katex`][remark-html-katex]
     — Transforms math nodes with [KaTeX][] for [`remark-html`][remark-html]
     (discouraged)
 
-See the above packages for more information.
+See their readmes for more information.
 
 ## Security
 
@@ -103,6 +104,8 @@ Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
     — Auto-link references like in GitHub issues, PRs, and comments
 *   [`remark-frontmatter`][remark-frontmatter]
     — Support frontmatter (YAML, TOML, and more)
+*   [`remark-footnotes`][remark-footnotes]
+    — Support footnotes
 *   [`remark-breaks`][remark-breaks]
     – Support hard breaks without needing spaces (like on issues)
 
@@ -169,6 +172,8 @@ abide by its terms.
 [remark-github]: https://github.com/remarkjs/remark-github
 
 [remark-frontmatter]: https://github.com/remarkjs/remark-frontmatter
+
+[remark-footnotes]: https://github.com/remarkjs/remark-footnotes
 
 [remark-breaks]: https://github.com/remarkjs/remark-breaks
 
