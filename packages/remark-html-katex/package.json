@@ -16,7 +16,7 @@
     "latex",
     "tex"
   ],
-  "repository": "https://github.com/remarkjs/remark-math/tree/master/packages/remark-html-katex",
+  "repository": "https://github.com/remarkjs/remark-math/tree/main/packages/remark-html-katex",
   "bugs": "https://github.com/remarkjs/remark-math/issues",
   "funding": {
     "type": "opencollective",

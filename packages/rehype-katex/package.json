@@ -18,7 +18,7 @@
     "latex",
     "tex"
   ],
-  "repository": "https://github.com/remarkjs/remark-math/tree/master/packages/rehype-katex",
+  "repository": "https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex",
   "bugs": "https://github.com/remarkjs/remark-math/issues",
   "funding": {
     "type": "opencollective",

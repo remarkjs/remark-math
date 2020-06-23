@@ -125,7 +125,7 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/remarkjs/remark-math/master.svg
+[build-badge]: https://img.shields.io/travis/remarkjs/remark-math/main.svg
 
 [build]: https://travis-ci.org/remarkjs/remark-math
 
@@ -155,11 +155,11 @@ abide by its terms.
 
 [health]: https://github.com/remarkjs/.github
 
-[contributing]: https://github.com/remarkjs/.github/blob/master/contributing.md
+[contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
 
-[support]: https://github.com/remarkjs/.github/blob/master/support.md
+[support]: https://github.com/remarkjs/.github/blob/HEAD/support.md
 
-[coc]: https://github.com/remarkjs/.github/blob/master/code-of-conduct.md
+[coc]: https://github.com/remarkjs/.github/blob/HEAD/code-of-conduct.md
 
 [license]: license
 

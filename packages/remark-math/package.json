@@ -15,7 +15,7 @@
     "latex",
     "tex"
   ],
-  "repository": "https://github.com/remarkjs/remark-math/tree/master/packages/remark-math",
+  "repository": "https://github.com/remarkjs/remark-math/tree/main/packages/remark-math",
   "bugs": "https://github.com/remarkjs/remark-math/issues",
   "funding": {
     "type": "opencollective",

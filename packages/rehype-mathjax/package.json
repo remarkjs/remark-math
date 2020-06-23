@@ -18,7 +18,7 @@
     "latex",
     "tex"
   ],
-  "repository": "https://github.com/remarkjs/remark-math/tree/master/packages/rehype-mathjax",
+  "repository": "https://github.com/remarkjs/remark-math/tree/main/packages/rehype-mathjax",
   "bugs": "https://github.com/remarkjs/remark-math/issues",
   "funding": {
     "type": "opencollective",
