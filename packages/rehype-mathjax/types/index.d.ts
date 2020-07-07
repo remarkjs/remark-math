@@ -1,6 +1,6 @@
 import {Plugin} from 'unified'
 
-// should be ported back to MathJax repo
+// Should be ported back to MathJax repo
 // http://docs.mathjax.org/en/latest/options/output/svg.html#the-configuration-block
 interface MathJaxSVGOptions {
   scale: number
