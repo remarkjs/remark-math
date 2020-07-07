@@ -33,6 +33,7 @@
     "index.js"
   ],
   "main": "index.js",
+  "types": "types/index.d.ts",
   "dependencies": {
     "hast-util-to-text": "^2.0.0",
     "katex": "^0.12.0",
