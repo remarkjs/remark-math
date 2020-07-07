@@ -33,7 +33,10 @@
     "util.js"
   ],
   "main": "index.js",
+  "types": "types/index.d.ts",
   "dependencies": {},
-  "devDependencies": {},
+  "peerDependencies": {
+    "unified": "^9.0.0"
+  },
   "xo": false
 }
