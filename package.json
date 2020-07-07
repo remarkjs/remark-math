@@ -15,6 +15,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "eslint-plugin-prettier": "^3.1.4",
     "lerna": "^3.0.0",
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
