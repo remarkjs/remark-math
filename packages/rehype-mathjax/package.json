@@ -41,7 +41,7 @@
     "index.js"
   ],
   "main": "index.js",
-  "types": "types/index.d.ts",
+  "types": "index.d.ts",
   "dependencies": {
     "@types/mathjax": "^0.0.36",
     "hast-util-from-dom": "^2.0.0",
@@ -51,11 +51,5 @@
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.0"
   },
-  "devDependencies": {
-    "dtslint": "^3.6.12"
-  },
-  "xo": false,
-  "scripts": {
-    "test-types": "dtslint ."
-  }
+  "xo": false
 }

@@ -15,6 +15,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "dtslint": "^3.6.12",
     "eslint-plugin-prettier": "^3.1.4",
     "lerna": "^3.0.0",
     "npm-run-all": "^4.1.5",
@@ -29,6 +30,7 @@
     "remark-rehype": "^7.0.0",
     "remark-stringify": "^8.0.0",
     "tape": "^5.0.0",
+    "typescript": "^3.9.6",
     "unified": "^9.0.0",
     "unist-builder": "^2.0.0",
     "xo": "^0.32.0"
@@ -38,7 +40,7 @@
     "format": "remark . -qfo && prettier . --write && xo --fix",
     "test-api": "tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
     "test-coverage": "nyc --reporter lcov tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
-    "test-types": "lerna run test-types",
+    "test-types": "dtslint packages/rehype-katex/types && dtslint packages/rehype-mathjax && dtslint packages/remark-html-katex/types && dtslint packages/remark-math/types",
     "test": "run-s format test-types test-coverage"
   },
   "nyc": {

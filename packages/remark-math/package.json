@@ -38,11 +38,5 @@
   "dependencies": {
     "unified": "^9.0.0"
   },
-  "xo": false,
-  "devDependencies": {
-    "dtslint": "^3.6.12"
-  },
-  "scripts": {
-    "test-types": "dtslint types"
-  }
+  "xo": false
 }

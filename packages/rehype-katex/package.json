@@ -43,11 +43,5 @@
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.0"
   },
-  "devDependencies": {
-    "dtslint": "^3.6.12"
-  },
-  "xo": false,
-  "scripts": {
-    "test-types": "dtslint types"
-  }
+  "xo": false
 }
