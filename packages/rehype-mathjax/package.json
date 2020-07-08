@@ -34,6 +34,7 @@
   ],
   "files": [
     "lib/",
+    "*.d.ts",
     "browser.js",
     "chtml.js",
     "svg.js",
@@ -55,6 +56,6 @@
   },
   "xo": false,
   "scripts": {
-    "test-types": "dtslint types"
+    "test-types": "dtslint ."
   }
 }
