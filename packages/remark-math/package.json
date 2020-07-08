@@ -34,9 +34,14 @@
   ],
   "main": "index.js",
   "types": "types/index.d.ts",
-  "dependencies": {},
-  "peerDependencies": {
+  "dependencies": {
     "unified": "^9.0.0"
   },
-  "xo": false
+  "xo": false,
+  "devDependencies": {
+    "dtslint": "^3.6.12"
+  },
+  "scripts": {
+    "test-types": "dtslint types"
+  }
 }

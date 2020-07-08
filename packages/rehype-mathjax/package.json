@@ -42,15 +42,19 @@
   "main": "index.js",
   "types": "types/index.d.ts",
   "dependencies": {
+    "@types/mathjax": "^0.0.36",
     "hast-util-from-dom": "^2.0.0",
     "hast-util-to-text": "^2.0.0",
     "jsdom": "^16.0.0",
     "mathjax-full": "^3.0.0",
+    "unified": "^9.0.0",
     "unist-util-visit": "^2.0.0"
   },
-  "peerDependencies": {
-    "unified": "^9.0.0"
+  "devDependencies": {
+    "dtslint": "^3.6.12"
   },
-  "devDependencies": {},
-  "xo": false
+  "xo": false,
+  "scripts": {
+    "test-types": "dtslint types"
+  }
 }

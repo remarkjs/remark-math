@@ -1,6 +1,6 @@
 import {Plugin} from 'unified'
 
-export interface RemarkMathOptions {
+interface RemarkMathOptions {
   inlineMathDouble: boolean
 }
 

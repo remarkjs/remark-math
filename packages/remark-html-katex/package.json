@@ -33,11 +33,17 @@
   "main": "index.js",
   "types": "types/index.d.ts",
   "dependencies": {
+    "@types/katex": "^0.11.0",
     "katex": "^0.12.0",
     "rehype-parse": "^6.0.0",
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.0"
   },
-  "devDependencies": {},
-  "xo": false
+  "devDependencies": {
+    "dtslint": "^3.6.12"
+  },
+  "xo": false,
+  "scripts": {
+    "test-types": "dtslint types"
+  }
 }
