@@ -26,7 +26,9 @@
     "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
+  "types": "types/index.d.ts",
   "files": [
+    "types/index.d.ts",
     "index.js",
     "block.js",
     "inline.js",
