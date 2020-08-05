@@ -51,5 +51,8 @@
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.0"
   },
+  "scripts": {
+    "test-types": "dtslint"
+  },
   "xo": false
 }
