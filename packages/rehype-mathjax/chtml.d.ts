@@ -16,6 +16,6 @@ interface MathJaxCHtmlOptions {
   adaptiveCSS?: boolean
 }
 
-declare const renderCHtml: Plugin<[MathJaxCHtmlOptions?]>
+declare const renderCHtml: Plugin<[MathJaxCHtmlOptions]>
 
 export = renderCHtml

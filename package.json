@@ -13,7 +13,6 @@
     "Daniel Perez Alvarez <unindented@gmail.com>",
     "TANIGUCHI Masaya <mew@cat.ovh>"
   ],
-  "dependencies": {},
   "devDependencies": {
     "dtslint": "^3.6.12",
     "lerna": "^3.0.0",
@@ -39,8 +38,12 @@
     "format": "remark . -qfo && prettier . --write && xo --fix",
     "test-api": "tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
     "test-coverage": "nyc --reporter lcov tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
-    "test-types": "dtslint packages/rehype-katex/types && dtslint packages/rehype-mathjax && dtslint packages/remark-html-katex/types && dtslint packages/remark-math/types",
-    "test": "run-s format test-types test-coverage"
+    "test:types": "run-p test:types:rehype-katex test:types:rehype-mathjax test:types:remark-html-katex test:types:remark-math",
+    "test:types:rehype-katex": "dtslint packages/rehype-katex/types",
+    "test:types:rehype-mathjax": "dtslint packages/rehype-mathjax",
+    "test:types:remark-html-katex": "dtslint packages/remark-html-katex/types",
+    "test:types:remark-math": "dtslint packages/remark-math/types",
+    "test": "run-s format test:types test-coverage"
   },
   "nyc": {
     "check-coverage": true,

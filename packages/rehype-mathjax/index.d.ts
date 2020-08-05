@@ -1,3 +1,4 @@
+// Minimum TypeScript Version: 3.2
 import {Plugin} from 'unified'
 
 // Should be ported back to MathJax repo
