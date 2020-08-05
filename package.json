@@ -37,7 +37,7 @@
     "format": "remark . -qfo && prettier . --write && xo --fix",
     "test-api": "tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
     "test-coverage": "nyc --reporter lcov tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
-    "test-types": "lerna run test-types --parallel",
+    "test-types": "lerna run test-types --concurrency 1 --stream",
     "test": "npm run format && npm run test-types && npm run test-coverage"
   },
   "nyc": {
