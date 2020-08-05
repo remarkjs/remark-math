@@ -3,7 +3,7 @@ import {Plugin} from 'unified'
 
 // Should be ported back to MathJax repo
 // http://docs.mathjax.org/en/latest/options/output/svg.html#the-configuration-block
-interface MathJaxSVGOptions {
+interface MathJaxSvgOptions {
   scale: number
   minScale: number
   mtextInheritFont: boolean
@@ -19,7 +19,7 @@ interface MathJaxSVGOptions {
   titleID: number
 }
 
-type RenderSVGOptions = Partial<MathJaxSVGOptions>
+type RenderSVGOptions = Partial<MathJaxSvgOptions>
 
 declare const renderSvg: Plugin<[RenderSVGOptions?]>
 
