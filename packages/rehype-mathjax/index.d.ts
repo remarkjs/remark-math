@@ -1,5 +1,5 @@
 // Minimum TypeScript Version: 3.2
-import {Plugin} from 'unified'
+import {Plugin} from 'unified' // eslint-disable-line import/no-extraneous-dependencies
 
 // Should be ported back to MathJax repo
 // http://docs.mathjax.org/en/latest/options/output/svg.html#the-configuration-block

@@ -35,9 +35,6 @@
   ],
   "main": "index.js",
   "types": "types/index.d.ts",
-  "dependencies": {
-    "unified": "^9.0.0"
-  },
   "scripts": {
     "test-types": "dtslint types"
   },

@@ -1,4 +1,4 @@
-import {Plugin} from 'unified'
+import {Plugin} from 'unified' // eslint-disable-line import/no-extraneous-dependencies
 
 interface RemarkMathOptions {
   inlineMathDouble?: boolean

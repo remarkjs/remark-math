@@ -1,4 +1,4 @@
-import {Plugin} from 'unified'
+import {Plugin} from 'unified' // eslint-disable-line import/no-extraneous-dependencies
 
 // http://docs.mathjax.org/en/latest/options/output/chtml.html#the-configuration-block
 interface MathJaxCHtmlOptions {

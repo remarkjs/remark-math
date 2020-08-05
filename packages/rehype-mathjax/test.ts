@@ -1,4 +1,4 @@
-import unified from 'unified'
+import unified from 'unified' // eslint-disable-line import/no-extraneous-dependencies
 import mathjax from 'rehype-mathjax'
 import chtml from 'rehype-mathjax/chtml'
 import browser from 'rehype-mathjax/browser'

@@ -1,4 +1,4 @@
-import unified from 'unified'
+import unified from 'unified' // eslint-disable-line import/no-extraneous-dependencies
 import math from 'remark-math'
 
 // $ExpectType Processor<Settings>
