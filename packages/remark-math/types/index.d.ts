@@ -1,9 +1,9 @@
 import {Plugin} from 'unified'
 
 interface RemarkMathOptions {
-  inlineMathDouble: boolean
+  inlineMathDouble?: boolean
 }
 
-declare const math: Plugin<[Partial<RemarkMathOptions>?]>
+declare const math: Plugin<[RemarkMathOptions?]>
 
 export = math
