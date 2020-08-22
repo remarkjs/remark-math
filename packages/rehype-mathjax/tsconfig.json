@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["es2015", "dom"],
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "rehype-mathjax": ["."],
+      "rehype-mathjax/chtml": ["./chtml"],
+      "rehype-mathjax/browser": ["./browser"]
+    },
+    "esModuleInterop": true
+  }
+}

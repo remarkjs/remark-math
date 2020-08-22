@@ -13,8 +13,8 @@
     "Daniel Perez Alvarez <unindented@gmail.com>",
     "TANIGUCHI Masaya <mew@cat.ovh>"
   ],
-  "dependencies": {},
   "devDependencies": {
+    "dtslint": "^3.0.0",
     "lerna": "^3.0.0",
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
@@ -27,6 +27,7 @@
     "remark-rehype": "^7.0.0",
     "remark-stringify": "^8.0.0",
     "tape": "^5.0.0",
+    "typescript": "^4.0.0",
     "unified": "^9.0.0",
     "unist-builder": "^2.0.0",
     "xo": "^0.33.0"
@@ -36,7 +37,8 @@
     "format": "remark . -qfo && prettier . --write && xo --fix",
     "test-api": "tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
     "test-coverage": "nyc --reporter lcov tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
-    "test": "npm run format && npm run test-coverage"
+    "test-types": "lerna run test-types --concurrency 1 --stream",
+    "test": "npm run format && npm run test-types && npm run test-coverage"
   },
   "nyc": {
     "check-coverage": true,

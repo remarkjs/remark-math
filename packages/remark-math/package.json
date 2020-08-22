@@ -30,10 +30,13 @@
     "index.js",
     "block.js",
     "inline.js",
-    "util.js"
+    "util.js",
+    "types/index.d.ts"
   ],
   "main": "index.js",
-  "dependencies": {},
-  "devDependencies": {},
+  "types": "types/index.d.ts",
+  "scripts": {
+    "test-types": "dtslint types"
+  },
   "xo": false
 }

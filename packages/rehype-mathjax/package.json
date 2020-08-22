@@ -34,19 +34,24 @@
   ],
   "files": [
     "lib/",
+    "*.d.ts",
     "browser.js",
     "chtml.js",
     "svg.js",
     "index.js"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "dependencies": {
+    "@types/mathjax": "^0.0.36",
     "hast-util-from-dom": "^2.0.0",
     "hast-util-to-text": "^2.0.0",
     "jsdom": "^16.0.0",
     "mathjax-full": "^3.0.0",
     "unist-util-visit": "^2.0.0"
   },
-  "devDependencies": {},
+  "scripts": {
+    "test-types": "dtslint"
+  },
   "xo": false
 }
