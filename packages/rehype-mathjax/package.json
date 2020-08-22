@@ -44,7 +44,7 @@
   "types": "index.d.ts",
   "dependencies": {
     "@types/mathjax": "^0.0.36",
-    "hast-util-from-dom": "^2.0.0",
+    "hast-util-from-dom": "^3.0.0",
     "hast-util-to-text": "^2.0.0",
     "jsdom": "^16.0.0",
     "mathjax-full": "^3.0.0",
