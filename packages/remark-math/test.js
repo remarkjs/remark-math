@@ -472,7 +472,7 @@ test('remark-math', function (t) {
   )
   t.deepEqual(
     String(toHtml.processSync('* $1+1 = 2$\n* $$\n  1+1 = 2\n  $$')),
-    '<ul>\n<li><span class="math math-inline">1+1 = 2</span></li>\n<li><div class="math math-display">1+1 = 2</div></li>\n</ul>',
+    '<ul>\n<li><span class="math math-inline">1+1 = 2</span></li>\n<li>\n<div class="math math-display">1+1 = 2</div>\n</li>\n</ul>',
     'markdown-it-katex#15: display and inline math can appear in lists'
   )
   t.deepEqual(
