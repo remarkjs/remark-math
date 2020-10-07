@@ -93,8 +93,8 @@ See their readmes for more information.
 
 ## Security
 
-Use of `rehype-katex` or `remark-html-katex` renders user content with
-[KaTeX][], so any vulnerability in KaTeX can open you to a
+Use of `rehype-katex`, `rehype-mathjax`, or `remark-html-katex` renders user
+content with [KaTeX][], so any vulnerability in KaTeX can open you to a
 [cross-site scripting (XSS)][xss] attack.
 
 Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
