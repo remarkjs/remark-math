@@ -10,6 +10,14 @@
 
 [**remark**][remark] plugin to parse and stringify math.
 
+## Important!
+
+This plugin is affected by the new parser in remark
+([`micromark`](https://github.com/micromark/micromark),
+see [`remarkjs/remark#536`](https://github.com/remarkjs/remark/pull/536)).
+Use version 3 while you’re still on remark 12.
+Use version 4 for remark 13+.
+
 ## Install
 
 [npm][]:
@@ -67,43 +75,18 @@ Now, running `node example` yields:
 Parse and stringify math.
 
 Get’s useful when combined with [`rehype-katex`][rehype-katex] or
-[`remark-html-katex`][remark-html-katex].
+[`rehype-mathjax`][rehype-mathjax].
 
-You can also support only inline, or online block math, by importing them
-directly:
-
-```js
-const mathInline = require('remark-math/inline')
-
-// …
-
-unified()
-  // …
-  .use(mathInline)
-  // …
-```
-
-#### `options`
-
-##### `options.inlineMathDouble`
-
-Add an extra `math-display` class to inline `$$` math (default: `false`).
+See [`micromark/micromark-extension-math`][extension-math] for more info on what
+syntax is supported.
 
 #### Notes
 
 ##### Escaping
 
-You can escape dollar signs with a back slash (`\`):
-
-```markdown
-\$\alpha\$
-
-$\alpha\$$
-
-$$
-\beta\$
-$$
-```
+Markdown escapes don’t work in math, similar to code, but you can use more
+dollars around the math instead: `$$\raisebox{0.25em}{$\frac
+a b$}$$`
 
 ## Security
 
@@ -174,6 +157,8 @@ abide by its terms.
 
 [rehype-katex]: https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex
 
-[remark-html-katex]: https://github.com/remarkjs/remark-math/tree/main/packages/remark-html-katex
+[rehype-mathjax]: https://github.com/remarkjs/remark-math/tree/main/packages/rehype-mathjax
+
+[extension-math]: https://github.com/micromark/micromark-extension-math
 
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize

@@ -35,6 +35,10 @@
   ],
   "main": "index.js",
   "types": "types/index.d.ts",
+  "dependencies": {
+    "mdast-util-math": "^0.1.0",
+    "micromark-extension-math": "^0.1.0"
+  },
   "scripts": {
     "test-types": "dtslint types"
   },
