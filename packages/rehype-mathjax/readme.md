@@ -112,6 +112,11 @@ Options are not passed to MathJax: do that yourself on the client.
 
 All options, except when using the browser plugin, are passed to
 [MathJax][mathjax-options].
+Specifically, they are passed to the chosen output processor.
+
+#### `options.tex`
+
+These options are passed to the [TeX input processor][mathjax-tex-input-options].
 
 ## Security
 
@@ -190,3 +195,5 @@ abide by its terms.
 [mathjax-svg]: http://docs.mathjax.org/en/latest/output/svg.html
 
 [mathjax-chtml]: http://docs.mathjax.org/en/latest/output/html.html
+
+[mathjax-tex-input-options]: http://docs.mathjax.org/en/latest/options/input/tex.html
