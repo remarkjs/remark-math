@@ -129,5 +129,47 @@ test('rehype-mathjax', function (t) {
     'should support custom `inlineMath` and `displayMath` delimiters for browser'
   )
 
+  t.equal(
+    unified()
+      .use(parseHtml, {fragment: true})
+      .use(svg, {tex: {tags: 'ams'}})
+      .use(stringify)
+      .processSync(
+        vfile.readSync({
+          dirname: fixtures,
+          basename: 'equation-numbering-1.html'
+        })
+      )
+      .toString(),
+    String(
+      vfile.readSync({
+        dirname: fixtures,
+        basename: 'equation-numbering-1-svg.html'
+      })
+    ).trim(),
+    'should render SVG with equation numbers'
+  )
+
+  t.equal(
+    unified()
+      .use(parseHtml, {fragment: true})
+      .use(chtml, {fontURL: 'place/to/fonts', tex: {tags: 'ams'}})
+      .use(stringify)
+      .processSync(
+        vfile.readSync({
+          dirname: fixtures,
+          basename: 'equation-numbering-1.html'
+        })
+      )
+      .toString(),
+    String(
+      vfile.readSync({
+        dirname: fixtures,
+        basename: 'equation-numbering-1-chtml.html'
+      })
+    ).trim(),
+    'should render CHTML with equation numbers'
+  )
+
   t.end()
 })

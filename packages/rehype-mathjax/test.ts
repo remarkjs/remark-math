@@ -7,11 +7,15 @@ import browser from 'rehype-mathjax/browser'
 unified().use(mathjax)
 // $ExpectType Processor<Settings>
 unified().use(mathjax, {minScale: 3})
+// $ExpectType Processor<Settings>
+unified().use(mathjax, {minScale: 3, tex: {tags: 'ams'}})
 // $ExpectError
 unified().use(mathjax, {invalidProp: true})
 
 // $ExpectType Processor<Settings>
 unified().use(chtml, {fontURL: 'url'})
+// $ExpectType Processor<Settings>
+unified().use(chtml, {fontURL: 'url', tex: {tags: 'ams'}})
 // $ExpectError
 unified().use(chtml)
 // $ExpectError
