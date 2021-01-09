@@ -6,10 +6,10 @@ const createAdaptor = require('./adaptor')
 
 module.exports = renderer
 
-function renderer(input, output) {
-  const adaptor = createAdaptor()
-  register(adaptor)
+const adaptor = createAdaptor()
+register(adaptor)
 
+function renderer(input, output) {
   const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 
   return {render: render, styleSheet: styleSheet}
