@@ -153,6 +153,27 @@ test('rehype-mathjax', function (t) {
   t.equal(
     unified()
       .use(parseHtml, {fragment: true})
+      .use(svg, {tex: {tags: 'ams'}})
+      .use(stringify)
+      .processSync(
+        vfile.readSync({
+          dirname: fixtures,
+          basename: 'equation-numbering-2.html'
+        })
+      )
+      .toString(),
+    String(
+      vfile.readSync({
+        dirname: fixtures,
+        basename: 'equation-numbering-2-svg.html'
+      })
+    ).trim(),
+    'should render SVG with reference to an undefined equation'
+  )
+
+  t.equal(
+    unified()
+      .use(parseHtml, {fragment: true})
       .use(chtml, {fontURL: 'place/to/fonts', tex: {tags: 'ams'}})
       .use(stringify)
       .processSync(
@@ -169,6 +190,42 @@ test('rehype-mathjax', function (t) {
       })
     ).trim(),
     'should render CHTML with equation numbers'
+  )
+
+  t.equal(
+    (() => {
+      const processor = unified()
+        .use(parseHtml, {fragment: true})
+        .use(svg, {tex: {tags: 'ams'}})
+        .use(stringify)
+      return ['equation-numbering-1.html', 'equation-numbering-2.html']
+        .map((basename) =>
+          processor
+            .processSync(
+              vfile.readSync({
+                dirname: fixtures,
+                basename: basename
+              })
+            )
+            .toString()
+        )
+        .join('')
+    })(),
+    [
+      String(
+        vfile.readSync({
+          dirname: fixtures,
+          basename: 'equation-numbering-1-svg.html'
+        })
+      ).trim(),
+      String(
+        vfile.readSync({
+          dirname: fixtures,
+          basename: 'equation-numbering-2-svg.html'
+        })
+      ).trim()
+    ].join(''),
+    'should render SVG with equation numbers'
   )
 
   t.end()
