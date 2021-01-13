@@ -2,7 +2,10 @@ const visit = require('unist-util-visit')
 
 module.exports = createPlugin
 
-function createPlugin(displayName, createRenderer, chtml = false) {
+/* To do next major: Remove `chtml` and `browser` flags once all the options use
+the same format */
+
+function createPlugin(displayName, createRenderer, chtml, browser) {
   attacher.displayName = displayName
 
   return attacher
@@ -14,12 +17,19 @@ function createPlugin(displayName, createRenderer, chtml = false) {
       )
     }
 
+    const inputOptions = browser ? options : (options || {}).tex
+    let outputOptions = options || {}
+    if ('tex' in outputOptions) {
+      outputOptions = Object.assign({}, outputOptions)
+      delete outputOptions.tex
+    }
+
     transform.displayName = displayName + 'Transform'
 
     return transform
 
     function transform(tree) {
-      const renderer = createRenderer(options)
+      const renderer = createRenderer(inputOptions, outputOptions)
 
       let context = tree
       let found = false
