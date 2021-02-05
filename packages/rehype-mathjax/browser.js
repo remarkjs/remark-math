@@ -7,9 +7,8 @@ module.exports = createPlugin(
   true
 )
 
-/* To do next major: Make `options` match the format of MathJax options
-`{tex: ...}` */
-
+// To do next major: Make `options` match the format of MathJax options
+// `{tex: ...}`
 function renderBrowser(options) {
   const settings = options || {}
   const display = settings.displayMath || ['\\[', '\\]']

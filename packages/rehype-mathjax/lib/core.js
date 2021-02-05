@@ -2,9 +2,8 @@ const visit = require('unist-util-visit')
 
 module.exports = createPlugin
 
-/* To do next major: Remove `chtml` and `browser` flags once all the options use
-the same format */
-
+// To do next major: Remove `chtml` and `browser` flags once all the options use
+// the same format.
 function createPlugin(displayName, createRenderer, chtml, browser) {
   attacher.displayName = displayName
 
