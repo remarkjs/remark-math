@@ -19,8 +19,30 @@ interface MathJaxSvgOptions {
   titleID: number
 }
 
+// http://docs.mathjax.org/en/latest/options/input/tex.html#the-configuration-block
+interface MathJaxInputTexOptions {
+  packages: string[]
+  inlineMath: [[string, string]]
+  displayMath: [[string, string]]
+  processEscapes: boolean
+  processEnvironments: boolean
+  processRefs: boolean
+  digits: RegExp
+  tags: 'none' | 'ams' | 'all'
+  tagSide: 'left' | 'right'
+  tagIndent: string
+  useLabelIds: boolean
+  multlineWidth: string
+  maxMacros: number
+  maxBuffer: number
+  baseURL: string
+  formatError: (jax: any, err: any) => string
+}
+
 type RenderSVGOptions = Partial<MathJaxSvgOptions>
 
-declare const renderSvg: Plugin<[RenderSVGOptions?]>
+declare const renderSvg: Plugin<
+  [(RenderSVGOptions & {tex?: Partial<MathJaxInputTexOptions>})?]
+>
 
 export = renderSvg

@@ -1,6 +1,14 @@
 const createPlugin = require('./lib/core')
 
-module.exports = createPlugin('rehypeMathJaxBrowser', renderBrowser)
+module.exports = createPlugin(
+  'rehypeMathJaxBrowser',
+  renderBrowser,
+  false,
+  true
+)
+
+/* To do next major: Make `options` match the format of MathJax options
+`{tex: ...}` */
 
 function renderBrowser(options) {
   const settings = options || {}
