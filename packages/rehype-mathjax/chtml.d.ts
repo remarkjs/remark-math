@@ -8,7 +8,7 @@ interface MathJaxCHtmlOptions {
   mtextInheritFont?: boolean
   merrorInheritFont?: boolean
   mathmlSpacing?: boolean
-  skipAttributes?: {[index: string]: boolean}
+  skipAttributes?: Record<string, boolean>
   exFactor?: number
   displayAlign?: 'left' | 'center' | 'right'
   displayIndent?: string
@@ -33,7 +33,7 @@ interface MathJaxInputTexOptions {
   maxMacros: number
   maxBuffer: number
   baseURL: string
-  formatError: (jax: any, err: any) => string
+  formatError: (jax: any, error: any) => string
 }
 
 declare const renderCHtml: Plugin<
