@@ -8,10 +8,12 @@
     "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
     "Victor Felder <victor@draft.li>",
+    "TANIGUCHI Masaya <mew@cat.ovh>",
     "Xiaoru Li <dev@xiaoru.li>",
-    "John Jeng <j3@sagemath.com>",
     "Daniel Perez Alvarez <unindented@gmail.com>",
-    "TANIGUCHI Masaya <mew@cat.ovh>"
+    "John Jeng <j3@sagemath.com>",
+    "Marc-Antoine Ouimet <ouimetmarcantoine@gmail.com>",
+    "Rongjian Zhang <pd4d10@gmail.com>"
   ],
   "devDependencies": {
     "dtslint": "^4.0.0",
