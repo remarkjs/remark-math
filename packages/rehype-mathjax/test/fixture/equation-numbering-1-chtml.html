@@ -1,6 +1,6 @@
 <p>Block math:</p>
-<div class="math-display"><mjx-container class="MathJax" jax="CHTML" display="true" width="full" style="min-width: 7.968em;"><mjx-math width="full" display="true" class="MJX-TEX"><mjx-mtable width="full" style="min-width: 7.968em;" side="right"><mjx-table style="width: auto; min-width: 3.812em; margin: 0px 2.078em;"><mjx-itable width="full"><mjx-mlabeledtr><mjx-mtd><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D438 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="4"><mjx-c class="mjx-c1D45A TEX-I"></mjx-c></mjx-mi><mjx-msup><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D450 TEX-I"></mjx-c></mjx-mi><mjx-script style="vertical-align: 0.413em;"><mjx-mn class="mjx-n" size="s"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-script></mjx-msup><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mlabeledtr></mjx-itable></mjx-table><mjx-labels style="width: 7.968em;"><mjx-itable align="right" style="right: 0px;"><mjx-mtr style="height: 1.134em;"><mjx-mtd id="mjx-eqn-mass-energy_relation"><mjx-mtext class="mjx-n"><mjx-c class="mjx-c28"></mjx-c><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c29"></mjx-c></mjx-mtext><mjx-tstrut style="height: 1.134em; vertical-align: -0.25em;"></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-labels></mjx-mtable></mjx-math></mjx-container></div>
-<p>See equation <span class="math-inline"><mjx-container class="MathJax" jax="CHTML"><mjx-math class="MJX-TEX"><a href="#mjx-eqn-mass-energy_relation"><mjx-mrow class="MathJax_ref"><mjx-mtext class="mjx-n"><mjx-c class="mjx-c28"></mjx-c><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c29"></mjx-c></mjx-mtext></mjx-mrow></a></mjx-math></mjx-container></span>.</p>
+<div class="math-display"><mjx-container class="MathJax" jax="CHTML" display="true" width="full" style="min-width: 8.001em;"><mjx-math width="full" display="true" class="MJX-TEX"><mjx-mtable width="full" style="min-width: 8.001em;" side="right"><mjx-table style="width: auto; min-width: 3.845em; margin: 0px 2.078em;"><mjx-itable width="full"><mjx-mlabeledtr><mjx-mtd><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D438 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="4"><mjx-c class="mjx-c1D45A TEX-I"></mjx-c></mjx-mi><mjx-msup><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D450 TEX-I"></mjx-c></mjx-mi><mjx-script style="vertical-align: 0.413em;"><mjx-mn class="mjx-n" size="s"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-script></mjx-msup><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mlabeledtr></mjx-itable></mjx-table><mjx-labels style="width: 8.001em;"><mjx-itable align="right" style="right: 0px;"><mjx-mtr style="height: 1.134em;"><mjx-mtd id="mjx-eqn:mass-energy_relation"><mjx-mtext class="mjx-n"><mjx-c class="mjx-c28"></mjx-c><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c29"></mjx-c></mjx-mtext><mjx-tstrut style="height: 1.134em; vertical-align: -0.25em;"></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-labels></mjx-mtable></mjx-math></mjx-container></div>
+<p>See equation <span class="math-inline"><mjx-container class="MathJax" jax="CHTML"><mjx-math class="MJX-TEX"><a href="#mjx-eqn%3Amass-energy_relation"><mjx-mrow class="MathJax_ref"><mjx-mtext class="mjx-n"><mjx-c class="mjx-c28"></mjx-c><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c29"></mjx-c></mjx-mtext></mjx-mrow></a></mjx-math></mjx-container></span>.</p>
 <style>
 mjx-container[jax="CHTML"] {
   line-height: 0;
@@ -201,7 +201,6 @@ mjx-stretchy-h > * > mjx-c {
 
 mjx-stretchy-h > * > mjx-c::before {
   display: inline-block;
-  padding: .001em 0;
   width: initial;
 }
 
@@ -258,10 +257,11 @@ mjx-stretchy-v > mjx-ext {
 
 mjx-stretchy-v > mjx-ext > mjx-c::before {
   width: initial;
+  box-sizing: border-box;
 }
 
 mjx-stretchy-v > mjx-ext > mjx-c {
-  transform: scaleY(500) translateY(.1em);
+  transform: scaleY(500) translateY(.075em);
   overflow: visible;
 }
 
@@ -300,6 +300,12 @@ mjx-mtable {
   vertical-align: .25em;
   position: relative;
   box-sizing: border-box;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+mjx-mstyle[size="s"] mjx-mtable {
+  vertical-align: .354em;
 }
 
 mjx-labels {
@@ -712,10 +718,6 @@ mjx-c.mjx-c1D438.TEX-I::before {
   content: "E";
 }
 
-[noIC] mjx-c.mjx-c1D438.TEX-I:last-child::before {
-  padding-right: 0.738em;
-}
-
 mjx-c.mjx-c1D450.TEX-I::before {
   padding: 0.442em 0.433em 0.011em 0;
   content: "c";
@@ -734,9 +736,5 @@ mjx-c.mjx-c1D6FC.TEX-I::before {
 mjx-c.mjx-c1D6FE.TEX-I::before {
   padding: 0.441em 0.543em 0.216em 0;
   content: "\3B3";
-}
-
-[noIC] mjx-c.mjx-c1D6FE.TEX-I:last-child::before {
-  padding-right: 0.518em;
 }
 </style>
