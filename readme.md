@@ -34,13 +34,13 @@ $$
 And our script, `example.js`, looks as follows:
 
 ```js
-const vfile = require('to-vfile')
-const unified = require('unified')
-const markdown = require('remark-parse')
-const math = require('remark-math')
-const remark2rehype = require('remark-rehype')
-const katex = require('rehype-katex')
-const stringify = require('rehype-stringify')
+import { toVFile } from 'to-vfile'
+import unified from 'unified'
+import markdown from 'remark-parse'
+import math from 'remark-math'
+import remark2rehype from 'remark-rehype'
+import katex from 'rehype-katex'
+import stringify from 'rehype-stringify'
 
 unified()
   .use(markdown)
@@ -48,9 +48,9 @@ unified()
   .use(remark2rehype)
   .use(katex)
   .use(stringify)
-  .process(vfile.readSync('example.md'), function (err, file) {
+  .process(toVFile.readSync('example.md'), function (err, file) {
     if (err) throw err
-    console.log(String(file))
+    console.log(file)
   })
 ```
 
