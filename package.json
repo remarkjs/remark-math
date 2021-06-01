@@ -62,12 +62,13 @@
     "esnext": false,
     "rules": {
       "@typescript-eslint/ban-types": "off",
-      "unicorn/no-array-callback-reference": "off",
-      "no-eq-null": "off",
       "eqeqeq": [
         2,
         "allow-null"
-      ]
+      ],
+      "import/extensions": "off",
+      "no-eq-null": "off",
+      "unicorn/no-array-callback-reference": "off"
     }
   },
   "remarkConfig": {

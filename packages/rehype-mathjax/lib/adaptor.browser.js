@@ -1,1 +1,2 @@
-module.exports = require('mathjax-full/js/adaptors/browserAdaptor').browserAdaptor
+module.exports =
+  require('mathjax-full/js/adaptors/browserAdaptor').browserAdaptor
