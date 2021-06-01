@@ -34,7 +34,7 @@ $$
 And our script, `example.js`, looks as follows:
 
 ```js
-import { toVFile } from 'to-vfile'
+import {toVFile} from 'to-vfile'
 import unified from 'unified'
 import markdown from 'remark-parse'
 import math from 'remark-math'
