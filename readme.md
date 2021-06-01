@@ -50,7 +50,7 @@ unified()
   .use(stringify)
   .process(toVFile.readSync('example.md'), function (err, file) {
     if (err) throw err
-    console.log(file)
+    console.log(String(file))
   })
 ```
 
