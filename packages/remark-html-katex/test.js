@@ -8,7 +8,7 @@ import remarkHtml from 'remark-html'
 import remarkMath from '../remark-math/index.js'
 import remarkHtmlKatex from './index.js'
 
-test('remark-html-katex', function (t) {
+test('remark-html-katex', (t) => {
   t.deepEqual(
     unified()
       .use(remarkParse)
@@ -52,7 +52,7 @@ test('remark-html-katex', function (t) {
     unified()
       .use(remarkParse, {position: false})
       .use(remarkMath)
-      .use(remarkHtmlKatex, {macros: macros})
+      .use(remarkHtmlKatex, {macros})
       .use(remarkHtml)
       .processSync('$\\RR$')
       .toString(),
@@ -61,7 +61,7 @@ test('remark-html-katex', function (t) {
       .use(rehypeStringify)
       .processSync(
         '<p><span class="math math-inline">' +
-          katex.renderToString('\\RR', {macros: macros}) +
+          katex.renderToString('\\RR', {macros}) +
           '</span></p>\n'
       )
       .toString(),
@@ -98,7 +98,7 @@ test('remark-html-katex', function (t) {
       .use(remarkHtmlKatex)
       .use(remarkHtml)
       .processSync('Lorem\n$\\alpa$')
-      .messages.map(String),
+      .messages.map((d) => String(d)),
     [
       '2:1-2:8: KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
     ],

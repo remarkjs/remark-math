@@ -35,7 +35,7 @@
     "unified": "^10.0.0",
     "unist-builder": "^3.0.0",
     "unist-util-remove-position": "^4.0.0",
-    "xo": "^0.38.0"
+    "xo": "^0.39.0"
   },
   "scripts": {
     "postinstall": "lerna bootstrap --no-ci",
@@ -55,16 +55,8 @@
   },
   "xo": {
     "prettier": true,
-    "esnext": false,
     "rules": {
-      "@typescript-eslint/ban-types": "off",
-      "eqeqeq": [
-        2,
-        "allow-null"
-      ],
-      "import/extensions": "off",
-      "no-eq-null": "off",
-      "unicorn/no-array-callback-reference": "off"
+      "@typescript-eslint/ban-types": "off"
     }
   },
   "remarkConfig": {

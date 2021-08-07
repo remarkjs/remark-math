@@ -15,7 +15,7 @@ function renderBrowser(options) {
   const display = settings.displayMath || ['\\[', '\\]']
   const inline = settings.inlineMath || ['\\(', '\\)']
 
-  return {render: render}
+  return {render}
 
   function render(node, renderOptions) {
     const delimiters = renderOptions.display ? display : inline

@@ -51,7 +51,7 @@ export function createPlugin(displayName, createRenderer, chtml, browser) {
         }
 
         found = true
-        renderer.render(node, {display: display})
+        renderer.render(node, {display})
 
         return SKIP
       }

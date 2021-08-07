@@ -8,7 +8,7 @@ import rehypeStringify from 'rehype-stringify'
 import remarkStringify from 'remark-stringify'
 import remarkMath from './index.js'
 
-test('remarkMath', function (t) {
+test('remarkMath', (t) => {
   const toHtml = unified()
     .use(remarkParse)
     .use(remarkMath)

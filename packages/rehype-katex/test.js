@@ -8,7 +8,7 @@ import rehypeStringify from 'rehype-stringify'
 import remarkMath from '../remark-math/index.js'
 import rehypeKatex from './index.js'
 
-test('rehype-katex', function (t) {
+test('rehype-katex', (t) => {
   t.deepEqual(
     unified()
       .use(rehypeParse, {fragment: true})
@@ -103,7 +103,7 @@ test('rehype-katex', function (t) {
   t.deepEqual(
     unified()
       .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex, {macros: macros})
+      .use(rehypeKatex, {macros})
       .use(rehypeStringify)
       .processSync('<span class="math-inline">\\RR</span>')
       .toString(),
@@ -112,7 +112,7 @@ test('rehype-katex', function (t) {
       .use(rehypeStringify)
       .processSync(
         '<span class="math-inline">' +
-          katex.renderToString('\\RR', {macros: macros}) +
+          katex.renderToString('\\RR', {macros}) +
           '</span>'
       )
       .toString(),
@@ -149,7 +149,7 @@ test('rehype-katex', function (t) {
       .processSync(
         '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
       )
-      .messages.map(String),
+      .messages.map((d) => String(d)),
     [
       '2:4-2:42: KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
     ],

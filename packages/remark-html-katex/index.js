@@ -25,7 +25,7 @@ export default function remarkHtmlKatex(options) {
         result = katex.renderToString(
           node.value,
           Object.assign({}, settings, {
-            displayMode: displayMode,
+            displayMode,
             throwOnError: true
           })
         )
@@ -38,7 +38,7 @@ export default function remarkHtmlKatex(options) {
         result = katex.renderToString(
           node.value,
           Object.assign({}, settings, {
-            displayMode: displayMode,
+            displayMode,
             throwOnError: false,
             strict: 'ignore'
           })

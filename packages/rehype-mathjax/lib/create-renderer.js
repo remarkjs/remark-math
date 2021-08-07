@@ -22,7 +22,7 @@ RegisterHTMLHandler(adaptor)
 export function createRenderer(input, output) {
   const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 
-  return {render: render, styleSheet: styleSheet}
+  return {render, styleSheet}
 
   function render(node, options) {
     node.children = [fromDom(doc.convert(toText(node), options))]
@@ -35,7 +35,7 @@ export function createRenderer(input, output) {
       type: 'element',
       tagName: 'style',
       properties: {},
-      children: [{type: 'text', value: value}]
+      children: [{type: 'text', value}]
     }
   }
 }

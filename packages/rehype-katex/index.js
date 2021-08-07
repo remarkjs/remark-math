@@ -36,7 +36,7 @@ export default function rehypeKatex(options) {
       try {
         result = katex.renderToString(
           value,
-          assign({}, settings, {displayMode: displayMode, throwOnError: true})
+          assign({}, settings, {displayMode, throwOnError: true})
         )
       } catch (error) {
         const fn = throwOnError ? 'fail' : 'message'
@@ -47,7 +47,7 @@ export default function rehypeKatex(options) {
         result = katex.renderToString(
           value,
           assign({}, settings, {
-            displayMode: displayMode,
+            displayMode,
             throwOnError: false,
             strict: 'ignore'
           })

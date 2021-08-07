@@ -13,7 +13,7 @@ import rehypeMathJaxBrowser from '../browser.js'
 
 const fixtures = path.join('test', 'fixture')
 
-test('rehype-mathjax', function (t) {
+test('rehype-mathjax', (t) => {
   t.equal(
     unified()
       .use(rehypeParse, {fragment: true})
@@ -26,7 +26,7 @@ test('rehype-mathjax', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       unified().use(rehypeMathJaxChtml).freeze()
     },
     /rehype-mathjax: missing `fontURL` in options/,
@@ -195,7 +195,7 @@ test('rehype-mathjax', function (t) {
             .processSync(
               readSync({
                 dirname: fixtures,
-                basename: basename
+                basename
               })
             )
             .toString()

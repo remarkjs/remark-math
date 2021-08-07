@@ -1,10 +1,10 @@
 import {math} from 'micromark-extension-math'
 import {mathFromMarkdown, mathToMarkdown} from 'mdast-util-math'
 
-var warningIssued
+let warningIssued
 
 export default function remarkMath() {
-  var data = this.data()
+  const data = this.data()
 
   // Old remark.
   /* c8 ignore next 14 */
