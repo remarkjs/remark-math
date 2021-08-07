@@ -1,11 +1,11 @@
 import test from 'tape'
-import unified from 'unified'
+import {u} from 'unist-builder'
+import {removePosition} from 'unist-util-remove-position'
+import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
 import remarkStringify from 'remark-stringify'
-import u from 'unist-builder'
-import removePosition from 'unist-util-remove-position'
 import remarkMath from './index.js'
 
 test('remarkMath', function (t) {

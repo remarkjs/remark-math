@@ -1,7 +1,7 @@
 import path from 'path'
 import test from 'tape'
-import vfile from 'to-vfile'
-import unified from 'unified'
+import {readSync} from 'to-vfile'
+import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeParse from 'rehype-parse'
@@ -19,11 +19,9 @@ test('rehype-mathjax', function (t) {
       .use(rehypeParse, {fragment: true})
       .use(rehypeMathJaxSvg)
       .use(rehypeStringify)
-      .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
+      .processSync(readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
-    String(
-      vfile.readSync({dirname: fixtures, basename: 'small-svg.html'})
-    ).trim(),
+    String(readSync({dirname: fixtures, basename: 'small-svg.html'})).trim(),
     'should render SVG'
   )
 
@@ -40,11 +38,9 @@ test('rehype-mathjax', function (t) {
       .use(rehypeParse, {fragment: true})
       .use(rehypeMathJaxChtml, {fontURL: 'place/to/fonts'})
       .use(rehypeStringify)
-      .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
+      .processSync(readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
-    String(
-      vfile.readSync({dirname: fixtures, basename: 'small-chtml.html'})
-    ).trim(),
+    String(readSync({dirname: fixtures, basename: 'small-chtml.html'})).trim(),
     'should render CHTML'
   )
 
@@ -53,9 +49,9 @@ test('rehype-mathjax', function (t) {
       .use(rehypeParse, {fragment: true})
       .use(rehypeMathJaxBrowser)
       .use(rehypeStringify)
-      .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
+      .processSync(readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
-    String(vfile.readSync({dirname: fixtures, basename: 'small-browser.html'})),
+    String(readSync({dirname: fixtures, basename: 'small-browser.html'})),
     'should render browser'
   )
 
@@ -66,11 +62,9 @@ test('rehype-mathjax', function (t) {
       .use(remarkRehype)
       .use(rehypeMathJaxSvg)
       .use(rehypeStringify)
-      .processSync(vfile.readSync({dirname: fixtures, basename: 'markdown.md'}))
+      .processSync(readSync({dirname: fixtures, basename: 'markdown.md'}))
       .toString(),
-    String(
-      vfile.readSync({dirname: fixtures, basename: 'markdown-svg.html'})
-    ).trim(),
+    String(readSync({dirname: fixtures, basename: 'markdown-svg.html'})).trim(),
     'should integrate with `remark-math`'
   )
 
@@ -79,11 +73,9 @@ test('rehype-mathjax', function (t) {
       .use(rehypeParse, {fragment: true})
       .use(rehypeMathJaxSvg)
       .use(rehypeStringify)
-      .processSync(vfile.readSync({dirname: fixtures, basename: 'double.html'}))
+      .processSync(readSync({dirname: fixtures, basename: 'double.html'}))
       .toString(),
-    String(
-      vfile.readSync({dirname: fixtures, basename: 'double-svg.html'})
-    ).trim(),
+    String(readSync({dirname: fixtures, basename: 'double-svg.html'})).trim(),
     'should transform `.math-inline.math-display`'
   )
 
@@ -92,9 +84,9 @@ test('rehype-mathjax', function (t) {
       .use(rehypeParse, {fragment: true})
       .use(rehypeMathJaxSvg)
       .use(rehypeStringify)
-      .processSync(vfile.readSync({dirname: fixtures, basename: 'none.html'}))
+      .processSync(readSync({dirname: fixtures, basename: 'none.html'}))
       .toString(),
-    String(vfile.readSync({dirname: fixtures, basename: 'none-svg.html'})),
+    String(readSync({dirname: fixtures, basename: 'none-svg.html'})),
     'should transform documents without math'
   )
 
@@ -103,13 +95,9 @@ test('rehype-mathjax', function (t) {
       .use(rehypeParse)
       .use(rehypeMathJaxSvg)
       .use(rehypeStringify)
-      .processSync(
-        vfile.readSync({dirname: fixtures, basename: 'document.html'})
-      )
+      .processSync(readSync({dirname: fixtures, basename: 'document.html'}))
       .toString(),
-    String(
-      vfile.readSync({dirname: fixtures, basename: 'document-svg.html'})
-    ).trim(),
+    String(readSync({dirname: fixtures, basename: 'document-svg.html'})).trim(),
     'should transform complete documents'
   )
 
@@ -121,10 +109,10 @@ test('rehype-mathjax', function (t) {
         displayMath: ['$$', '$$']
       })
       .use(rehypeStringify)
-      .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
+      .processSync(readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
     String(
-      vfile.readSync({
+      readSync({
         dirname: fixtures,
         basename: 'small-browser-delimiters.html'
       })
@@ -138,14 +126,14 @@ test('rehype-mathjax', function (t) {
       .use(rehypeMathJaxSvg, {tex: {tags: 'ams'}})
       .use(rehypeStringify)
       .processSync(
-        vfile.readSync({
+        readSync({
           dirname: fixtures,
           basename: 'equation-numbering-1.html'
         })
       )
       .toString(),
     String(
-      vfile.readSync({
+      readSync({
         dirname: fixtures,
         basename: 'equation-numbering-1-svg.html'
       })
@@ -159,14 +147,14 @@ test('rehype-mathjax', function (t) {
       .use(rehypeMathJaxSvg, {tex: {tags: 'ams'}})
       .use(rehypeStringify)
       .processSync(
-        vfile.readSync({
+        readSync({
           dirname: fixtures,
           basename: 'equation-numbering-2.html'
         })
       )
       .toString(),
     String(
-      vfile.readSync({
+      readSync({
         dirname: fixtures,
         basename: 'equation-numbering-2-svg.html'
       })
@@ -180,14 +168,14 @@ test('rehype-mathjax', function (t) {
       .use(rehypeMathJaxChtml, {fontURL: 'place/to/fonts', tex: {tags: 'ams'}})
       .use(rehypeStringify)
       .processSync(
-        vfile.readSync({
+        readSync({
           dirname: fixtures,
           basename: 'equation-numbering-1.html'
         })
       )
       .toString(),
     String(
-      vfile.readSync({
+      readSync({
         dirname: fixtures,
         basename: 'equation-numbering-1-chtml.html'
       })
@@ -205,7 +193,7 @@ test('rehype-mathjax', function (t) {
         .map((basename) =>
           processor
             .processSync(
-              vfile.readSync({
+              readSync({
                 dirname: fixtures,
                 basename: basename
               })
@@ -216,13 +204,13 @@ test('rehype-mathjax', function (t) {
     })(),
     [
       String(
-        vfile.readSync({
+        readSync({
           dirname: fixtures,
           basename: 'equation-numbering-1-svg.html'
         })
       ).trim(),
       String(
-        vfile.readSync({
+        readSync({
           dirname: fixtures,
           basename: 'equation-numbering-2-svg.html'
         })
