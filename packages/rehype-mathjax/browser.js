@@ -1,4 +1,4 @@
-import {createPlugin} from './lib/core.js'
+import {createPlugin} from './lib/create-plugin.js'
 
 const rehypeMathJaxBrowser = createPlugin(
   'rehypeMathJaxBrowser',

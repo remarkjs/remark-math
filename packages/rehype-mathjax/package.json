@@ -40,7 +40,7 @@
     "svg.js"
   ],
   "browser": {
-    "./lib/adaptor.js": "./lib/adaptor.browser.js"
+    "./lib/create-adaptor.js": "./lib/create-adaptor.browser.js"
   },
   "dependencies": {
     "@types/mathjax": "^0.0.36",
