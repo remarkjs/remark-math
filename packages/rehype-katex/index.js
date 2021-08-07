@@ -1,4 +1,5 @@
 import visit from 'unist-util-visit'
+import removePosition from 'unist-util-remove-position'
 import katex from 'katex'
 import unified from 'unified'
 import parse from 'rehype-parse'
@@ -6,7 +7,7 @@ import toText from 'hast-util-to-text'
 
 const assign = Object.assign
 
-const parseHtml = unified().use(parse, {fragment: true, position: false})
+const parseHtml = unified().use(parse, {fragment: true})
 
 const source = 'rehype-katex'
 
@@ -53,7 +54,7 @@ export default function rehypeKatex(options) {
         )
       }
 
-      element.children = parseHtml.parse(result).children
+      element.children = removePosition(parseHtml.parse(result), true).children
     }
   }
 }

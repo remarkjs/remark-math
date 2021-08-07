@@ -11,7 +11,7 @@ import remarkHtmlKatex from './index.js'
 test('remark-html-katex', function (t) {
   t.deepEqual(
     unified()
-      .use(remarkParse, {position: false})
+      .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex)
       .use(remarkHtml)
@@ -28,7 +28,7 @@ test('remark-html-katex', function (t) {
       )
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         [
@@ -57,7 +57,7 @@ test('remark-html-katex', function (t) {
       .processSync('$\\RR$')
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         '<p><span class="math math-inline">' +
@@ -77,7 +77,7 @@ test('remark-html-katex', function (t) {
       .processSync('$\\alpa$')
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         '<p><span class="math math-inline">' +
@@ -129,7 +129,7 @@ test('remark-html-katex', function (t) {
       .processSync('$ê&$')
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         '<p><span class="math math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span></p>\n'

@@ -11,7 +11,7 @@ import rehypeKatex from './index.js'
 test('rehype-katex', function (t) {
   t.deepEqual(
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeKatex)
       .use(rehypeStringify)
       .processSync(
@@ -23,7 +23,7 @@ test('rehype-katex', function (t) {
       )
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         [
@@ -60,7 +60,7 @@ test('rehype-katex', function (t) {
       )
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         [
@@ -79,7 +79,7 @@ test('rehype-katex', function (t) {
 
   t.deepEqual(
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeKatex)
       .use(rehypeStringify)
       .processSync(
@@ -87,7 +87,7 @@ test('rehype-katex', function (t) {
       )
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         '<p>Double math <span class="math-inline math-display">' +
@@ -102,13 +102,13 @@ test('rehype-katex', function (t) {
 
   t.deepEqual(
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeKatex, {macros: macros})
       .use(rehypeStringify)
       .processSync('<span class="math-inline">\\RR</span>')
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         '<span class="math-inline">' +
@@ -121,13 +121,13 @@ test('rehype-katex', function (t) {
 
   t.deepEqual(
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeKatex, {errorColor: 'orange'})
       .use(rehypeStringify)
       .processSync('<span class="math-inline">\\alpa</span>')
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         '<span class="math-inline">' +
@@ -174,13 +174,13 @@ test('rehype-katex', function (t) {
 
   t.deepEqual(
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeKatex, {errorColor: 'orange', strict: 'ignore'})
       .use(rehypeStringify)
       .processSync('<span class="math-inline">ê&amp;</span>')
       .toString(),
     unified()
-      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeParse, {fragment: true})
       .use(rehypeStringify)
       .processSync(
         '<span class="math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span>'

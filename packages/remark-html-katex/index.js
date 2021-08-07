@@ -1,9 +1,10 @@
 import visit from 'unist-util-visit'
+import removePosition from 'unist-util-remove-position'
 import katex from 'katex'
 import unified from 'unified'
 import rehypeParse from 'rehype-parse'
 
-const parseHtml = unified().use(rehypeParse, {fragment: true, position: false})
+const parseHtml = unified().use(rehypeParse, {fragment: true})
 
 const source = 'remark-html-katex'
 
@@ -44,7 +45,7 @@ export default function remarkHtmlKatex(options) {
         )
       }
 
-      node.data.hChildren = parseHtml.parse(result).children
+      node.data.hChildren = removePosition(parseHtml.parse(result)).children
     }
   }
 }
