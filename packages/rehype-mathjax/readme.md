@@ -13,6 +13,9 @@
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -34,21 +37,23 @@ Say we have the following file, `example.html`:
 </div>
 ```
 
-And our script, `example.js`, looks as follows:
+And our module, `example.js`, looks as follows:
 
 ```js
-const vfile = require('to-vfile')
-const unified = require('unified')
-const parse = require('rehype-parse')
-const mathjax = require('rehype-mathjax')
-const stringify = require('rehype-stringify')
+import {readSync} from 'to-vfile'
+import {unified} from 'unified'
+import rehypeParse from 'rehype-parse'
+import rehypeMathJax from 'rehype-mathjax'
+import rehypeStringify from 'rehype-stringify'
+
+const file = readSync('example.html')
 
 unified()
-  .use(parse, {fragment: true})
-  .use(mathjax)
-  .use(stringify)
-  .process(vfile.readSync('example.html'), function (err, file) {
-    if (err) throw err
+  .use(rehypeParse, {fragment: true})
+  .use(rehypeMathJax)
+  .use(rehypeStringify)
+  .process(file)
+  .then((file) => {
     console.log(String(file))
   })
 ```
@@ -77,7 +82,10 @@ mjx-container[jax="SVG"] > svg {
 
 ## API
 
-### `rehype().use(rehypeMathJax[, options])`
+This package exports no identifiers.
+The default export is `rehypeMathJaxSvg`.
+
+### `unified().use(rehypeMathJaxSvg[, options])`
 
 Transform `<span class="math-inline">` and `<div class="math-display">` with
 [MathJax][].
@@ -87,18 +95,21 @@ big memory and size footprint: SVG, CHTML, and browser:
 
 ###### SVG
 
-Render math as [SVG][mathjax-svg] (`require('rehype-mathjax/svg')`, default).
+Render math as [SVG][mathjax-svg] (`import rehypeMathJaxSvg from
+'rehype-mathjax/svg.js'`, default).
 About 566kb minzipped.
 
 ###### CHTML
 
-Render math as [CHTML][mathjax-chtml] (`require('rehype-mathjax/chtml')`).
+Render math as [CHTML][mathjax-chtml] (`import rehypeMathJaxChtml from
+'rehype-mathjax/chtml.js'`).
 About 154kb minzipped.
 Needs a `fontURL` to be passed.
 
 ###### Browser
 
-Tiny wrapper to render MathJax client-side (`require('rehype-mathjax/browser')`).
+Tiny wrapper to render MathJax client-side (`import rehypeMathJaxBrowser from
+'rehype-mathjax/browser.js'`).
 About 1kb minzipped.
 
 Uses `options.displayMath` (default: `['\\[', '\\]']`) for display, and

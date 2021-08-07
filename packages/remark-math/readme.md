@@ -20,6 +20,9 @@ Use version 4 for remark 13+.
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -38,25 +41,27 @@ L = \frac{1}{2} \rho v^2 S C_L
 $$
 ```
 
-And our script, `example.js`, looks as follows:
+And our module, `example.js`, looks as follows:
 
 ```js
-const vfile = require('to-vfile')
-const unified = require('unified')
-const markdown = require('remark-parse')
-const math = require('remark-math')
-const remark2rehype = require('remark-rehype')
-const katex = require('rehype-katex')
-const stringify = require('rehype-stringify')
+import {readSync} from 'to-vfile'
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkMath from 'remark-math'
+import remarkRehype from 'remark-rehype'
+import rehypeKatex from 'rehype-katex'
+import rehypeStringify from 'rehype-stringify'
+
+const file = readSync('example.md')
 
 unified()
-  .use(markdown)
-  .use(math)
-  .use(remark2rehype)
-  .use(katex)
-  .use(stringify)
-  .process(vfile.readSync('example.md'), function(err, file) {
-    if (err) throw err
+  .use(remarkParse)
+  .use(remarkMath)
+  .use(remarkRehype)
+  .use(rehypeKatex)
+  .use(rehypeStringify)
+  .process(file)
+  .then((file) => {
     console.log(String(file))
   })
 ```
@@ -70,7 +75,10 @@ Now, running `node example` yields:
 
 ## API
 
-### `remark().use(math[, options])`
+This package exports no identifiers.
+The default export is `remarkMath`.
+
+### `unified().use(remarkMath[, options])`
 
 Parse and stringify math.
 

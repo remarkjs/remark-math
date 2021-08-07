@@ -13,6 +13,9 @@
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -34,21 +37,23 @@ Say we have the following file, `example.html`:
 </div>
 ```
 
-And our script, `example.js`, looks as follows:
+And our module, `example.js`, looks as follows:
 
 ```js
-const vfile = require('to-vfile')
-const unified = require('unified')
-const parse = require('rehype-parse')
-const katex = require('rehype-katex')
-const stringify = require('rehype-stringify')
+import {readSync} from 'to-vfile'
+import {unified} from 'unified'
+import rehypeParse from 'rehype-parse'
+import rehypeKatex from 'rehype-katex'
+import rehypeStringify from 'rehype-stringify'
+
+const file = readSync('example.html')
 
 unified()
-  .use(parse, {fragment: true})
-  .use(katex)
-  .use(stringify)
-  .process(vfile.readSync('example.html'), function (err, file) {
-    if (err) throw err
+  .use(rehypeParse, {fragment: true})
+  .use(rehypeKatex)
+  .use(rehypeStringify)
+  .process(file)
+  .then((file) => {
     console.log(String(file))
   })
 ```
@@ -67,7 +72,10 @@ Now, running `node example` yields:
 
 ## API
 
-### `rehype().use(katex[, options])`
+This package exports no identifiers.
+The default export is `rehypeKatex`.
+
+### `unified().use(rehypeKatex[, options])`
 
 Transform `<span class="math-inline">` and `<div class="math-display">` with
 [KaTeX][].

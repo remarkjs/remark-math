@@ -17,6 +17,9 @@
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -35,23 +38,25 @@ L = \frac{1}{2} \rho v^2 S C_L
 $$
 ```
 
-And our script, `example.js`, looks as follows:
+And our module, `example.js`, looks as follows:
 
 ```js
-const vfile = require('to-vfile')
-const unified = require('unified')
-const markdown = require('remark-parse')
-const math = require('remark-math')
-const htmlKatex = require('remark-html-katex')
-const html = require('remark-html')
+import {readSync} from 'to-vfile'
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkMath from 'remark-math'
+import remarkHtmlKatex from 'remark-html-katex'
+import remarkHtml from 'remark-html'
+
+const file = readSync('example.md')
 
 unified()
-  .use(markdown)
-  .use(math)
-  .use(htmlKatex)
-  .use(html)
-  .process(vfile.readSync('example.md'), function (err, file) {
-    if (err) throw err
+  .use(remarkParse)
+  .use(remarkMath)
+  .use(remarkHtmlKatex)
+  .use(remarkHtml)
+  .process(file)
+  .then((file) => {
     console.log(String(file))
   })
 ```
@@ -65,7 +70,10 @@ Now, running `node example` yields:
 
 ## API
 
-### `remark().use(htmlKatex[, options])`
+This package exports no identifiers.
+The default export is `remarkHtmlKatex`.
+
+### `unified().use(remarkHtmlKatex[, options])`
 
 Transform `inlineMath` and `math` nodes with [KaTeX][] for
 [`remark-html`][remark-html].
