@@ -51,7 +51,9 @@
     "unist-util-visit": "^2.0.0"
   },
   "scripts": {
-    "test-types": "dtslint"
+    "test-api": "node --conditions development test/index.js",
+    "test-types": "dtslint",
+    "test": "npm run test-api && npm run test-types"
   },
   "xo": false
 }

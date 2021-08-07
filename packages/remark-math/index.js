@@ -10,7 +10,8 @@ module.exports = math
 function math() {
   var data = this.data()
 
-  /* istanbul ignore next - old remark. */
+  // Old remark.
+  /* c8 ignore next 14 */
   if (
     !warningIssued &&
     ((this.Parser &&
@@ -31,7 +32,8 @@ function math() {
   add('toMarkdownExtensions', toMarkdown)
 
   function add(field, value) {
-    /* istanbul ignore if - other extensions. */
+    // Other extensions.
+    /* c8 ignore next */
     if (data[field]) data[field].push(value)
     else data[field] = [value]
   }

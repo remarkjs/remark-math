@@ -16,9 +16,9 @@
     "Rongjian Zhang <pd4d10@gmail.com>"
   ],
   "devDependencies": {
+    "c8": "^7.0.0",
     "dtslint": "^4.0.0",
     "lerna": "^4.0.0",
-    "nyc": "^15.0.0",
     "prettier": "^2.0.0",
     "rehype-parse": "^7.0.0",
     "rehype-stringify": "^8.0.0",
@@ -38,16 +38,10 @@
   "scripts": {
     "postinstall": "lerna bootstrap --no-ci",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
-    "test-api": "tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
-    "test-coverage": "nyc --reporter lcov tape \"packages/*/test.js\" \"packages/*/test/**/*.js\"",
+    "test-api": "lerna run test-api",
+    "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov npm run test-api",
     "test-types": "lerna run test-types --concurrency 1 --stream",
     "test": "npm run format && npm run test-coverage && npm run test-types"
-  },
-  "nyc": {
-    "check-coverage": true,
-    "lines": 100,
-    "functions": 100,
-    "branches": 100
   },
   "prettier": {
     "tabWidth": 2,

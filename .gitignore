@@ -1,7 +1,5 @@
-.DS_Store
-*.log
-.nyc_output/
 coverage/
 node_modules/
-package-lock.json
+.DS_Store
+*.log
 yarn.lock

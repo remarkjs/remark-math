@@ -40,7 +40,9 @@
     "micromark-extension-math": "^0.1.0"
   },
   "scripts": {
-    "test-types": "dtslint types"
+    "test-api": "node --conditions development test.js",
+    "test-types": "dtslint types",
+    "test": "npm run test-api && npm run test-types"
   },
   "xo": false
 }
