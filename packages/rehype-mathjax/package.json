@@ -44,11 +44,11 @@
   },
   "dependencies": {
     "@types/mathjax": "^0.0.36",
-    "hast-util-from-dom": "^3.0.0",
-    "hast-util-to-text": "^2.0.0",
+    "hast-util-from-dom": "^4.0.0",
+    "hast-util-to-text": "^3.0.0",
     "jsdom": "^16.0.0",
     "mathjax-full": "^3.0.0",
-    "unist-util-visit": "^2.0.0"
+    "unist-util-visit": "^4.0.0"
   },
   "scripts": {
     "test-api": "node --conditions development test/index.js",

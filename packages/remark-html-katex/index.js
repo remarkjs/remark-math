@@ -1,7 +1,7 @@
-import visit from 'unist-util-visit'
-import removePosition from 'unist-util-remove-position'
+import {visit} from 'unist-util-visit'
+import {removePosition} from 'unist-util-remove-position'
 import katex from 'katex'
-import unified from 'unified'
+import {unified} from 'unified'
 import rehypeParse from 'rehype-parse'
 
 const parseHtml = unified().use(rehypeParse, {fragment: true})

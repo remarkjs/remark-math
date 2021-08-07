@@ -1,13 +1,13 @@
-import visit from 'unist-util-visit'
-import removePosition from 'unist-util-remove-position'
 import katex from 'katex'
-import unified from 'unified'
-import parse from 'rehype-parse'
-import toText from 'hast-util-to-text'
+import {visit} from 'unist-util-visit'
+import {removePosition} from 'unist-util-remove-position'
+import {toText} from 'hast-util-to-text'
+import {unified} from 'unified'
+import rehypeParse from 'rehype-parse'
 
 const assign = Object.assign
 
-const parseHtml = unified().use(parse, {fragment: true})
+const parseHtml = unified().use(rehypeParse, {fragment: true})
 
 const source = 'rehype-katex'
 

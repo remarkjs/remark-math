@@ -1,7 +1,7 @@
 import {mathjax} from 'mathjax-full/js/mathjax.js'
 import {RegisterHTMLHandler} from 'mathjax-full/js/handlers/html.js'
-import fromDom from 'hast-util-from-dom'
-import toText from 'hast-util-to-text'
+import {fromDom} from 'hast-util-from-dom'
+import {toText} from 'hast-util-to-text'
 import {createAdaptor} from './create-adaptor.js'
 
 const adaptor = createAdaptor()

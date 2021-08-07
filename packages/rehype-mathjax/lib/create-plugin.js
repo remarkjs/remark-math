@@ -1,4 +1,4 @@
-import visit from 'unist-util-visit'
+import {visit, SKIP} from 'unist-util-visit'
 
 // To do next major: Remove `chtml` and `browser` flags once all the options use
 // the same format.
@@ -53,7 +53,7 @@ export function createPlugin(displayName, createRenderer, chtml, browser) {
         found = true
         renderer.render(node, {display: display})
 
-        return visit.SKIP
+        return SKIP
       }
     }
   }

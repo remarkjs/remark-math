@@ -36,8 +36,8 @@
     "util.js"
   ],
   "dependencies": {
-    "mdast-util-math": "^0.1.0",
-    "micromark-extension-math": "^0.1.0"
+    "mdast-util-math": "^1.0.0",
+    "micromark-extension-math": "^1.0.0"
   },
   "scripts": {
     "test-api": "node --conditions development test.js",

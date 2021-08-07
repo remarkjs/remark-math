@@ -1,6 +1,5 @@
-import syntax from 'micromark-extension-math'
-import fromMarkdown from 'mdast-util-math/from-markdown.js'
-import toMarkdown from 'mdast-util-math/to-markdown.js'
+import {math} from 'micromark-extension-math'
+import {mathFromMarkdown, mathToMarkdown} from 'mdast-util-math'
 
 var warningIssued
 
@@ -24,9 +23,9 @@ export default function remarkMath() {
     )
   }
 
-  add('micromarkExtensions', syntax)
-  add('fromMarkdownExtensions', fromMarkdown)
-  add('toMarkdownExtensions', toMarkdown)
+  add('micromarkExtensions', math)
+  add('fromMarkdownExtensions', mathFromMarkdown)
+  add('toMarkdownExtensions', mathToMarkdown)
 
   function add(field, value) {
     // Other extensions.

@@ -1,6 +1,6 @@
 import test from 'tape'
 import katex from 'katex'
-import unified from 'unified'
+import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeParse from 'rehype-parse'
