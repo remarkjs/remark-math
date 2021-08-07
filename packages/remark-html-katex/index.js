@@ -1,17 +1,13 @@
-const visit = require('unist-util-visit')
-const katex = require('katex').renderToString
-const unified = require('unified')
-const parse = require('rehype-parse')
+import visit from 'unist-util-visit'
+import katex from 'katex'
+import unified from 'unified'
+import rehypeParse from 'rehype-parse'
 
-module.exports = htmlKatex
-
-const assign = Object.assign
-
-const parseHtml = unified().use(parse, {fragment: true, position: false})
+const parseHtml = unified().use(rehypeParse, {fragment: true, position: false})
 
 const source = 'remark-html-katex'
 
-function htmlKatex(options) {
+export default function remarkHtmlKatex(options) {
   const settings = options || {}
   const throwOnError = settings.throwOnError || false
 
@@ -25,9 +21,12 @@ function htmlKatex(options) {
       let result
 
       try {
-        result = katex(
+        result = katex.renderToString(
           node.value,
-          assign({}, settings, {displayMode: displayMode, throwOnError: true})
+          Object.assign({}, settings, {
+            displayMode: displayMode,
+            throwOnError: true
+          })
         )
       } catch (error) {
         const fn = throwOnError ? 'fail' : 'message'
@@ -35,9 +34,9 @@ function htmlKatex(options) {
 
         file[fn](error.message, node.position, origin)
 
-        result = katex(
+        result = katex.renderToString(
           node.value,
-          assign({}, settings, {
+          Object.assign({}, settings, {
             displayMode: displayMode,
             throwOnError: false,
             strict: 'ignore'

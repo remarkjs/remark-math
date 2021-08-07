@@ -1,10 +1,8 @@
-const mathjax = require('mathjax-full/js/mathjax').mathjax
-const register = require('mathjax-full/js/handlers/html').RegisterHTMLHandler
-const fromDom = require('hast-util-from-dom')
-const toText = require('hast-util-to-text')
-const createAdaptor = require('./adaptor')
-
-module.exports = renderer
+import {mathjax} from 'mathjax-full/js/mathjax.js'
+import {RegisterHTMLHandler} from 'mathjax-full/js/handlers/html.js'
+import fromDom from 'hast-util-from-dom'
+import toText from 'hast-util-to-text'
+import {createAdaptor} from './adaptor.js'
 
 const adaptor = createAdaptor()
 
@@ -18,9 +16,10 @@ const adaptor = createAdaptor()
 // `mathjax.handlers.unregister(handler)`.
 // That is to prevent memory leak in `mathjax.handlers` whenever a new instance
 // of the plugin is used.
-register(adaptor)
+/* eslint-disable-next-line new-cap */
+RegisterHTMLHandler(adaptor)
 
-function renderer(input, output) {
+export function createRenderer(input, output) {
   const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 
   return {render: render, styleSheet: styleSheet}

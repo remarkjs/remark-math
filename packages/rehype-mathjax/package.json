@@ -24,24 +24,24 @@
     "type": "opencollective",
     "url": "https://opencollective.com/unified"
   },
-  "browser": {
-    "./lib/adaptor.js": "./lib/adaptor.browser.js"
-  },
   "author": "TANIGUCHI Masaya <mew@cat.ovh> (https://docs.casa)",
   "contributors": [
     "TANIGUCHI Masaya <mew@cat.ovh> (https://docs.casa)",
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
+  "sideEffects": false,
+  "type": "module",
+  "main": "index.js",
   "files": [
     "lib/",
-    "*.d.ts",
     "browser.js",
     "chtml.js",
-    "svg.js",
-    "index.js"
+    "index.js",
+    "svg.js"
   ],
-  "main": "index.js",
-  "types": "index.d.ts",
+  "browser": {
+    "./lib/adaptor.js": "./lib/adaptor.browser.js"
+  },
   "dependencies": {
     "@types/mathjax": "^0.0.36",
     "hast-util-from-dom": "^3.0.0",

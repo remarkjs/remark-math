@@ -1,8 +1,6 @@
-const Tex = require('mathjax-full/js/input/tex').TeX
-const packages = require('mathjax-full/js/input/tex/AllPackages').AllPackages
+import {TeX} from 'mathjax-full/js/input/tex.js'
+import {AllPackages} from 'mathjax-full/js/input/tex/AllPackages.js'
 
-module.exports = createInput
-
-function createInput(options) {
-  return new Tex(Object.assign({packages: packages}, options))
+export function createInput(options) {
+  return new TeX(Object.assign({packages: AllPackages}, options))
 }

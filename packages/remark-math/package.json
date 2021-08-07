@@ -26,15 +26,15 @@
     "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
-  "files": [
-    "index.js",
-    "block.js",
-    "inline.js",
-    "util.js",
-    "types/index.d.ts"
-  ],
+  "sideEffects": false,
+  "type": "module",
   "main": "index.js",
-  "types": "types/index.d.ts",
+  "files": [
+    "block.js",
+    "index.js",
+    "inline.js",
+    "util.js"
+  ],
   "dependencies": {
     "mdast-util-math": "^0.1.0",
     "micromark-extension-math": "^0.1.0"

@@ -1,20 +1,20 @@
-const test = require('tape')
-const katex = require('katex')
-const unified = require('unified')
-const parseMarkdown = require('remark-parse')
-const parseHtml = require('rehype-parse')
-const stringify = require('rehype-stringify')
-const html = require('remark-html')
-const math = require('../remark-math')
-const htmlKatex = require('.')
+import test from 'tape'
+import katex from 'katex'
+import unified from 'unified'
+import remarkParse from 'remark-parse'
+import rehypeParse from 'rehype-parse'
+import rehypeStringify from 'rehype-stringify'
+import remarkHtml from 'remark-html'
+import remarkMath from '../remark-math/index.js'
+import remarkHtmlKatex from './index.js'
 
 test('remark-html-katex', function (t) {
   t.deepEqual(
     unified()
-      .use(parseMarkdown, {position: false})
-      .use(math)
-      .use(htmlKatex)
-      .use(html)
+      .use(remarkParse, {position: false})
+      .use(remarkMath)
+      .use(remarkHtmlKatex)
+      .use(remarkHtml)
       .processSync(
         [
           'Inline math $\\alpha$.',
@@ -28,8 +28,8 @@ test('remark-html-katex', function (t) {
       )
       .toString(),
     unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeStringify)
       .processSync(
         [
           '<p>Inline math <span class="math math-inline">' +
@@ -50,15 +50,15 @@ test('remark-html-katex', function (t) {
 
   t.deepEqual(
     unified()
-      .use(parseMarkdown, {position: false})
-      .use(math)
-      .use(htmlKatex, {macros: macros})
-      .use(html)
+      .use(remarkParse, {position: false})
+      .use(remarkMath)
+      .use(remarkHtmlKatex, {macros: macros})
+      .use(remarkHtml)
       .processSync('$\\RR$')
       .toString(),
     unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeStringify)
       .processSync(
         '<p><span class="math math-inline">' +
           katex.renderToString('\\RR', {macros: macros}) +
@@ -70,15 +70,15 @@ test('remark-html-katex', function (t) {
 
   t.deepEqual(
     unified()
-      .use(parseMarkdown, {position: false})
-      .use(math)
-      .use(htmlKatex, {errorColor: 'orange'})
-      .use(html)
+      .use(remarkParse, {position: false})
+      .use(remarkMath)
+      .use(remarkHtmlKatex, {errorColor: 'orange'})
+      .use(remarkHtml)
       .processSync('$\\alpa$')
       .toString(),
     unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeStringify)
       .processSync(
         '<p><span class="math math-inline">' +
           katex.renderToString('\\alpa', {
@@ -93,10 +93,10 @@ test('remark-html-katex', function (t) {
 
   t.deepLooseEqual(
     unified()
-      .use(parseMarkdown)
-      .use(math)
-      .use(htmlKatex)
-      .use(html)
+      .use(remarkParse)
+      .use(remarkMath)
+      .use(remarkHtmlKatex)
+      .use(remarkHtml)
       .processSync('Lorem\n$\\alpa$')
       .messages.map(String),
     [
@@ -107,10 +107,10 @@ test('remark-html-katex', function (t) {
 
   try {
     unified()
-      .use(parseMarkdown)
-      .use(math)
-      .use(htmlKatex, {throwOnError: true})
-      .use(html)
+      .use(remarkParse)
+      .use(remarkMath)
+      .use(remarkHtmlKatex, {throwOnError: true})
+      .use(remarkHtml)
       .processSync('Lorem\n$\\alpa$')
   } catch (error) {
     t.equal(
@@ -122,15 +122,15 @@ test('remark-html-katex', function (t) {
 
   t.deepEqual(
     unified()
-      .use(parseMarkdown, {position: false})
-      .use(math)
-      .use(htmlKatex, {errorColor: 'orange', strict: 'ignore'})
-      .use(html)
+      .use(remarkParse, {position: false})
+      .use(remarkMath)
+      .use(remarkHtmlKatex, {errorColor: 'orange', strict: 'ignore'})
+      .use(remarkHtml)
       .processSync('$ê&$')
       .toString(),
     unified()
-      .use(parseHtml, {fragment: true, position: false})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true, position: false})
+      .use(rehypeStringify)
       .processSync(
         '<p><span class="math math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span></p>\n'
       )

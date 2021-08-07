@@ -29,12 +29,12 @@
     "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
-  "files": [
-    "index.js",
-    "types/index.d.ts"
-  ],
+  "sideEffects": false,
+  "type": "module",
   "main": "index.js",
-  "types": "types/index.d.ts",
+  "files": [
+    "index.js"
+  ],
   "dependencies": {
     "@types/katex": "^0.11.0",
     "hast-util-to-text": "^2.0.0",

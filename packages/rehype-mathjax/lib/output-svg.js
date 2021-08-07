@@ -1,7 +1,5 @@
-const Svg = require('mathjax-full/js/output/svg').SVG
+import {SVG} from 'mathjax-full/js/output/svg.js'
 
-module.exports = createOutput
-
-function createOutput(options) {
-  return new Svg(options)
+export function createOutput(options) {
+  return new SVG(options)
 }

@@ -1,13 +1,10 @@
-'use strict'
+import syntax from 'micromark-extension-math'
+import fromMarkdown from 'mdast-util-math/from-markdown.js'
+import toMarkdown from 'mdast-util-math/to-markdown.js'
 
-var syntax = require('micromark-extension-math')
-var fromMarkdown = require('mdast-util-math/from-markdown')
-var toMarkdown = require('mdast-util-math/to-markdown')
 var warningIssued
 
-module.exports = math
-
-function math() {
+export default function remarkMath() {
   var data = this.data()
 
   // Old remark.

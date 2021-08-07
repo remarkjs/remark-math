@@ -1,7 +1,5 @@
-const CHtml = require('mathjax-full/js/output/chtml').CHTML
+import {CHTML} from 'mathjax-full/js/output/chtml.js'
 
-module.exports = createOutput
-
-function createOutput(options) {
-  return new CHtml(options)
+export function createOutput(options) {
+  return new CHTML(options)
 }

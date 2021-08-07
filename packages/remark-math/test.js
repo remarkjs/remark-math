@@ -1,25 +1,25 @@
-const test = require('tape')
-const unified = require('unified')
-const parse = require('remark-parse')
-const remark2rehype = require('remark-rehype')
-const rehypeStringify = require('rehype-stringify')
-const stringify = require('remark-stringify')
-const u = require('unist-builder')
-const removePosition = require('unist-util-remove-position')
-const math = require('.')
+import test from 'tape'
+import unified from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import remarkStringify from 'remark-stringify'
+import u from 'unist-builder'
+import removePosition from 'unist-util-remove-position'
+import remarkMath from './index.js'
 
-test('remark-math', function (t) {
+test('remarkMath', function (t) {
   const toHtml = unified()
-    .use(parse)
-    .use(math)
-    .use(remark2rehype)
+    .use(remarkParse)
+    .use(remarkMath)
+    .use(remarkRehype)
     .use(rehypeStringify)
 
   t.deepEqual(
     removePosition(
       unified()
-        .use(parse)
-        .use(math)
+        .use(remarkParse)
+        .use(remarkMath)
         .parse('Math $\\alpha$\n\n$$\n\\beta+\\gamma\n$$'),
       true
     ),
@@ -55,13 +55,19 @@ test('remark-math', function (t) {
   )
 
   t.deepEqual(
-    removePosition(unified().use(parse).use(math).parse('\\$\\alpha$'), true),
+    removePosition(
+      unified().use(remarkParse).use(remarkMath).parse('\\$\\alpha$'),
+      true
+    ),
     u('root', [u('paragraph', [u('text', '$\\alpha$')])]),
     'should ignore an escaped opening dollar sign'
   )
 
   t.deepEqual(
-    removePosition(unified().use(parse).use(math).parse('$\\alpha\\$'), true),
+    removePosition(
+      unified().use(remarkParse).use(remarkMath).parse('$\\alpha\\$'),
+      true
+    ),
     u('root', [
       u('paragraph', [
         u(
@@ -81,7 +87,10 @@ test('remark-math', function (t) {
   )
 
   t.deepEqual(
-    removePosition(unified().use(parse).use(math).parse('\\\\$\\alpha$'), true),
+    removePosition(
+      unified().use(remarkParse).use(remarkMath).parse('\\\\$\\alpha$'),
+      true
+    ),
     u('root', [
       u('paragraph', [
         u('text', '\\'),
@@ -102,13 +111,19 @@ test('remark-math', function (t) {
   )
 
   t.deepEqual(
-    removePosition(unified().use(parse).use(math).parse('`$`\\alpha$'), true),
+    removePosition(
+      unified().use(remarkParse).use(remarkMath).parse('`$`\\alpha$'),
+      true
+    ),
     u('root', [u('paragraph', [u('inlineCode', '$'), u('text', '\\alpha$')])]),
     'should ignore dollar signs in inline code (#1)'
   )
 
   t.deepEqual(
-    removePosition(unified().use(parse).use(math).parse('$\\alpha`$`'), true),
+    removePosition(
+      unified().use(remarkParse).use(remarkMath).parse('$\\alpha`$`'),
+      true
+    ),
     u('root', [
       u('paragraph', [
         u(
@@ -129,7 +144,10 @@ test('remark-math', function (t) {
   )
 
   t.deepEqual(
-    removePosition(unified().use(parse).use(math).parse('$`\\alpha`$'), true),
+    removePosition(
+      unified().use(remarkParse).use(remarkMath).parse('$`\\alpha`$'),
+      true
+    ),
     u('root', [
       u('paragraph', [
         u(
@@ -150,7 +168,7 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     removePosition(
-      unified().use(parse).use(math).parse('$$ \\alpha$ $$'),
+      unified().use(remarkParse).use(remarkMath).parse('$$ \\alpha$ $$'),
       true
     ),
     u('root', [
@@ -173,7 +191,7 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     removePosition(
-      unified().use(parse).use(math).parse('$$\n\\alpha\\$\n$$'),
+      unified().use(remarkParse).use(remarkMath).parse('$$\n\\alpha\\$\n$$'),
       true
     ),
     u('root', [
@@ -195,7 +213,10 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     removePosition(
-      unified().use(parse).use(math).parse('tango\n$$\n\\alpha\n$$'),
+      unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('tango\n$$\n\\alpha\n$$'),
       true
     ),
     u('root', [
@@ -217,7 +238,10 @@ test('remark-math', function (t) {
   )
 
   t.deepEqual(
-    removePosition(unified().use(parse).use(math).parse('$$\\alpha$$'), true),
+    removePosition(
+      unified().use(remarkParse).use(remarkMath).parse('$$\\alpha$$'),
+      true
+    ),
     u('root', [
       u('paragraph', [
         u(
@@ -238,7 +262,7 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     removePosition(
-      unified().use(parse).use(math).parse('$$$\n\\alpha\n$$$'),
+      unified().use(remarkParse).use(remarkMath).parse('$$$\n\\alpha\n$$$'),
       true
     ),
     u('root', [
@@ -260,7 +284,10 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     removePosition(
-      unified().use(parse).use(math).parse('  $$\n    \\alpha\n  $$'),
+      unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('  $$\n    \\alpha\n  $$'),
       true
     ),
     u('root', [
@@ -282,9 +309,9 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     unified()
-      .use(parse)
-      .use(stringify)
-      .use(math)
+      .use(remarkParse)
+      .use(remarkStringify)
+      .use(remarkMath)
       .processSync('Math $\\alpha$\n\n$$\n\\beta+\\gamma\n$$\n')
       .toString(),
     'Math $\\alpha$\n\n$$\n\\beta+\\gamma\n$$\n',
@@ -293,9 +320,9 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     unified()
-      .use(parse)
-      .use(stringify)
-      .use(math)
+      .use(remarkParse)
+      .use(remarkStringify)
+      .use(remarkMath)
       .processSync('> $$\n> \\alpha\\beta\n> $$\n')
       .toString(),
     '> $$\n> \\alpha\\beta\n> $$\n',
@@ -336,8 +363,8 @@ test('remark-math', function (t) {
   t.deepEqual(
     removePosition(
       unified()
-        .use(parse)
-        .use(math)
+        .use(remarkParse)
+        .use(remarkMath)
         .parse('$$\n\\alpha\n$$\n```\nbravo\n```\n'),
       true
     ),
@@ -360,7 +387,10 @@ test('remark-math', function (t) {
   )
 
   t.deepEqual(
-    removePosition(unified().use(parse).use(math).parse('$$\\alpha$$'), true),
+    removePosition(
+      unified().use(remarkParse).use(remarkMath).parse('$$\\alpha$$'),
+      true
+    ),
     u('root', [
       u('paragraph', [
         u(
@@ -381,8 +411,8 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     unified()
-      .use(stringify)
-      .use(math)
+      .use(remarkStringify)
+      .use(remarkMath)
       .stringify(
         u('root', [
           u('paragraph', [u('text', 'Math '), u('inlineMath', '\\alpha')]),
@@ -396,9 +426,9 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     unified()
-      .use(parse)
-      .use(stringify)
-      .use(math)
+      .use(remarkParse)
+      .use(remarkStringify)
+      .use(remarkMath)
       .processSync('$$\\alpha$$')
       .toString(),
     '$\\alpha$\n',
@@ -407,9 +437,9 @@ test('remark-math', function (t) {
 
   t.deepEqual(
     unified()
-      .use(parse)
-      .use(stringify)
-      .use(math)
+      .use(remarkParse)
+      .use(remarkStringify)
+      .use(remarkMath)
       .processSync('$$\\alpha$$')
       .toString(),
     '$\\alpha$\n',

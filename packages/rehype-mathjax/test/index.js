@@ -1,24 +1,24 @@
-const path = require('path')
-const test = require('tape')
-const vfile = require('to-vfile')
-const unified = require('unified')
-const parseMarkdown = require('remark-parse')
-const remark2rehype = require('remark-rehype')
-const parseHtml = require('rehype-parse')
-const stringify = require('rehype-stringify')
-const math = require('../../remark-math')
-const svg = require('..')
-const chtml = require('../chtml')
-const browser = require('../browser')
+import path from 'path'
+import test from 'tape'
+import vfile from 'to-vfile'
+import unified from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeParse from 'rehype-parse'
+import rehypeStringify from 'rehype-stringify'
+import remarkMath from '../../remark-math/index.js'
+import rehypeMathJaxSvg from '../svg.js'
+import rehypeMathJaxChtml from '../chtml.js'
+import rehypeMathJaxBrowser from '../browser.js'
 
-const fixtures = path.join(__dirname, 'fixture')
+const fixtures = path.join('test', 'fixture')
 
 test('rehype-mathjax', function (t) {
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(svg)
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxSvg)
+      .use(rehypeStringify)
       .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
     String(
@@ -29,7 +29,7 @@ test('rehype-mathjax', function (t) {
 
   t.throws(
     function () {
-      unified().use(chtml).freeze()
+      unified().use(rehypeMathJaxChtml).freeze()
     },
     /rehype-mathjax: missing `fontURL` in options/,
     'should crash for CHTML w/o `fontURL`'
@@ -37,9 +37,9 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(chtml, {fontURL: 'place/to/fonts'})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxChtml, {fontURL: 'place/to/fonts'})
+      .use(rehypeStringify)
       .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
     String(
@@ -50,9 +50,9 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(browser)
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxBrowser)
+      .use(rehypeStringify)
       .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
     String(vfile.readSync({dirname: fixtures, basename: 'small-browser.html'})),
@@ -61,11 +61,11 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseMarkdown)
-      .use(math)
-      .use(remark2rehype)
-      .use(svg)
-      .use(stringify)
+      .use(remarkParse)
+      .use(remarkMath)
+      .use(remarkRehype)
+      .use(rehypeMathJaxSvg)
+      .use(rehypeStringify)
       .processSync(vfile.readSync({dirname: fixtures, basename: 'markdown.md'}))
       .toString(),
     String(
@@ -76,9 +76,9 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(svg)
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxSvg)
+      .use(rehypeStringify)
       .processSync(vfile.readSync({dirname: fixtures, basename: 'double.html'}))
       .toString(),
     String(
@@ -89,9 +89,9 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(svg)
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxSvg)
+      .use(rehypeStringify)
       .processSync(vfile.readSync({dirname: fixtures, basename: 'none.html'}))
       .toString(),
     String(vfile.readSync({dirname: fixtures, basename: 'none-svg.html'})),
@@ -100,9 +100,9 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml)
-      .use(svg)
-      .use(stringify)
+      .use(rehypeParse)
+      .use(rehypeMathJaxSvg)
+      .use(rehypeStringify)
       .processSync(
         vfile.readSync({dirname: fixtures, basename: 'document.html'})
       )
@@ -115,9 +115,12 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(browser, {inlineMath: ['$', '$'], displayMath: ['$$', '$$']})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxBrowser, {
+        inlineMath: ['$', '$'],
+        displayMath: ['$$', '$$']
+      })
+      .use(rehypeStringify)
       .processSync(vfile.readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
     String(
@@ -131,9 +134,9 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(svg, {tex: {tags: 'ams'}})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxSvg, {tex: {tags: 'ams'}})
+      .use(rehypeStringify)
       .processSync(
         vfile.readSync({
           dirname: fixtures,
@@ -152,9 +155,9 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(svg, {tex: {tags: 'ams'}})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxSvg, {tex: {tags: 'ams'}})
+      .use(rehypeStringify)
       .processSync(
         vfile.readSync({
           dirname: fixtures,
@@ -173,9 +176,9 @@ test('rehype-mathjax', function (t) {
 
   t.equal(
     unified()
-      .use(parseHtml, {fragment: true})
-      .use(chtml, {fontURL: 'place/to/fonts', tex: {tags: 'ams'}})
-      .use(stringify)
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxChtml, {fontURL: 'place/to/fonts', tex: {tags: 'ams'}})
+      .use(rehypeStringify)
       .processSync(
         vfile.readSync({
           dirname: fixtures,
@@ -195,9 +198,9 @@ test('rehype-mathjax', function (t) {
   t.equal(
     (() => {
       const processor = unified()
-        .use(parseHtml, {fragment: true})
-        .use(svg, {tex: {tags: 'ams'}})
-        .use(stringify)
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeMathJaxSvg, {tex: {tags: 'ams'}})
+        .use(rehypeStringify)
       return ['equation-numbering-1.html', 'equation-numbering-2.html']
         .map((basename) =>
           processor

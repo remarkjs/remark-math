@@ -1,9 +1,11 @@
-const createInput = require('./lib/input')
-const createOutput = require('./lib/output-chtml')
-const createRenderer = require('./lib/renderer')
-const createPlugin = require('./lib/core')
+import {createInput} from './lib/input.js'
+import {createOutput} from './lib/output-chtml.js'
+import {createRenderer} from './lib/renderer.js'
+import {createPlugin} from './lib/core.js'
 
-module.exports = createPlugin('rehypeMathJaxCHtml', renderCHtml, true)
+const rehypeMathJaxCHtml = createPlugin('rehypeMathJaxCHtml', renderCHtml, true)
+
+export default rehypeMathJaxCHtml
 
 function renderCHtml(inputOptions, outputOptions) {
   return createRenderer(createInput(inputOptions), createOutput(outputOptions))

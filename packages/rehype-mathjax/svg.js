@@ -1,9 +1,11 @@
-const createInput = require('./lib/input')
-const createOutput = require('./lib/output-svg')
-const createRenderer = require('./lib/renderer')
-const createPlugin = require('./lib/core')
+import {createInput} from './lib/input.js'
+import {createOutput} from './lib/output-svg.js'
+import {createRenderer} from './lib/renderer.js'
+import {createPlugin} from './lib/core.js'
 
-module.exports = createPlugin('rehypeMathJaxSvg', renderSvg)
+const rehypeMathJaxSvg = createPlugin('rehypeMathJaxSvg', renderSvg)
+
+export default rehypeMathJaxSvg
 
 function renderSvg(inputOptions, outputOptions) {
   return createRenderer(createInput(inputOptions), createOutput(outputOptions))

@@ -15,6 +15,7 @@
     "Marc-Antoine Ouimet <ouimetmarcantoine@gmail.com>",
     "Rongjian Zhang <pd4d10@gmail.com>"
   ],
+  "type": "module",
   "devDependencies": {
     "c8": "^7.0.0",
     "dtslint": "^4.0.0",

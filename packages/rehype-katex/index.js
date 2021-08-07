@@ -1,10 +1,8 @@
-const visit = require('unist-util-visit')
-const katex = require('katex').renderToString
-const unified = require('unified')
-const parse = require('rehype-parse')
-const toText = require('hast-util-to-text')
-
-module.exports = rehypeKatex
+import visit from 'unist-util-visit'
+import katex from 'katex'
+import unified from 'unified'
+import parse from 'rehype-parse'
+import toText from 'hast-util-to-text'
 
 const assign = Object.assign
 
@@ -12,7 +10,7 @@ const parseHtml = unified().use(parse, {fragment: true, position: false})
 
 const source = 'rehype-katex'
 
-function rehypeKatex(options) {
+export default function rehypeKatex(options) {
   const settings = options || {}
   const throwOnError = settings.throwOnError || false
 
@@ -35,7 +33,7 @@ function rehypeKatex(options) {
       let result
 
       try {
-        result = katex(
+        result = katex.renderToString(
           value,
           assign({}, settings, {displayMode: displayMode, throwOnError: true})
         )
@@ -45,7 +43,7 @@ function rehypeKatex(options) {
 
         file[fn](error.message, element.position, origin)
 
-        result = katex(
+        result = katex.renderToString(
           value,
           assign({}, settings, {
             displayMode: displayMode,

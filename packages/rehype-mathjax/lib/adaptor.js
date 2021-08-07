@@ -1,8 +1,6 @@
-const JsDom = require('jsdom').JSDOM
-const adaptor = require('mathjax-full/js/adaptors/jsdomAdaptor').jsdomAdaptor
+import {JSDOM} from 'jsdom'
+import {jsdomAdaptor} from 'mathjax-full/js/adaptors/jsdomAdaptor.js'
 
-module.exports = createAdaptor
-
-function createAdaptor() {
-  return adaptor(JsDom)
+export function createAdaptor() {
+  return jsdomAdaptor(JSDOM)
 }

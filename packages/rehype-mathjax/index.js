@@ -1,1 +1,3 @@
-module.exports = require('./svg')
+import rehypeMathJaxSvg from './svg.js'
+
+export default rehypeMathJaxSvg
