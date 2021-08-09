@@ -27,7 +27,12 @@ test('rehype-mathjax', (t) => {
 
   t.throws(
     () => {
-      unified().use(rehypeMathJaxChtml).freeze()
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeMathJaxChtml)
+        .use(rehypeStringify)
+        .processSync(readSync({dirname: fixtures, basename: 'small.html'}))
+        .toString()
     },
     /rehype-mathjax: missing `fontURL` in options/,
     'should crash for CHTML w/o `fontURL`'
@@ -36,7 +41,7 @@ test('rehype-mathjax', (t) => {
   t.equal(
     unified()
       .use(rehypeParse, {fragment: true})
-      .use(rehypeMathJaxChtml, {fontURL: 'place/to/fonts'})
+      .use(rehypeMathJaxChtml, {chtml: {fontURL: 'place/to/fonts'}})
       .use(rehypeStringify)
       .processSync(readSync({dirname: fixtures, basename: 'small.html'}))
       .toString(),
@@ -105,8 +110,10 @@ test('rehype-mathjax', (t) => {
     unified()
       .use(rehypeParse, {fragment: true})
       .use(rehypeMathJaxBrowser, {
-        inlineMath: ['$', '$'],
-        displayMath: ['$$', '$$']
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']]
+        }
       })
       .use(rehypeStringify)
       .processSync(readSync({dirname: fixtures, basename: 'small.html'}))
@@ -165,7 +172,10 @@ test('rehype-mathjax', (t) => {
   t.equal(
     unified()
       .use(rehypeParse, {fragment: true})
-      .use(rehypeMathJaxChtml, {fontURL: 'place/to/fonts', tex: {tags: 'ams'}})
+      .use(rehypeMathJaxChtml, {
+        chtml: {fontURL: 'place/to/fonts'},
+        tex: {tags: 'ams'}
+      })
       .use(rehypeStringify)
       .processSync(
         readSync({

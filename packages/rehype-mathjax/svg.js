@@ -1,18 +1,15 @@
 /**
  * @typedef {import('hast').Root} Root
- * @typedef {import('./lib/create-plugin').SvgOptions} Options
+ * @typedef {import('mathjax-full/js/output/svg.js').SVG<HTMLElement, Text, Document>} SVG_
+ * @typedef {import('./lib/create-plugin.js').Options} Options
  */
 
-import {createOutputSvg} from './lib/create-output-svg.js'
+import {SVG} from 'mathjax-full/js/output/svg.js'
 import {createRenderer} from './lib/create-renderer.js'
 import {createPlugin} from './lib/create-plugin.js'
 
-const rehypeMathJaxSvg =
-  /** @type {import('unified').Plugin<[Options?]|void[], Root>} */
-  (
-    createPlugin((inputOptions, outputOptions) =>
-      createRenderer(inputOptions, createOutputSvg(outputOptions))
-    )
-  )
+const rehypeMathJaxSvg = createPlugin((options) =>
+  createRenderer(options, new SVG(options.svg))
+)
 
 export default rehypeMathJaxSvg

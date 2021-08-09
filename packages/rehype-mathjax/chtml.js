@@ -1,20 +1,21 @@
 /**
  * @typedef {import('hast').Root} Root
- * @typedef {import('./lib/create-plugin').CHtmlOptions} Options
+ * @typedef {import('mathjax-full/js/output/chtml.js').CHTML<HTMLElement, Text, Document>} CHTML_
+ * @typedef {import('./lib/create-plugin').Options} Options
  */
 
-import {createOutputChtml} from './lib/create-output-chtml.js'
+import {CHTML} from 'mathjax-full/js/output/chtml.js'
 import {createRenderer} from './lib/create-renderer.js'
 import {createPlugin} from './lib/create-plugin.js'
 
-const rehypeMathJaxCHtml =
-  /** @type {import('unified').Plugin<[Options?]|void[], Root>} */
-  (
-    createPlugin(
-      (inputOptions, outputOptions) =>
-        createRenderer(inputOptions, createOutputChtml(outputOptions)),
-      true
+const rehypeMathJaxCHtml = createPlugin((options) => {
+  if (!options.chtml || !options.chtml.fontURL) {
+    throw new Error(
+      'rehype-mathjax: missing `fontURL` in options, which must be set to a URL to reach MathJaX fonts'
     )
-  )
+  }
+
+  return createRenderer(options, new CHTML(options.chtml))
+})
 
 export default rehypeMathJaxCHtml

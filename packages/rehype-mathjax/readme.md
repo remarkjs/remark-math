@@ -123,11 +123,22 @@ Options are not passed to MathJax: do that yourself on the client.
 
 All options, except when using the browser plugin, are passed to
 [MathJax][mathjax-options].
-Specifically, they are passed to the chosen output processor.
 
 #### `options.tex`
 
 These options are passed to the [TeX input processor][mathjax-tex-options].
+The browser plugin uses the first delimiter pair in `tex.displayMath` and
+`tex.inlineMath` to instead wrap math.
+
+#### `options.chtml`
+
+These options are passed to the [CommonHTML output
+processor][mathjax-chtml-options].
+Passing `fontURL` is required!
+
+#### `options.svg`
+
+These options are passed to the [SVG output processor][mathjax-svg-options].
 
 ## Security
 
@@ -208,3 +219,7 @@ abide by its terms.
 [mathjax-chtml]: http://docs.mathjax.org/en/latest/output/html.html
 
 [mathjax-tex-options]: http://docs.mathjax.org/en/latest/options/input/tex.html
+
+[mathjax-svg-options]: http://docs.mathjax.org/en/latest/options/output/svg.html
+
+[mathjax-chtml-options]: http://docs.mathjax.org/en/latest/options/output/chtml.html

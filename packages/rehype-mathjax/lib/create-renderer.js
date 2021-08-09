@@ -2,14 +2,17 @@
  * @typedef {import('hast').Element} Element
  * @typedef {import('mathjax-full/js/core/OutputJax').OutputJax<HTMLElement, Text, Document>} OutputJax
  * @typedef {import('mathjax-full/js/core/MathDocument.js').MathDocument<HTMLElement, Text, Document>} MathDocument
- * @typedef {import('./create-plugin.js').CreateRenderer} CreateRenderer
+ * @typedef {import('mathjax-full/js/input/tex.js').TeX<HTMLElement, Text, Document>} TeX_
+ * @typedef {import('./create-plugin.js').Options} Options
+ * @typedef {import('./create-plugin.js').Renderer} Renderer
  */
 
 import {mathjax} from 'mathjax-full/js/mathjax.js'
 import {RegisterHTMLHandler} from 'mathjax-full/js/handlers/html.js'
+import {TeX} from 'mathjax-full/js/input/tex.js'
+import {AllPackages} from 'mathjax-full/js/input/tex/AllPackages.js'
 import {fromDom} from 'hast-util-from-dom'
 import {toText} from 'hast-util-to-text'
-import {createInput} from './create-input.js'
 import {createAdaptor} from './create-adaptor.js'
 
 const adaptor = createAdaptor()
@@ -28,11 +31,12 @@ const adaptor = createAdaptor()
 RegisterHTMLHandler(adaptor)
 
 /**
- * @type {CreateRenderer}
+ * @param {Options} options
  * @param {OutputJax} output
+ * @returns {Renderer}
  */
-export function createRenderer(inputOptions, output) {
-  const input = createInput(inputOptions)
+export function createRenderer(options, output) {
+  const input = new TeX(Object.assign({packages: AllPackages}, options.tex))
   /** @type {MathDocument} */
   const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 

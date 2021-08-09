@@ -6,14 +6,7 @@
  *   Markers to use for math.
  *   See: <http://docs.mathjax.org/en/latest/options/input/tex.html#the-configuration-block>
  *
- * @typedef BrowserOptions
- *   Configuration.
- * @property {MathNotation} [displayMath]
- *   Markers to use for blocks.
- * @property {MathNotation} [inlineMath]
- *   Markers to use for inlines.
- *
- * @typedef MathJaxSvgOptions
+ * @typedef OutputSvgOptions
  *   <http://docs.mathjax.org/en/latest/options/output/svg.html#the-configuration-block>
  * @property {number} [scale]
  * @property {number} [minScale]
@@ -29,7 +22,7 @@
  * @property {boolean} [internalSpeechTitles]
  * @property {number} [titleID]
  *
- * @typedef MathJaxCHtmlOptions
+ * @typedef OutputCHtmlOptions
  *   <http://docs.mathjax.org/en/latest/options/output/chtml.html#the-configuration-block>
  * @property {number} [scale]
  * @property {number} [minScale]
@@ -44,7 +37,7 @@
  * @property {string} fontURL
  * @property {boolean} [adaptiveCSS]
  *
- * @typedef MathJaxInputTexOptions
+ * @typedef InputTexOptions
  *   <http://docs.mathjax.org/en/latest/options/input/tex.html#the-configuration-block>
  * @property {string[]} [packages]
  * @property {MathNotation[]} [inlineMath]
@@ -63,47 +56,37 @@
  * @property {string} [baseURL]
  * @property {(jax: any, error: any) => string} [formatError]
  *
- * @typedef {MathJaxCHtmlOptions & {tex?: MathJaxInputTexOptions}} CHtmlOptions
- * @typedef {MathJaxSvgOptions & {tex?: MathJaxInputTexOptions}} SvgOptions
- *
- * @typedef {BrowserOptions|CHtmlOptions|SvgOptions} Options
+ * @typedef Options
+ *   Configuration.
+ * @property {InputTexOptions} [tex]
+ *   Configuration for the input TeX.
+ * @property {OutputCHtmlOptions} [chtml]
+ *   Configuration for the output (when CHTML).
+ * @property {OutputSvgOptions} [svg]
+ *   Configuration for the output (when SVG).
  *
  * @typedef Renderer
  * @property {(node: Element, options: {display: boolean}) => void} render
  * @property {() => Element} [styleSheet]
  *
  * @callback CreateRenderer
- * @param {MathJaxInputTexOptions} inputOptions
- * @param {MathJaxCHtmlOptions|MathJaxSvgOptions|BrowserOptions} outputOptions
+ * @param {Options} options
  * @returns {Renderer}
  */
 
 import {visit, SKIP} from 'unist-util-visit'
 
-// To do next major: Remove `chtml` and `browser` flags once all the options use
-// the same format.
-
 /**
  * @param {CreateRenderer} createRenderer
- * @param {boolean} [chtml=false]
  */
-export function createPlugin(createRenderer, chtml) {
+export function createPlugin(createRenderer) {
   /** @type {import('unified').Plugin<[Options?]|void[], Root>} */
   return (options = {}) => {
-    if (chtml && (!('fontURL' in options) || !options.fontURL)) {
-      throw new Error(
-        'rehype-mathjax: missing `fontURL` in options, which must be set to a URL to reach MathJaX fonts'
-      )
-    }
-
-    // @ts-expect-error: hush.
-    const {tex, ...outputOptions} = options
-
     return (tree) => {
-      const renderer = createRenderer(tex || {}, outputOptions)
+      const renderer = createRenderer(options)
+      let found = false
       /** @type {Root|Element} */
       let context = tree
-      let found = false
 
       visit(tree, 'element', (node) => {
         const classes =
