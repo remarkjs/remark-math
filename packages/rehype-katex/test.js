@@ -42,7 +42,7 @@ test('rehype-katex', (t) => {
 
   t.deepEqual(
     unified()
-      .use(remarkParse, {position: false})
+      .use(remarkParse)
       .use(remarkMath)
       .use(remarkRehype)
       .use(rehypeKatex)

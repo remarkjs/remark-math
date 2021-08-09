@@ -32,28 +32,50 @@
   "sideEffects": false,
   "type": "module",
   "main": "index.js",
+  "types": "index.d.ts",
   "files": [
     "lib/",
+    "browser.d.ts",
     "browser.js",
+    "chtml.d.ts",
     "chtml.js",
+    "index.d.ts",
     "index.js",
+    "svg.d.ts",
     "svg.js"
   ],
   "browser": {
     "./lib/create-adaptor.js": "./lib/create-adaptor.browser.js"
   },
   "dependencies": {
+    "@types/hast": "^2.0.0",
     "@types/mathjax": "^0.0.36",
     "hast-util-from-dom": "^4.0.0",
     "hast-util-to-text": "^3.0.0",
     "jsdom": "^16.0.0",
     "mathjax-full": "^3.0.0",
+    "unified": "^10.0.0",
     "unist-util-visit": "^4.0.0"
   },
-  "scripts": {
-    "test-api": "node --conditions development test/index.js",
-    "test-types": "dtslint",
-    "test": "npm run test-api && npm run test-types"
+  "devDependencies": {
+    "@types/jsdom": "^16.0.0"
   },
-  "xo": false
+  "scripts": {
+    "build": "rimraf \"lib/**/*.d.ts\" \"test/**/*.d.ts\" \"*.d.ts\" && tsc && type-coverage",
+    "test-api": "node --conditions development test/index.js",
+    "test": "npm run build && npm run test-api"
+  },
+  "xo": false,
+  "typeCoverage": {
+    "atLeast": 100,
+    "detail": true,
+    "strict": true,
+    "ignoreCatch": true,
+    "#": "needed `any`s",
+    "ignoreFiles": [
+      "lib/create-plugin.d.ts",
+      "lib/create-renderer.d.ts",
+      "lib/create-renderer.js"
+    ]
+  }
 }

@@ -1,3 +1,8 @@
+/**
+ * @typedef {import('hast').Root} Root
+ * @typedef {import('katex').KatexOptions} Options
+ */
+
 import katex from 'katex'
 import {visit} from 'unist-util-visit'
 import {removePosition} from 'unist-util-remove-position'
@@ -11,17 +16,22 @@ const parseHtml = unified().use(rehypeParse, {fragment: true})
 
 const source = 'rehype-katex'
 
+/**
+ * Plugin to transform `<span class=math-inline>` and `<div class=math-display>`
+ * with KaTeX.
+ *
+ * @type {import('unified').Plugin<[Options?]|void[], Root>}
+ */
 export default function rehypeKatex(options) {
   const settings = options || {}
   const throwOnError = settings.throwOnError || false
 
-  return transformMath
-
-  function transformMath(tree, file) {
-    visit(tree, 'element', onelement)
-
-    function onelement(element) {
-      const classes = element.properties.className || []
+  return (tree, file) => {
+    visit(tree, 'element', (element) => {
+      const classes =
+        element.properties && Array.isArray(element.properties.className)
+          ? element.properties.className
+          : []
       const inline = classes.includes('math-inline')
       const displayMode = classes.includes('math-display')
 
@@ -31,6 +41,7 @@ export default function rehypeKatex(options) {
 
       const value = toText(element)
 
+      /** @type {string} */
       let result
 
       try {
@@ -54,7 +65,8 @@ export default function rehypeKatex(options) {
         )
       }
 
+      // @ts-expect-error: assume no `doctypes` in KaTeX result.
       element.children = removePosition(parseHtml.parse(result), true).children
-    }
+    })
   }
 }

@@ -50,7 +50,7 @@ test('remark-html-katex', (t) => {
 
   t.deepEqual(
     unified()
-      .use(remarkParse, {position: false})
+      .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex, {macros})
       .use(remarkHtml)
@@ -70,7 +70,7 @@ test('remark-html-katex', (t) => {
 
   t.deepEqual(
     unified()
-      .use(remarkParse, {position: false})
+      .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex, {errorColor: 'orange'})
       .use(remarkHtml)
@@ -122,7 +122,7 @@ test('remark-html-katex', (t) => {
 
   t.deepEqual(
     unified()
-      .use(remarkParse, {position: false})
+      .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex, {errorColor: 'orange', strict: 'ignore'})
       .use(remarkHtml)
@@ -136,6 +136,21 @@ test('remark-html-katex', (t) => {
       )
       .toString(),
     'should support `strict: ignore`'
+  )
+
+  const pipeline = unified()
+    .use(remarkHtmlKatex, {errorColor: 'orange', strict: 'ignore'})
+    .use(remarkHtml)
+
+  t.deepEqual(
+    pipeline.stringify(
+      pipeline.runSync({
+        type: 'root',
+        children: [{type: 'inlineMath', value: '\\alpha'}]
+      })
+    ),
+    '<div>' + katex.renderToString('\\alpha') + '</div>\n',
+    'should support generated nodes'
   )
 
   t.end()

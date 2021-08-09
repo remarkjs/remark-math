@@ -1,3 +1,8 @@
+/**
+ * @typedef {import('mdast').Root} Root
+ * @typedef {import('katex').KatexOptions} Options
+ */
+
 import {visit} from 'unist-util-visit'
 import {removePosition} from 'unist-util-remove-position'
 import katex from 'katex'
@@ -8,44 +13,50 @@ const parseHtml = unified().use(rehypeParse, {fragment: true})
 
 const source = 'remark-html-katex'
 
-export default function remarkHtmlKatex(options) {
-  const settings = options || {}
-  const throwOnError = settings.throwOnError || false
+/**
+ * Plugin to transform `inlineMath` and `math` nodes with KaTeX for
+ * `remark-html`.
+ *
+ * @type {import('unified').Plugin<[Options?]|void[], Root>}
+ */
+export default function remarkHtmlKatex(options = {}) {
+  const throwOnError = options.throwOnError || false
 
-  return transform
+  return (tree, file) => {
+    visit(tree, (node) => {
+      if (node.type === 'inlineMath' || node.type === 'math') {
+        const displayMode = node.type === 'math'
+        /** @type {string} */
+        let result
 
-  function transform(tree, file) {
-    visit(tree, ['inlineMath', 'math'], onmath)
+        try {
+          result = katex.renderToString(
+            node.value,
+            Object.assign({}, options, {
+              displayMode,
+              throwOnError: true
+            })
+          )
+        } catch (error) {
+          const fn = throwOnError ? 'fail' : 'message'
+          const origin = [source, error.name.toLowerCase()].join(':')
 
-    function onmath(node) {
-      const displayMode = node.type === 'math'
-      let result
+          file[fn](error.message, node.position, origin)
 
-      try {
-        result = katex.renderToString(
-          node.value,
-          Object.assign({}, settings, {
-            displayMode,
-            throwOnError: true
-          })
-        )
-      } catch (error) {
-        const fn = throwOnError ? 'fail' : 'message'
-        const origin = [source, error.name.toLowerCase()].join(':')
+          result = katex.renderToString(
+            node.value,
+            Object.assign({}, options, {
+              displayMode,
+              throwOnError: false,
+              strict: 'ignore'
+            })
+          )
+        }
 
-        file[fn](error.message, node.position, origin)
+        const data = node.data || (node.data = {})
 
-        result = katex.renderToString(
-          node.value,
-          Object.assign({}, settings, {
-            displayMode,
-            throwOnError: false,
-            strict: 'ignore'
-          })
-        )
+        data.hChildren = removePosition(parseHtml.parse(result)).children
       }
-
-      node.data.hChildren = removePosition(parseHtml.parse(result)).children
-    }
+    })
   }
 }

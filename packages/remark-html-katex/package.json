@@ -30,11 +30,14 @@
   "sideEffects": false,
   "type": "module",
   "main": "index.js",
+  "types": "index.d.ts",
   "files": [
+    "index.d.ts",
     "index.js"
   ],
   "dependencies": {
     "@types/katex": "^0.11.0",
+    "@types/mdast": "^3.0.0",
     "katex": "^0.13.0",
     "rehype-parse": "^8.0.0",
     "unified": "^10.0.0",
@@ -42,9 +45,15 @@
     "unist-util-visit": "^4.0.0"
   },
   "scripts": {
+    "build": "rimraf \"*.d.ts\" && tsc && type-coverage",
     "test-api": "node --conditions development test.js",
-    "test-types": "dtslint types",
-    "test": "npm run test-api && npm run test-types"
+    "test": "npm run build && npm run test-api"
   },
-  "xo": false
+  "xo": false,
+  "typeCoverage": {
+    "atLeast": 100,
+    "detail": true,
+    "strict": true,
+    "ignoreCatch": true
+  }
 }

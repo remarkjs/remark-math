@@ -1,7 +1,16 @@
+/**
+ * @typedef {import('hast').Element} Element
+ * @typedef {import('mathjax-full/js/core/OutputJax').OutputJax<any, any, any>} OutputJax
+ * @typedef {import('./create-plugin.js').CreateRenderer} CreateRenderer
+ *
+ * For some reason MathJax types can’t be imported.
+ */
+
 import {mathjax} from 'mathjax-full/js/mathjax.js'
 import {RegisterHTMLHandler} from 'mathjax-full/js/handlers/html.js'
 import {fromDom} from 'hast-util-from-dom'
 import {toText} from 'hast-util-to-text'
+import {createInput} from './create-input.js'
 import {createAdaptor} from './create-adaptor.js'
 
 const adaptor = createAdaptor()
@@ -19,23 +28,29 @@ const adaptor = createAdaptor()
 /* eslint-disable-next-line new-cap */
 RegisterHTMLHandler(adaptor)
 
-export function createRenderer(input, output) {
+/**
+ * @type {CreateRenderer}
+ * @param {OutputJax} output
+ */
+export function createRenderer(inputOptions, output) {
+  const input = createInput(inputOptions)
   const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 
-  return {render, styleSheet}
+  return {
+    render(node, options) {
+      const domNode = doc.convert(toText(node), options)
+      // @ts-expect-error: assume no `doctypes`
+      node.children = [fromDom(domNode)]
+    },
+    styleSheet() {
+      const value = adaptor.textContent(output.styleSheet(doc))
 
-  function render(node, options) {
-    node.children = [fromDom(doc.convert(toText(node), options))]
-  }
-
-  function styleSheet() {
-    const value = adaptor.textContent(output.styleSheet(doc))
-
-    return {
-      type: 'element',
-      tagName: 'style',
-      properties: {},
-      children: [{type: 'text', value}]
+      return {
+        type: 'element',
+        tagName: 'style',
+        properties: {},
+        children: [{type: 'text', value}]
+      }
     }
   }
 }
