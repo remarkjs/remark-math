@@ -1,9 +1,14 @@
+/**
+ * @typedef {import('mathjax-full/js/util/Options.js').OptionList} OptionList
+ * @typedef {import('mathjax-full/js/output/svg.js').SVG<HTMLElement, Text, Document>} SVG_
+ */
+
 import {SVG} from 'mathjax-full/js/output/svg.js'
 
 /**
- * @param {unknown} options
+ * @param {OptionList} options
+ * @returns {SVG_}
  */
 export function createOutputSvg(options) {
-  // @ts-expect-error: assume options work (mathjax types are not exported)
   return new SVG(options)
 }

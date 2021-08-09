@@ -1,9 +1,14 @@
+/**
+ * @typedef {import('mathjax-full/js/util/Options.js').OptionList} OptionList
+ * @typedef {import('mathjax-full/js/output/chtml.js').CHTML<HTMLElement, Text, Document>} CHTML_
+ */
+
 import {CHTML} from 'mathjax-full/js/output/chtml.js'
 
 /**
- * @param {unknown} options
+ * @param {OptionList} options
+ * @returns {CHTML_}
  */
 export function createOutputChtml(options) {
-  // @ts-expect-error: assume options work (mathjax types are not exported)
   return new CHTML(options)
 }

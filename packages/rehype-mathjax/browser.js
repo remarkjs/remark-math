@@ -36,4 +36,5 @@ const rehypeMathJaxBrowser =
       }
     )
   )
+
 export default rehypeMathJaxBrowser

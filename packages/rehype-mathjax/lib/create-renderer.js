@@ -1,9 +1,8 @@
 /**
  * @typedef {import('hast').Element} Element
- * @typedef {import('mathjax-full/js/core/OutputJax').OutputJax<any, any, any>} OutputJax
+ * @typedef {import('mathjax-full/js/core/OutputJax').OutputJax<HTMLElement, Text, Document>} OutputJax
+ * @typedef {import('mathjax-full/js/core/MathDocument.js').MathDocument<HTMLElement, Text, Document>} MathDocument
  * @typedef {import('./create-plugin.js').CreateRenderer} CreateRenderer
- *
- * For some reason MathJax types can’t be imported.
  */
 
 import {mathjax} from 'mathjax-full/js/mathjax.js'
@@ -34,13 +33,16 @@ RegisterHTMLHandler(adaptor)
  */
 export function createRenderer(inputOptions, output) {
   const input = createInput(inputOptions)
+  /** @type {MathDocument} */
   const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 
   return {
     render(node, options) {
-      const domNode = doc.convert(toText(node), options)
-      // @ts-expect-error: assume no `doctypes`
-      node.children = [fromDom(domNode)]
+      // @ts-expect-error: assume mathml nodes can be handled by
+      // `hast-util-from-dom`.
+      const domNode = fromDom(doc.convert(toText(node), options))
+      // @ts-expect-error: `fromDom` returns an element for a given element.
+      node.children = [domNode]
     },
     styleSheet() {
       const value = adaptor.textContent(output.styleSheet(doc))
