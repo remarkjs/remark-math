@@ -81,8 +81,8 @@ import {visit, SKIP} from 'unist-util-visit'
  */
 export function createPlugin(createRenderer) {
   /** @type {import('unified').Plugin<[Options?]|void[], Root>} */
-  return (options = {}) => {
-    return (tree) => {
+  return (options = {}) =>
+    (tree) => {
       const renderer = createRenderer(options)
       let found = false
       /** @type {Root|Element} */
@@ -114,5 +114,4 @@ export function createPlugin(createRenderer) {
         context.children.push(renderer.styleSheet())
       }
     }
-  }
 }
