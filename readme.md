@@ -86,20 +86,15 @@ This repo houses four packages:
     — Parses `$` as `inlineMath` and `$$` as `math` nodes
 *   [`rehype-katex`][rehype-katex]
     — Transforms math nodes with [KaTeX][]
-    (✨ recommended)
 *   [`rehype-mathjax`][rehype-mathjax]
     — Transforms math nodes with [MathJax][]
-    (✨ recommended)
-*   [`remark-html-katex`][remark-html-katex]
-    — Transforms math nodes with [KaTeX][] for [`remark-html`][remark-html]
-    (discouraged)
 
 See their readmes for more information.
 
 ## Security
 
-Use of `rehype-katex`, `rehype-mathjax`, or `remark-html-katex` renders user
-content with [KaTeX][], so any vulnerability in KaTeX can open you to a
+Use of `rehype-katex` or `rehype-mathjax` renders user content with [KaTeX][],
+so any vulnerability in KaTeX can open you to a
 [cross-site scripting (XSS)][xss] attack.
 
 Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
@@ -175,8 +170,6 @@ abide by its terms.
 
 [remark]: https://github.com/remarkjs/remark
 
-[remark-html]: https://github.com/remarkjs/remark-html
-
 [rehype]: https://github.com/rehypejs/rehype
 
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
@@ -192,7 +185,5 @@ abide by its terms.
 [rehype-katex]: ./packages/rehype-katex
 
 [rehype-mathjax]: ./packages/rehype-mathjax
-
-[remark-html-katex]: ./packages/remark-html-katex
 
 [screenshot]: screenshot.png

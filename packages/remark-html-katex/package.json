@@ -1,21 +1,9 @@
 {
   "name": "remark-html-katex",
   "version": "4.0.0",
-  "description": "remark plugin to transform inline and block math with KaTeX",
+  "description": "Legacy remark plugin to transform math with KaTeX — please use `rehype-katex` instead",
   "license": "MIT",
-  "keywords": [
-    "unified",
-    "remark",
-    "remark-plugin",
-    "plugin",
-    "mdast",
-    "markdown",
-    "html",
-    "math",
-    "katex",
-    "latex",
-    "tex"
-  ],
+  "keywords": [],
   "repository": "https://github.com/remarkjs/remark-math/tree/main/packages/remark-html-katex",
   "bugs": "https://github.com/remarkjs/remark-math/issues",
   "funding": {
