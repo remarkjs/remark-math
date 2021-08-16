@@ -1,6 +1,6 @@
 {
   "name": "remark-html-katex",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Legacy remark plugin to transform math with KaTeX — please use `rehype-katex` instead",
   "license": "MIT",
   "keywords": [],
