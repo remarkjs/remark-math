@@ -6,7 +6,7 @@
 import katex from 'katex'
 import {visit} from 'unist-util-visit'
 import {removePosition} from 'unist-util-remove-position'
-import {toText} from 'hast-util-to-text'
+import {toString} from 'hast-util-to-string'
 import {unified} from 'unified'
 import rehypeParse from 'rehype-parse'
 
@@ -39,7 +39,7 @@ export default function rehypeKatex(options) {
         return
       }
 
-      const value = toText(element)
+      const value = toString(element)
 
       /** @type {string} */
       let result
