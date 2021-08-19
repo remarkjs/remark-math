@@ -20,9 +20,9 @@ test('rehype-katex', (t) => {
           '<p>Block math:</p>',
           '<div class="math-display">',
           '\\begin{split}' +
-            '   f(-2) &= \\sqrt{-2+4} \\\\' +
-            '   &= x % Test Comment' +
-            '\\end{split}',
+          '   f(-2) &= \\sqrt{-2+4} \\\\' +
+          '   &= x % Test Comment' +
+          '\\end{split}',
           '</div>'
         ].join('\n')
       )
@@ -39,9 +39,9 @@ test('rehype-katex', (t) => {
           '<div class="math-display">' +
             katex.renderToString(
               '\\begin{split}\n' +
-                '   f(-2) &= \\sqrt{-2+4} \\\\\n' +
-                '   &= x % Test Comment\n' +
-                '\\end{split}',
+              '   f(-2) &= \\sqrt{-2+4} \\\\\n' +
+              '   &= x % Test Comment\n' +
+              '\\end{split}',
               {displayMode: true}
             ) +
             '</div>'
@@ -66,9 +66,9 @@ test('rehype-katex', (t) => {
           '',
           '$$',
           '\\begin{split}' +
-            '   f(-2) &= \\sqrt{-2+4} \\\\' +
-            '   &= x % Test Comment' +
-            '\\end{split}',
+          '   f(-2) &= \\sqrt{-2+4} \\\\' +
+          '   &= x % Test Comment' +
+          '\\end{split}',
           '$$'
         ].join('\n')
       )
@@ -85,9 +85,9 @@ test('rehype-katex', (t) => {
           '<div class="math math-display">' +
             katex.renderToString(
               '\\begin{split}\n' +
-                '   f(-2) &= \\sqrt{-2+4} \\\\\n' +
-                '   &= x % Test Comment\n' +
-                '\\end{split}',
+              '   f(-2) &= \\sqrt{-2+4} \\\\\n' +
+              '   &= x % Test Comment\n' +
+              '\\end{split}',
               {displayMode: true}
             ) +
             '</div>'
