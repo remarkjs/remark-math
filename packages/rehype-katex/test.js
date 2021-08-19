@@ -18,7 +18,12 @@ test('rehype-katex', (t) => {
         [
           '<p>Inline math <span class="math-inline">\\alpha</span>.</p>',
           '<p>Block math:</p>',
-          '<div class="math-display">\\gamma</div>'
+          '<div class="math-display">',
+          '\\begin{split}' +
+            '   f(-2) &= \\sqrt{-2+4} \\\\' +
+            '   &= x % Test Comment' +
+            '\\end{split}',
+          '</div>'
         ].join('\n')
       )
       .toString(),
@@ -32,7 +37,13 @@ test('rehype-katex', (t) => {
             '</span>.</p>',
           '<p>Block math:</p>',
           '<div class="math-display">' +
-            katex.renderToString('\\gamma', {displayMode: true}) +
+            katex.renderToString(
+              '\\begin{split}\n' +
+                '   f(-2) &= \\sqrt{-2+4} \\\\\n' +
+                '   &= x % Test Comment\n' +
+                '\\end{split}',
+              {displayMode: true}
+            ) +
             '</div>'
         ].join('\n')
       )
@@ -54,7 +65,10 @@ test('rehype-katex', (t) => {
           'Block math:',
           '',
           '$$',
-          '\\gamma',
+          '\\begin{split}' +
+            '   f(-2) &= \\sqrt{-2+4} \\\\' +
+            '   &= x % Test Comment' +
+            '\\end{split}',
           '$$'
         ].join('\n')
       )
@@ -69,7 +83,13 @@ test('rehype-katex', (t) => {
             '</span>.</p>',
           '<p>Block math:</p>',
           '<div class="math math-display">' +
-            katex.renderToString('\\gamma', {displayMode: true}) +
+            katex.renderToString(
+              '\\begin{split}\n' +
+                '   f(-2) &= \\sqrt{-2+4} \\\\\n' +
+                '   &= x % Test Comment\n' +
+                '\\end{split}',
+              {displayMode: true}
+            ) +
             '</div>'
         ].join('\n')
       )
