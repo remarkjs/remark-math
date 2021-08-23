@@ -44,6 +44,7 @@ import {readSync} from 'to-vfile'
 import {unified} from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeKatex from 'rehype-katex'
+import rehypeDocument from 'rehype-document'
 import rehypeStringify from 'rehype-stringify'
 
 const file = readSync('example.html')
@@ -51,6 +52,9 @@ const file = readSync('example.html')
 unified()
   .use(rehypeParse, {fragment: true})
   .use(rehypeKatex)
+  .use(rehypeDocument, {
+    css: 'https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css'
+  })
   .use(rehypeStringify)
   .process(file)
   .then((file) => {
