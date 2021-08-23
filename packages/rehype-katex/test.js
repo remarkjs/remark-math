@@ -189,5 +189,29 @@ test('rehype-katex', (t) => {
     'should support `strict: ignore`'
   )
 
+  t.deepEqual(
+    unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeKatex, {errorColor: 'orange', strict: 'ignore'})
+      .use(rehypeStringify)
+      .processSync(
+        '<div class="math math-display">\\begin{split}\n  f(-2) &= \\sqrt{-2+4} \\\\\n  &= x % Test Comment\n\\end{split}</div>'
+      )
+      .toString(),
+    unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeStringify)
+      .processSync(
+        '<div class="math math-display">' +
+          katex.renderToString(
+            '\\begin{split}\n  f(-2) &= \\sqrt{-2+4} \\\\\n  &= x % Test Comment\n\\end{split}',
+            {displayMode: true}
+          ) +
+          '</div>'
+      )
+      .toString(),
+    'should support comments'
+  )
+
   t.end()
 })

@@ -42,9 +42,11 @@ export function createRenderer(options, output) {
 
   return {
     render(node, options) {
-      // @ts-expect-error: assume mathml nodes can be handled by
-      // `hast-util-from-dom`.
-      const domNode = fromDom(doc.convert(toText(node), options))
+      const domNode = fromDom(
+        // @ts-expect-error: assume mathml nodes can be handled by
+        // `hast-util-from-dom`.
+        doc.convert(toText(node, {whitespace: 'pre'}), options)
+      )
       // @ts-expect-error: `fromDom` returns an element for a given element.
       node.children = [domNode]
     },

@@ -52,7 +52,7 @@
     "@types/mathjax": "^0.0.36",
     "@types/web": "^0.0.15",
     "hast-util-from-dom": "^4.0.0",
-    "hast-util-to-text": "^3.0.0",
+    "hast-util-to-text": "^3.1.0",
     "jsdom": "^16.0.0",
     "mathjax-full": "^3.0.0",
     "unified": "^10.0.0",

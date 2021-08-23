@@ -39,7 +39,7 @@ export default function rehypeKatex(options) {
         return
       }
 
-      const value = toText(element)
+      const value = toText(element, {whitespace: 'pre'})
 
       /** @type {string} */
       let result
