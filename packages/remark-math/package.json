@@ -1,6 +1,6 @@
 {
   "name": "remark-math",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "remark plugin to parse and stringify math",
   "license": "MIT",
   "keywords": [
