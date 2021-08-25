@@ -80,7 +80,7 @@ But in a browser, that looks something like this:
 
 ## Packages
 
-This repo houses four packages:
+This repo houses three packages:
 
 *   [`remark-math`][remark-math]
     — Parses `$` as `inlineMath` and `$$` as `math` nodes

@@ -88,6 +88,15 @@ Get’s useful when combined with [`rehype-katex`][rehype-katex] or
 See [`micromark/micromark-extension-math`][extension-math] for more info on what
 syntax is supported.
 
+##### `options`
+
+###### `options.singleDollarTextMath`
+
+Whether to support math (text) with a single dollar (`boolean`, default:
+`true`).
+Single dollars work in Pandoc and many other places, but often interfere with
+“normal” dollars in text.
+
 #### Notes
 
 ##### Escaping

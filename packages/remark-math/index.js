@@ -1,5 +1,6 @@
 /**
  * @typedef {import('mdast').Root} Root
+ * @typedef {import('mdast-util-math').ToOptions} Options
  *
  * @typedef {import('mdast-util-math')} DoNotTouchAsThisImportIncludesMathInTree
  */
@@ -10,14 +11,14 @@ import {mathFromMarkdown, mathToMarkdown} from 'mdast-util-math'
 /**
  * Plugin to support math.
  *
- * @type {import('unified').Plugin<void[], Root>}
+ * @type {import('unified').Plugin<[Options?] | void[], Root, Root>}
  */
-export default function remarkMath() {
+export default function remarkMath(options = {}) {
   const data = this.data()
 
-  add('micromarkExtensions', math)
-  add('fromMarkdownExtensions', mathFromMarkdown)
-  add('toMarkdownExtensions', mathToMarkdown)
+  add('micromarkExtensions', math(options))
+  add('fromMarkdownExtensions', mathFromMarkdown())
+  add('toMarkdownExtensions', mathToMarkdown(options))
 
   /**
    * @param {string} field

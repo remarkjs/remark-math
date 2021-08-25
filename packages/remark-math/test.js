@@ -322,6 +322,29 @@ test('remarkMath', (t) => {
     unified()
       .use(remarkParse)
       .use(remarkStringify)
+      .use(remarkMath, {singleDollarTextMath: false})
+      .processSync('Math $\\alpha$\n\n$$\\beta+\\gamma$$\n')
+      .toString(),
+    'Math $\\alpha$\n\n$$\\beta+\\gamma$$\n',
+    'should support `singleDollarTextMath: false` (1)'
+  )
+
+  t.deepEqual(
+    unified()
+      .use(remarkParse)
+      .use(remarkMath, {singleDollarTextMath: false})
+      .use(remarkRehype)
+      .use(rehypeStringify)
+      .processSync('Math $\\alpha$\n\n$$\\beta+\\gamma$$\n')
+      .toString(),
+    '<p>Math $\\alpha$</p>\n<p><span class="math math-inline">\\beta+\\gamma</span></p>',
+    'should support `singleDollarTextMath: false` (2)'
+  )
+
+  t.deepEqual(
+    unified()
+      .use(remarkParse)
+      .use(remarkStringify)
       .use(remarkMath)
       .processSync('> $$\n> \\alpha\\beta\n> $$\n')
       .toString(),

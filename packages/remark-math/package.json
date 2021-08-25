@@ -36,8 +36,8 @@
   ],
   "dependencies": {
     "@types/mdast": "^3.0.0",
-    "mdast-util-math": "^1.0.0",
-    "micromark-extension-math": "^1.0.0",
+    "mdast-util-math": "^2.0.0",
+    "micromark-extension-math": "^2.0.0",
     "unified": "^10.0.0"
   },
   "scripts": {
