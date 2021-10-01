@@ -119,7 +119,8 @@ const mathSanitizeSchema = {
 };
 ```
 
-And applying the `rehype-katex` plugin *after* the [`rehype-sanitize`][rehype-sanitize] one like so:
+And applying the `rehype-katex` plugin *after* the
+[`rehype-sanitize`][rehype-sanitize] plugin like so:
 
 ```js
 [
