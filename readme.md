@@ -101,7 +101,7 @@ Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
 
 If you are using [`rehype-sanitize`][rehype-sanitize], but fully trust that
 [KaTeX][] doesn't have any XSS vulnerabilities, you can allow list the required
-class names by extending the sanitize schema like so:
+class names added by `remark-math` by extending the sanitize schema like so:
 
 ```js
 const mathSanitizeSchema = {
