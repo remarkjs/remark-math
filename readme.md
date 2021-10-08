@@ -99,9 +99,9 @@ so any vulnerability in KaTeX can open you to a
 
 Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
 
-If you are using [`rehype-sanitize`][rehype-sanitize], but fully trust that
-[KaTeX][] doesn’t have any XSS vulnerabilities, you can allow list the required
-class names added by `remark-math` by extending the sanitize schema like so:
+If you are using [`rehype-sanitize`][rehype-sanitize] and trust [KaTeX][], you
+can allow the classes added by `remark-math` by extending the default schema
+like so:
 
 ```js
 const mathSanitizeSchema = {
@@ -110,13 +110,13 @@ const mathSanitizeSchema = {
     ...defaultSchema.attributes,
     div: [
       ...defaultSchema.attributes.div,
-      ["className", "math", "math-display"],
+      ['className', 'math', 'math-display']
     ],
     span: [
-      ["className", "math", "math-inline"],
-    ],
-  },
-};
+      ['className', 'math', 'math-inline']
+    ]
+  }
+}
 ```
 
 And applying the `rehype-katex` plugin *after* the
@@ -125,10 +125,10 @@ And applying the `rehype-katex` plugin *after* the
 ```js
 [
   rehypeRaw,
-  ...
+  // …
   [rehypeSanitize, mathSanitizeSchema],
-  rehypeKatex,
-  ...
+  rehypeKatex
+  // …
 ]
 ```
 
