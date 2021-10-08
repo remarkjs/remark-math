@@ -112,7 +112,8 @@ test('remark-html-katex', (t) => {
       .use(remarkHtmlKatex, {throwOnError: true})
       .use(remarkHtml)
       .processSync('Lorem\n$\\alpa$')
-  } catch (error) {
+  } catch (exception) {
+    const error = /** @type {Error} */ (exception)
     t.equal(
       error.message,
       'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',

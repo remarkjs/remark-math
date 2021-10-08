@@ -49,7 +49,8 @@ export default function rehypeKatex(options) {
           value,
           assign({}, settings, {displayMode, throwOnError: true})
         )
-      } catch (error) {
+      } catch (exception) {
+        const error = /** @type {Error} */ (exception)
         const fn = throwOnError ? 'fail' : 'message'
         const origin = [source, error.name.toLowerCase()].join(':')
 

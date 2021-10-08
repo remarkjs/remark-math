@@ -37,7 +37,8 @@ export default function remarkHtmlKatex(options = {}) {
               throwOnError: true
             })
           )
-        } catch (error) {
+        } catch (exception) {
+          const error = /** @type {Error} */ (exception)
           const fn = throwOnError ? 'fail' : 'message'
           const origin = [source, error.name.toLowerCase()].join(':')
 
