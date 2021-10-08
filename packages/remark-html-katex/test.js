@@ -14,7 +14,7 @@ test('remark-html-katex', (t) => {
       .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex)
-      .use(remarkHtml)
+      .use(remarkHtml, {sanitize: false})
       .processSync(
         [
           'Inline math $\\alpha$.',
@@ -53,7 +53,7 @@ test('remark-html-katex', (t) => {
       .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex, {macros})
-      .use(remarkHtml)
+      .use(remarkHtml, {sanitize: false})
       .processSync('$\\RR$')
       .toString(),
     unified()
@@ -73,7 +73,7 @@ test('remark-html-katex', (t) => {
       .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex, {errorColor: 'orange'})
-      .use(remarkHtml)
+      .use(remarkHtml, {sanitize: false})
       .processSync('$\\alpa$')
       .toString(),
     unified()
@@ -96,7 +96,7 @@ test('remark-html-katex', (t) => {
       .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex)
-      .use(remarkHtml)
+      .use(remarkHtml, {sanitize: false})
       .processSync('Lorem\n$\\alpa$')
       .messages.map((d) => String(d)),
     [
@@ -110,9 +110,10 @@ test('remark-html-katex', (t) => {
       .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex, {throwOnError: true})
-      .use(remarkHtml)
+      .use(remarkHtml, {sanitize: false})
       .processSync('Lorem\n$\\alpa$')
-  } catch (error) {
+  } catch (error_) {
+    const error = /** @type {Error} */ (error_)
     t.equal(
       error.message,
       'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
@@ -125,7 +126,7 @@ test('remark-html-katex', (t) => {
       .use(remarkParse)
       .use(remarkMath)
       .use(remarkHtmlKatex, {errorColor: 'orange', strict: 'ignore'})
-      .use(remarkHtml)
+      .use(remarkHtml, {sanitize: false})
       .processSync('$ê&$')
       .toString(),
     unified()
@@ -140,7 +141,7 @@ test('remark-html-katex', (t) => {
 
   const pipeline = unified()
     .use(remarkHtmlKatex, {errorColor: 'orange', strict: 'ignore'})
-    .use(remarkHtml)
+    .use(remarkHtml, {sanitize: false})
 
   t.deepEqual(
     pipeline.stringify(

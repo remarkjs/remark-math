@@ -164,7 +164,8 @@ test('rehype-katex', (t) => {
       .processSync(
         '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
       )
-  } catch (error) {
+  } catch (error_) {
+    const error = /** @type {Error} */ (error_)
     t.equal(
       error.message,
       'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
