@@ -99,6 +99,39 @@ so any vulnerability in KaTeX can open you to a
 
 Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
 
+If you are using [`rehype-sanitize`][rehype-sanitize] and trust [KaTeX][], you
+can allow the classes added by `remark-math` by extending the default schema
+like so:
+
+```js
+const mathSanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    div: [
+      ...defaultSchema.attributes.div,
+      ['className', 'math', 'math-display']
+    ],
+    span: [
+      ['className', 'math', 'math-inline']
+    ]
+  }
+}
+```
+
+And applying the `rehype-katex` plugin *after* the
+[`rehype-sanitize`][rehype-sanitize] plugin like so:
+
+```js
+[
+  rehypeRaw,
+  // …
+  [rehypeSanitize, mathSanitizeSchema],
+  rehypeKatex
+  // …
+]
+```
+
 ## Related
 
 *   [`remark-breaks`](https://github.com/remarkjs/remark-breaks)
