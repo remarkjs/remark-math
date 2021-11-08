@@ -113,7 +113,7 @@ Now running `node example.js` yields:
 
 ### Example: MathJax
 
-Supporting either MathJax or KaTeX is every similar.
+Supporting either MathJax or KaTeX is very similar.
 Take the above KaTeX example and change:
 
 ```diff
