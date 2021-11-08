@@ -1,7 +1,4 @@
 /**
- * @typedef {import('hast').Root} Root
- * @typedef {import('hast').Element} Element
- * @typedef {import('./lib/create-plugin').MathNotation} MathNotation
  * @typedef {import('./lib/create-plugin').Options} Options
  */
 

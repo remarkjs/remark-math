@@ -8,23 +8,71 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**rehype**][rehype] plugin to transform `<span class=math-inline>` and
+**[rehype][]** plugin to render `<span class=math-inline>` and
 `<div class=math-display>` with [KaTeX][].
+
+## Contents
+
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
+*   [Install](#install)
+*   [Use](#use)
+*   [API](#api)
+    *   [`unified().use(rehypeKatex[, options])`](#unifieduserehypekatex-options)
+*   [CSS](#css)
+*   [Syntax tree](#syntax-tree)
+*   [Types](#types)
+*   [Security](#security)
+*   [Related](#related)
+*   [Contribute](#contribute)
+*   [License](#license)
+
+## What is this?
+
+This package is a [unified][] ([rehype][]) plugin to render math.
+You can combine it with [`remark-math`][remark-math] for math in markdown or add
+`math-inline` and `math-display` classes in HTML.
+
+**unified** is a project that transforms content with abstract syntax trees
+(ASTs).
+**rehype** adds support for HTML to unified.
+**hast** is the HTML AST that rehype uses.
+This is a rehype plugin that transforms hast.
+
+## When should I use this?
+
+This project is useful as it renders math with KaTeX at compile time, which
+means that there is no client side JavaScript needed.
+
+A different plugin, [`rehype-mathjax`][rehype-mathjax], is similar but uses
+[MathJax][] instead.
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
-Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
-
-[npm][]:
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
+In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
 
 ```sh
 npm install rehype-katex
 ```
 
+In Deno with [Skypack][]:
+
+```js
+import rehypeKatex from 'https://cdn.skypack.dev/rehype-katex@6?dts'
+```
+
+In browsers with [Skypack][]:
+
+```html
+<script type="module">
+  import rehypeKatex from 'https://cdn.skypack.dev/rehype-katex@6?min'
+</script>
+```
+
 ## Use
 
-Say we have the following file, `example.html`:
+Say we have the following file `example.html`:
 
 ```html
 <p>
@@ -37,41 +85,51 @@ Say we have the following file, `example.html`:
 </div>
 ```
 
-And our module, `example.js`, looks as follows:
+And our module `example.js` looks as follows:
 
 ```js
-import {readSync} from 'to-vfile'
+import {read} from 'to-vfile'
 import {unified} from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeKatex from 'rehype-katex'
 import rehypeDocument from 'rehype-document'
 import rehypeStringify from 'rehype-stringify'
 
-const file = readSync('example.html')
+main()
 
-unified()
-  .use(rehypeParse, {fragment: true})
-  .use(rehypeKatex)
-  .use(rehypeDocument, {
-    css: 'https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css'
-  })
-  .use(rehypeStringify)
-  .process(file)
-  .then((file) => {
-    console.log(String(file))
-  })
+async function main() {
+  const file = await unified()
+    .use(rehypeParse, {fragment: true})
+    .use(rehypeKatex)
+    .use(rehypeDocument, {
+      css: 'https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css'
+    })
+    .use(rehypeStringify)
+    .process(await read('example.html'))
+
+  console.log(String(file))
+}
 ```
 
-Now, running `node example` yields:
+Now running `node example.js` yields:
 
 ```html
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>example</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css">
+</head>
+<body>
 <p>
-  Lift(<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span></span></span></span></span>) can be determined by Lift Coefficient
-  (<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">C_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>) like the following equation.
+  Lift(<span class="math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient
+  (<span class="math math-inline"><span class="katex">…</span></span>) like the following equation.
 </p>
-
-<div class="math math-display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ρ</mi><msup><mi>v</mi><mn>2</mn></msup><mi>S</mi><msub><mi>C</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">L = \frac{1}{2} \rho v^2 S C_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal">ρ</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></div>
-
+<div class="math math-display"><span class="katex-display">…</span></div>
+</body>
+</html>
 ```
 
 ## API
@@ -84,24 +142,96 @@ The default export is `rehypeKatex`.
 Transform `<span class="math-inline">` and `<div class="math-display">` with
 [KaTeX][].
 
-#### `options`
+##### `options`
 
-##### `options.throwOnError`
+Configuration (optional).
+All options, except for `displayMode`, are passed to [KaTeX][katex-options].
+
+###### `options.throwOnError`
 
 Throw if a KaTeX parse error occurs (`boolean`, default: `false`).
 See [KaTeX options][katex-options].
 
-##### `options.<*>`
+## CSS
 
-All other options, except for `displayMode`, are passed to
-[KaTeX][katex-options].
+The HTML produced by KaTeX requires CSS to render correctly.
+You should use `katex.css` somewhere on the page where the math is shown to
+style it properly.
+At the time of writing, the last version is:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn" crossorigin="anonymous">
+```
+
+## Syntax tree
+
+This plugin transforms elements with a class name of either `math-inline` and/or
+`math-display`.
+
+## Types
+
+This package is fully typed with [TypeScript][].
+An extra `Options` type is exported, which models the accepted options.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 12.20+, 14.14+, and 16.0+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This plugin works with unified version 6+ and rehype version 4+.
 
 ## Security
 
-Use of `rehype-katex` renders user content with [KaTeX][], so any vulnerability
-in KaTeX can open you to a [cross-site scripting (XSS)][xss] attack.
-
+Using `rehype-katex` should be safe assuming that you trust KaTeX.
+Any vulnerability in it could open you to a [cross-site scripting (XSS)][xss]
+attack.
 Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
+
+When you don’t trust user content but do trust KaTeX, you can allow the classes
+added by `remark-math` while disallowing anything else in the `rehype-sanitize`
+schema, and run `rehype-katex` afterwards.
+Like so:
+
+```js
+import rehypeSanitize, {defaultSchema} from 'rehype-stringify'
+
+const mathSanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    div: [
+      ...defaultSchema.attributes.div,
+      ['className', 'math', 'math-display']
+    ],
+    span: [
+      ['className', 'math', 'math-inline']
+    ]
+  }
+}
+
+// …
+
+unified()
+  // …
+  .use(rehypeSanitize, mathSanitizeSchema)
+  .use(rehypeKatex)
+  // …
+```
+
+## Related
+
+*   [`rehype-mathjax`][rehype-mathjax]
+    — same but with MathJax
+*   [`rehype-highlight`](https://github.com/rehypejs/rehype-highlight)
+    — highlight code blocks
+*   [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
+    — add links to headings
+*   [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize)
+    — sanitize HTML
+*   [`rehype-document`](https://github.com/rehypejs/rehype-document)
+    — wrap a document around the tree
 
 ## Contribute
 
@@ -147,6 +277,8 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[skypack]: https://www.skypack.dev
+
 [health]: https://github.com/remarkjs/.github
 
 [contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
@@ -159,12 +291,22 @@ abide by its terms.
 
 [author]: https://rokt33r.github.io
 
+[unified]: https://github.com/unifiedjs/unified
+
 [rehype]: https://github.com/rehypejs/rehype
 
 [xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+
+[typescript]: https://www.typescriptlang.org
 
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
 
 [katex]: https://github.com/Khan/KaTeX
 
 [katex-options]: https://katex.org/docs/options.html
+
+[mathjax]: https://www.mathjax.org
+
+[remark-math]: ../remark-math
+
+[rehype-mathjax]: ../rehype-mathjax
