@@ -22,6 +22,7 @@
 *   [CSS](#css)
 *   [Syntax tree](#syntax-tree)
 *   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Related](#related)
 *   [Contribute](#contribute)
