@@ -1,6 +1,6 @@
 {
   "name": "rehype-katex",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "rehype plugin to transform inline and block math with KaTeX",
   "license": "MIT",
   "keywords": [
