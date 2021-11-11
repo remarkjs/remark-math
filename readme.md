@@ -8,22 +8,58 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**remark**][remark] and [**rehype**][rehype] plugins to support math!
+This project is a monorepo that contains several packages for dealing with
+math in markdown and HTML.
 
-## Install
+## Contents
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
-Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
+*   [Examples](#examples)
+    *   [Example: KaTeX](#example-katex)
+    *   [Example: MathJax](#example-mathjax)
+*   [Security](#security)
+*   [Contribute](#contribute)
+*   [License](#license)
 
-[npm][]:
+## What is this?
 
-```sh
-npm install remark-math rehype-katex
-```
+This repository contains [unified][] ([remark][] and [rehype][]) plugins to add
+support for math.
+You can use them to add support for parsing and serializing this syntax
+extension and to render math with KaTeX or MathJax.
 
-## Use
+*   [`remark-math`][remark-math]
+    — remark plugin to support a math syntax in markdown
+*   [`rehype-katex`][rehype-katex]
+    — rehype plugin to render math in HTML with [KaTeX][]
+*   [`rehype-mathjax`][rehype-mathjax]
+    — rehype plugin to render math in HTML with [MathJax][]
 
-Say we have the following file, `example.md`:
+You typically use `remark-math` combined with either `rehype-katex` or
+`rehype-mathjax`.
+
+**unified** is a project that transforms content with abstract syntax trees
+(ASTs).
+**remark** adds support for markdown and **rehype** adds support for HTML to
+unified.
+
+## When should I use this?
+
+This project is useful when you want to support LaTeX math.
+This mechanism works well when you want authors, that have some LaTeX
+experience, to be able to embed rich diagrams of math to scientific
+documentation.
+The syntax of math in markdown does not work everywhere so it makes markdown
+less portable.
+This project is also useful as it renders math with KaTeX or MathJax at compile
+time, which means that there is no client side JavaScript needed.
+
+## Examples
+
+### Example: KaTeX
+
+Say we have the following file `example.md`:
 
 ```markdown
 Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following
@@ -34,10 +70,10 @@ L = \frac{1}{2} \rho v^2 S C_L
 $$
 ```
 
-And our module, `example.js`, looks as follows:
+And our module `example.js` looks as follows:
 
 ```js
-import {readSync} from 'to-vfile'
+import {read} from 'to-vfile'
 import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkMath from 'remark-math'
@@ -45,105 +81,77 @@ import remarkRehype from 'remark-rehype'
 import rehypeKatex from 'rehype-katex'
 import rehypeStringify from 'rehype-stringify'
 
-const file = readSync('example.md')
+main()
 
-unified()
-  .use(remarkParse)
-  .use(remarkMath)
-  .use(remarkRehype)
-  .use(rehypeKatex)
-  .use(rehypeStringify)
-  .process(file)
-  .then((file) => {
-    console.log(String(file))
-  })
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkMath)
+    .use(remarkRehype)
+    .use(rehypeKatex)
+    .use(rehypeStringify)
+    .process(await read('example.md'))
+
+  console.log(String(file))
+}
 ```
 
-Now, running `node example` yields:
+Now running `node example.js` yields:
 
 ```html
-<p>Lift(<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span></span></span></span></span>) can be determined by Lift Coefficient (<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">C_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>) like the following equation.</p>
-<div class="math math-display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ρ</mi><msup><mi>v</mi><mn>2</mn></msup><mi>S</mi><msub><mi>C</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">L = \frac{1}{2} \rho v^2 S C_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal">ρ</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></div>
+<p>Lift(<span class="math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient (<span class="math math-inline"><span class="katex">…</span></span>) like the following equation.</p>
+<div class="math math-display"><span class="katex-display">…</span></div>
 ```
 
-Wow, that’s a lot!
-But in a browser, that looks something like this:
-
-![][screenshot]
-
-> Note: you should also use `katex.css` somewhere on the page to style math
+> 👉 **Note**: KaTeX requires CSS to render correctly.
+> Use `katex.css` somewhere on the page where the math is shown to style it
 > properly:
 >
 > ```html
 > <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn" crossorigin="anonymous">
 > ```
 
-## Packages
+### Example: MathJax
 
-This repo houses three packages:
+Supporting either MathJax or KaTeX is very similar.
+Take the above KaTeX example and change:
 
-*   [`remark-math`][remark-math]
-    — Parses `$` as `inlineMath` and `$$` as `math` nodes
-*   [`rehype-katex`][rehype-katex]
-    — Transforms math nodes with [KaTeX][]
-*   [`rehype-mathjax`][rehype-mathjax]
-    — Transforms math nodes with [MathJax][]
+```diff
+@@ -3,7 +3,7 @@ import {unified} from 'unified'
+ import remarkParse from 'remark-parse'
+ import remarkMath from 'remark-math'
+ import remarkRehype from 'remark-rehype'
+-import rehypeKatex from 'rehype-katex'
++import rehypeMathjax from 'rehype-mathjax'
+ import rehypeStringify from 'rehype-stringify'
 
-See their readmes for more information.
+ main()
+@@ -13,7 +13,7 @@ async function main() {
+     .use(remarkParse)
+     .use(remarkMath)
+     .use(remarkRehype)
+-    .use(rehypeKatex)
++    .use(rehypeMathjax)
+     .use(rehypeStringify)
+     .process(await read('example.md'))
+```
+
+Now running `node example.js` yields:
+
+```html
+<p>Lift(<span class="math math-inline"><mjx-container class="MathJax" jax="SVG">…</svg></mjx-container></span>) can be determined by Lift Coefficient (<span class="math math-inline"><mjx-container class="MathJax" jax="SVG">…</svg></mjx-container></span>) like the following
+equation.</p>
+<div class="math math-display"><mjx-container class="MathJax" jax="SVG" display="true">…</svg></mjx-container></div>
+<style>mjx-container[jax="SVG"]{direction: ltr}/*…*/</style>
+```
 
 ## Security
 
-Use of `rehype-katex` or `rehype-mathjax` renders user content with [KaTeX][],
-so any vulnerability in KaTeX can open you to a
-[cross-site scripting (XSS)][xss] attack.
-
-Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
-
-If you are using [`rehype-sanitize`][rehype-sanitize] and trust [KaTeX][], you
-can allow the classes added by `remark-math` by extending the default schema
-like so:
-
-```js
-const mathSanitizeSchema = {
-  ...defaultSchema,
-  attributes: {
-    ...defaultSchema.attributes,
-    div: [
-      ...defaultSchema.attributes.div,
-      ['className', 'math', 'math-display']
-    ],
-    span: [
-      ['className', 'math', 'math-inline']
-    ]
-  }
-}
-```
-
-And applying the `rehype-katex` plugin *after* the
-[`rehype-sanitize`][rehype-sanitize] plugin like so:
-
-```js
-[
-  rehypeRaw,
-  // …
-  [rehypeSanitize, mathSanitizeSchema],
-  rehypeKatex
-  // …
-]
-```
-
-## Related
-
-*   [`remark-breaks`](https://github.com/remarkjs/remark-breaks)
-    – Support hard breaks without needing spaces (like on issues)
-*   [`remark-gfm`](https://github.com/remarkjs/remark-gfm)
-    — GFM (autolink literals, strikethrough, tables, tasklists)
-*   [`remark-github`](https://github.com/remarkjs/remark-github)
-    — Autolink references like in GitHub issues, PRs, and comments
-*   [`remark-footnotes`](https://github.com/remarkjs/remark-footnotes)
-    — Footnotes
-*   [`remark-frontmatter`](https://github.com/remarkjs/remark-frontmatter)
-    — Frontmatter (YAML, TOML, and more)
+Using `rehype-katex` or `rehype-mathjax` should be safe assuming that you trust
+KaTeX and MathJax.
+Any vulnerability in them could open you to a [cross-site scripting (XSS)][xss]
+attack.
+See their readmes for more info.
 
 ## Contribute
 
@@ -157,7 +165,7 @@ abide by its terms.
 
 ## License
 
-[MIT][license] © [Junyoung Choi][author]
+[MIT][license] © [Junyoung Choi][author] and TANIGUCHI Masaya
 
 <!-- Definitions -->
 
@@ -187,8 +195,6 @@ abide by its terms.
 
 [chat]: https://github.com/remarkjs/remark/discussions
 
-[npm]: https://docs.npmjs.com/cli/install
-
 [health]: https://github.com/remarkjs/.github
 
 [contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
@@ -201,11 +207,11 @@ abide by its terms.
 
 [author]: https://rokt33r.github.io
 
+[unified]: https://github.com/unifiedjs/unified
+
 [remark]: https://github.com/remarkjs/remark
 
 [rehype]: https://github.com/rehypejs/rehype
-
-[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
 
 [katex]: https://github.com/Khan/KaTeX
 
@@ -218,5 +224,3 @@ abide by its terms.
 [rehype-katex]: ./packages/rehype-katex
 
 [rehype-mathjax]: ./packages/rehype-mathjax
-
-[screenshot]: screenshot.png

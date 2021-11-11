@@ -1,6 +1,4 @@
 /**
- * @typedef {import('hast').Root} Root
- * @typedef {import('mathjax-full/js/output/svg.js').SVG<HTMLElement, Text, Document>} SVG_
  * @typedef {import('./lib/create-plugin.js').Options} Options
  */
 

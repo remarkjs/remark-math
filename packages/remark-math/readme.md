@@ -8,43 +8,87 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**remark**][remark] plugin to parse and stringify math.
+**[remark][]** plugin to support math (`$C_L$`).
 
-## Important!
+## Contents
 
-This plugin is affected by the new parser in remark
-([`micromark`](https://github.com/micromark/micromark),
-see [`remarkjs/remark#536`](https://github.com/remarkjs/remark/pull/536)).
-Use version 3 while you’re still on remark 12.
-Use version 4 for remark 13+.
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
+*   [Install](#install)
+*   [Use](#use)
+*   [API](#api)
+    *   [`unified().use(remarkMath[, options])`](#unifieduseremarkmath-options)
+*   [Syntax](#syntax)
+*   [HTML](#html)
+*   [Syntax tree](#syntax-tree)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
+*   [Security](#security)
+*   [Related](#related)
+*   [Contribute](#contribute)
+*   [License](#license)
+
+## What is this?
+
+This package is a [unified][] ([remark][]) plugin to add support for math.
+You can use this to add support for parsing and serializing this syntax
+extension.
+
+**unified** is a project that transforms content with abstract syntax trees
+(ASTs).
+**remark** adds support for markdown to unified.
+**mdast** is the markdown AST that remark uses.
+**micromark** is the markdown parser we use.
+This is a remark plugin that adds support for the math syntax and AST to remark.
+
+## When should I use this?
+
+This project is useful when you want to support math in markdown.
+Extending markdown with a syntax extension makes the markdown less portable.
+LaTeX equations are also quite hard.
+But this mechanism works well when you want authors, that have some LaTeX
+experience, to be able to embed rich diagrams of math in scientific text.
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
-Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
-
-[npm][]:
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
+In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
 
 ```sh
 npm install remark-math
 ```
 
+In Deno with [Skypack][]:
+
+```js
+import remarkMath from 'https://cdn.skypack.dev/remark-math@5?dts'
+```
+
+In browsers with [Skypack][]:
+
+```html
+<script type="module">
+  import remarkMath from 'https://cdn.skypack.dev/remark-math@5?min'
+</script>
+```
+
 ## Use
 
-Say we have the following file, `example.md`:
+Say we have the following file `example.md`:
 
 ```markdown
-Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following equation.
+Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following
+equation.
 
 $$
 L = \frac{1}{2} \rho v^2 S C_L
 $$
 ```
 
-And our module, `example.js`, looks as follows:
+And our module `example.js` looks as follows:
 
 ```js
-import {readSync} from 'to-vfile'
+import {read} from 'to-vfile'
 import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkMath from 'remark-math'
@@ -52,25 +96,26 @@ import remarkRehype from 'remark-rehype'
 import rehypeKatex from 'rehype-katex'
 import rehypeStringify from 'rehype-stringify'
 
-const file = readSync('example.md')
+main()
 
-unified()
-  .use(remarkParse)
-  .use(remarkMath)
-  .use(remarkRehype)
-  .use(rehypeKatex)
-  .use(rehypeStringify)
-  .process(file)
-  .then((file) => {
-    console.log(String(file))
-  })
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkMath)
+    .use(remarkRehype)
+    .use(rehypeKatex)
+    .use(rehypeStringify)
+    .process(await read('example.md'))
+
+  console.log(String(file))
+}
 ```
 
-Now, running `node example` yields:
+Now running `node example.js` yields:
 
 ```html
-<p>Lift(<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">L</span></span></span></span></span>) can be determined by Lift Coefficient (<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>C</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">C_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>) like the following equation.</p>
-<div class="math math-display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ρ</mi><msup><mi>v</mi><mn>2</mn></msup><mi>S</mi><msub><mi>C</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">L = \frac{1}{2} \rho v^2 S C_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathdefault">ρ</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></div>
+<p>Lift(<span class="math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient (<span class="math math-inline"><span class="katex">…</span></span>) like the following equation.</p>
+<div class="math math-display"><span class="katex-display">…</span></div>
 ```
 
 ## API
@@ -80,15 +125,11 @@ The default export is `remarkMath`.
 
 ### `unified().use(remarkMath[, options])`
 
-Parse and stringify math.
-
-Get’s useful when combined with [`rehype-katex`][rehype-katex] or
-[`rehype-mathjax`][rehype-mathjax].
-
-See [`micromark/micromark-extension-math`][extension-math] for more info on what
-syntax is supported.
+Plugin to support math.
 
 ##### `options`
+
+Configuration (optional).
 
 ###### `options.singleDollarTextMath`
 
@@ -97,20 +138,80 @@ Whether to support math (text) with a single dollar (`boolean`, default:
 Single dollars work in Pandoc and many other places, but often interfere with
 “normal” dollars in text.
 
-#### Notes
+## Syntax
 
-##### Escaping
+This plugin applies a micromark extensions to parse the syntax.
+See its readme for parse details:
 
-Markdown escapes don’t work in math, similar to code, but you can use more
-dollars around the math instead: `$$\raisebox{0.25em}{$\frac
-a b$}$$`
+*   [`micromark-extension-math`](https://github.com/micromark/micromark-extension-math#syntax)
+
+> 👉 **Note**: `$math$` works similar to `` `code` ``.
+> That means escapes don’t work inside math but you can use more dollars around
+> the math instead: `$$\raisebox{0.25em}{$\frac a b$}$$`
+
+## HTML
+
+This plugin integrates with [`remark-rehype`][remark-rehype].
+When mdast (markdown AST) is turned into hast (the HTML AST) the math nodes
+are turned into `<span class=math-inline>` and `<div class=math-block>`
+elements.
+
+## Syntax tree
+
+This plugin applies one mdast utility to build and serialize the AST.
+See its readme for the node types supported in the tree:
+
+*   [`mdast-util-math`](https://github.com/syntax-tree/mdast-util-math#syntax-tree)
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports an extra `Options` type which models the interface of the accepted
+options.
+
+If you’re working with the syntax tree, make sure to import this plugin
+somewhere in your types, as that registers the new node types in the tree.
+
+```js
+/** @typedef {import('remark-math')} */
+
+import {visit} from 'unist-util-visit'
+
+/** @type {import('unified').Plugin<[], import('mdast').Root>} */
+export default function myRemarkPlugin() => {
+  return (tree) => {
+    visit(tree, (node) => {
+      // `node` can now be one of the nodes for math.
+    })
+  }
+}
+```
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 12.20+, 14.14+, and 16.0+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This plugin works with unified version 6+ and remark version 14+.
+The previous major (version 4) worked with remark 13.
 
 ## Security
 
-Use of `remark-math` itself doesn’t open you up to [cross-site scripting
+Use of `remark-math` itself does not open you up to [cross-site scripting
 (XSS)][xss] attacks.
-
 Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
+
+## Related
+
+*   [`remark-gfm`](https://github.com/remarkjs/remark-gfm)
+    — support GFM (autolink literals, footnotes, strikethrough, tables,
+    tasklists)
+*   [`remark-frontmatter`](https://github.com/remarkjs/remark-frontmatter)
+    — support frontmatter (YAML, TOML, and more)
+*   [`remark-directive`](https://github.com/remarkjs/remark-directive)
+    — support directives
 
 ## Contribute
 
@@ -156,6 +257,8 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[skypack]: https://www.skypack.dev
+
 [health]: https://github.com/remarkjs/.github
 
 [contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
@@ -168,14 +271,14 @@ abide by its terms.
 
 [author]: https://rokt33r.github.io
 
+[unified]: https://github.com/unifiedjs/unified
+
 [remark]: https://github.com/remarkjs/remark
 
 [xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
 
-[rehype-katex]: https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex
+[typescript]: https://www.typescriptlang.org
 
-[rehype-mathjax]: https://github.com/remarkjs/remark-math/tree/main/packages/rehype-mathjax
-
-[extension-math]: https://github.com/micromark/micromark-extension-math
+[remark-rehype]: https://github.com/remarkjs/remark-rehype
 
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize

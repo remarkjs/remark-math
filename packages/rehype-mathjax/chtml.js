@@ -1,6 +1,4 @@
 /**
- * @typedef {import('hast').Root} Root
- * @typedef {import('mathjax-full/js/output/chtml.js').CHTML<HTMLElement, Text, Document>} CHTML_
  * @typedef {import('./lib/create-plugin').Options} Options
  */
 
