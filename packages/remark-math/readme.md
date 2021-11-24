@@ -212,7 +212,7 @@ Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
     — support frontmatter (YAML, TOML, and more)
 *   [`remark-directive`](https://github.com/remarkjs/remark-directive)
     — support directives
-*   [`remark-mdx`](https://github.com/mdx-js/mdx/tree/main/packages/mdx)
+*   [`remark-mdx`](https://github.com/mdx-js/mdx/tree/main/packages/remark-mdx)
     — support MDX (JSX, expressions, ESM)
 
 ## Contribute
