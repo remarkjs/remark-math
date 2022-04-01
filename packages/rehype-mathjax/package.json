@@ -50,10 +50,10 @@
   "dependencies": {
     "@types/hast": "^2.0.0",
     "@types/mathjax": "^0.0.37",
-    "@types/web": "^0.0.46",
+    "@types/web": "^0.0.61",
     "hast-util-from-dom": "^4.0.0",
     "hast-util-to-text": "^3.1.0",
-    "jsdom": "^18.0.0",
+    "jsdom": "^19.0.0",
     "mathjax-full": "^3.0.0",
     "unified": "^10.0.0",
     "unist-util-visit": "^4.0.0"

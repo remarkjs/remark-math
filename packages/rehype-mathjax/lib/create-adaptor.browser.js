@@ -1,3 +1,1 @@
-import {browserAdaptor} from 'mathjax-full/js/adaptors/browserAdaptor.js'
-
-export {browserAdaptor as createAdaptor}
+export {browserAdaptor as createAdaptor} from 'mathjax-full/js/adaptors/browserAdaptor.js'
