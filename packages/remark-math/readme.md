@@ -58,17 +58,17 @@ In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
 npm install remark-math
 ```
 
-In Deno with [Skypack][]:
+In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import remarkMath from 'https://cdn.skypack.dev/remark-math@5?dts'
+import remarkMath from 'https://esm.sh/remark-math@5'
 ```
 
-In browsers with [Skypack][]:
+In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import remarkMath from 'https://cdn.skypack.dev/remark-math@5?min'
+  import remarkMath from 'https://esm.sh/remark-math@5?bundle'
 </script>
 ```
 
@@ -259,7 +259,7 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
-[skypack]: https://www.skypack.dev
+[esmsh]: https://esm.sh
 
 [health]: https://github.com/remarkjs/.github
 
