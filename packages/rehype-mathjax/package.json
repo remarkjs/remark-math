@@ -50,7 +50,7 @@
   "dependencies": {
     "@types/hast": "^2.0.0",
     "@types/mathjax": "^0.0.37",
-    "@types/web": "^0.0.61",
+    "@types/web": "^0.0.70",
     "hast-util-from-dom": "^4.0.0",
     "hast-util-to-text": "^3.1.0",
     "jsdom": "^20.0.0",
