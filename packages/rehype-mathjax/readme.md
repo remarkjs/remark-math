@@ -95,17 +95,13 @@ import rehypeParse from 'rehype-parse'
 import rehypeMathjax from 'rehype-mathjax'
 import rehypeStringify from 'rehype-stringify'
 
-main()
+const file = await unified()
+  .use(rehypeParse, {fragment: true})
+  .use(rehypeMathjax)
+  .use(rehypeStringify)
+  .process(await read('example.html'))
 
-async function main() {
-  const file = await unified()
-    .use(rehypeParse, {fragment: true})
-    .use(rehypeMathjax)
-    .use(rehypeStringify)
-    .process(await read('example.html'))
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
 Now running `node example.js` yields:

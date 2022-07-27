@@ -81,19 +81,15 @@ import remarkRehype from 'remark-rehype'
 import rehypeKatex from 'rehype-katex'
 import rehypeStringify from 'rehype-stringify'
 
-main()
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkMath)
+  .use(remarkRehype)
+  .use(rehypeKatex)
+  .use(rehypeStringify)
+  .process(await read('example.md'))
 
-async function main() {
-  const file = await unified()
-    .use(remarkParse)
-    .use(remarkMath)
-    .use(remarkRehype)
-    .use(rehypeKatex)
-    .use(rehypeStringify)
-    .process(await read('example.md'))
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
 Now running `node example.js` yields:
@@ -130,15 +126,14 @@ Take the above KaTeX example and change:
 +import rehypeMathjax from 'rehype-mathjax'
  import rehypeStringify from 'rehype-stringify'
 
- main()
-@@ -13,7 +13,7 @@ async function main() {
-     .use(remarkParse)
-     .use(remarkMath)
-     .use(remarkRehype)
--    .use(rehypeKatex)
-+    .use(rehypeMathjax)
-     .use(rehypeStringify)
-     .process(await read('example.md'))
+@@ -13,7 +13,7 @@
+   .use(remarkParse)
+   .use(remarkMath)
+   .use(remarkRehype)
+-  .use(rehypeKatex)
++  .use(rehypeMathjax)
+   .use(rehypeStringify)
+   .process(await read('example.md'))
 ```
 
 Now running `node example.js` yields:

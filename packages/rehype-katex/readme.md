@@ -96,20 +96,16 @@ import rehypeKatex from 'rehype-katex'
 import rehypeDocument from 'rehype-document'
 import rehypeStringify from 'rehype-stringify'
 
-main()
+const file = await unified()
+  .use(rehypeParse, {fragment: true})
+  .use(rehypeKatex)
+  .use(rehypeDocument, {
+    css: 'https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css'
+  })
+  .use(rehypeStringify)
+  .process(await read('example.html'))
 
-async function main() {
-  const file = await unified()
-    .use(rehypeParse, {fragment: true})
-    .use(rehypeKatex)
-    .use(rehypeDocument, {
-      css: 'https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css'
-    })
-    .use(rehypeStringify)
-    .process(await read('example.html'))
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
 Now running `node example.js` yields:
