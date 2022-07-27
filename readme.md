@@ -108,8 +108,13 @@ Now running `node example.js` yields:
 > properly:
 >
 > ```html
-> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css" integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn" crossorigin="anonymous">
+> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
 > ```
+
+<!--
+  To update the above, go to <https://katex.org/docs/browser.html> and copy
+  the URL and integrity.
+-->
 
 ### Example: MathJax
 

@@ -103,7 +103,7 @@ async function main() {
     .use(rehypeParse, {fragment: true})
     .use(rehypeKatex)
     .use(rehypeDocument, {
-      css: 'https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css'
+      css: 'https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css'
     })
     .use(rehypeStringify)
     .process(await read('example.html'))
@@ -121,7 +121,7 @@ Now running `node example.js` yields:
 <meta charset="utf-8">
 <title>example</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
 </head>
 <body>
 <p>
@@ -161,8 +161,10 @@ style it properly.
 At the time of writing, the last version is:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css" integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
 ```
+
+<!-- To update the above, read the note in the monorepo readme. -->
 
 ## Syntax tree
 
