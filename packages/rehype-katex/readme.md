@@ -198,7 +198,7 @@ schema, and run `rehype-katex` afterwards.
 Like so:
 
 ```js
-import rehypeSanitize, {defaultSchema} from 'rehype-stringify'
+import rehypeSanitize, {defaultSchema} from 'rehype-sanitize'
 
 const mathSanitizeSchema = {
   ...defaultSchema,
