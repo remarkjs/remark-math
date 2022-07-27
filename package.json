@@ -28,7 +28,7 @@
     "prettier": "^2.0.0",
     "rehype-parse": "^8.0.0",
     "rehype-stringify": "^9.0.0",
-    "remark-cli": "^10.0.0",
+    "remark-cli": "^11.0.0",
     "remark-html": "^15.0.0",
     "remark-parse": "^10.0.0",
     "remark-preset-wooorm": "^9.0.0",
@@ -42,7 +42,7 @@
     "unified": "^10.0.0",
     "unist-builder": "^3.0.0",
     "unist-util-remove-position": "^4.0.0",
-    "xo": "^0.48.0"
+    "xo": "^0.51.0"
   },
   "scripts": {
     "build": "npm run build --workspaces",
