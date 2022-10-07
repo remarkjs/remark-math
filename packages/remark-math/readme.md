@@ -134,9 +134,14 @@ Whether to support math (text) with a single dollar (`boolean`, default:
 Single dollars work in Pandoc and many other places, but often interfere with
 “normal” dollars in text.
 
+If you turn this off, you can still use two or more dollars for text math.
+
 ## Syntax
 
 This plugin applies a micromark extensions to parse the syntax.
+That basically follows how code works in markdown, except that dollars (`$`)
+are used instead of backticks (`` ` ``), and that two dollars instead of 3 is
+enough for blocks.
 See its readme for parse details:
 
 *   [`micromark-extension-math`](https://github.com/micromark/micromark-extension-math#syntax)
