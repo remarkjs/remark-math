@@ -139,9 +139,8 @@ If you turn this off, you can still use two or more dollars for text math.
 ## Syntax
 
 This plugin applies a micromark extensions to parse the syntax.
-That basically follows how code works in markdown, except that dollars (`$`)
-are used instead of backticks (`` ` ``), and that two dollars instead of 3 is
-enough for blocks.
+The syntax basically follows how code works in markdown, except that dollars (`$`)
+are used instead of backticks (`` ` ``), and you must have a newline in the text math in order to have it be considered a math block. 
 See its readme for parse details:
 
 *   [`micromark-extension-math`](https://github.com/micromark/micromark-extension-math#syntax)
