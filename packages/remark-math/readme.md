@@ -142,16 +142,6 @@ This plugin applies a micromark extensions to parse the syntax.
 The syntax basically follows how code works in markdown, except that dollars (`$`)
 are used instead of backticks (`` ` ``) and that 2 or more dollars instead of 3
 or more backticks is enough for blocks.
-Like code, the difference between “inline” and “block”, is in the line endings:
-
-```
-$$inline$$
-
-$$
-block
-$$
-```
-
 
 See its readme for parse details:
 
@@ -160,6 +150,16 @@ See its readme for parse details:
 > 👉 **Note**: `$math$` works similar to `` `code` ``.
 > That means escapes don’t work inside math but you can use more dollars around
 > the math instead: `$$\raisebox{0.25em}{$\frac a b$}$$`
+
+> 👉 **Note**: Like code, the difference between “inline” and “block”, is in the line endings:
+> 
+> ```markdown
+> $$inline$$
+> 
+> $$
+> block
+> $$
+> ```
 
 ## HTML
 
