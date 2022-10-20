@@ -151,7 +151,8 @@ See its readme for parse details:
 > That means escapes don’t work inside math but you can use more dollars around
 > the math instead: `$$\raisebox{0.25em}{$\frac a b$}$$`
 
-> 👉 **Note**: Like code, the difference between “inline” and “block”, is in the line endings:
+> 👉 **Note**: Like code, the difference between “inline” and “block”,
+> is in the line endings:
 > 
 > ```markdown
 > $$inline$$
