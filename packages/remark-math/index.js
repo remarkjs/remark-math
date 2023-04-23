@@ -11,6 +11,7 @@ import {mathFromMarkdown, mathToMarkdown} from 'mdast-util-math'
 /**
  * Plugin to support math.
  *
+ * @this {import('unified').Processor}
  * @type {import('unified').Plugin<[Options?] | void[], Root, Root>}
  */
 export default function remarkMath(options = {}) {
@@ -25,7 +26,7 @@ export default function remarkMath(options = {}) {
    * @param {unknown} value
    */
   function add(field, value) {
-    const list = /** @type {unknown[]} */ (
+    const list = /** @type {Array<unknown>} */ (
       // Other extensions
       /* c8 ignore next 2 */
       data[field] ? data[field] : (data[field] = [])

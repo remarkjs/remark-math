@@ -38,11 +38,11 @@
     "tape": "^5.0.0",
     "to-vfile": "^7.0.0",
     "type-coverage": "^2.0.0",
-    "typescript": "^4.0.0",
+    "typescript": "^5.0.0",
     "unified": "^10.0.0",
     "unist-builder": "^3.0.0",
     "unist-util-remove-position": "^4.0.0",
-    "xo": "^0.52.0"
+    "xo": "^0.54.0"
   },
   "scripts": {
     "build": "npm run build --workspaces",
@@ -60,11 +60,14 @@
     "trailingComma": "none"
   },
   "xo": {
-    "prettier": true
+    "prettier": true,
+    "rules": {
+      "unicorn/prefer-logical-operator-over-ternary": "off"
+    }
   },
   "remarkConfig": {
     "plugins": [
-      "preset-wooorm"
+      "remark-preset-wooorm"
     ]
   },
   "typeCoverage": {

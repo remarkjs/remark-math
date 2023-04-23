@@ -153,10 +153,10 @@ See its readme for parse details:
 
 > 👉 **Note**: Like code, the difference between “inline” and “block”,
 > is in the line endings:
-> 
+>
 > ```markdown
 > $$inline$$
-> 
+>
 > $$
 > block
 > $$
