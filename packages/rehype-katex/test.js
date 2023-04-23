@@ -214,5 +214,24 @@ test('rehype-katex', (t) => {
     'should support comments'
   )
 
+  t.deepEqual(
+    unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeKatex)
+      .use(rehypeStringify)
+      .processSync(
+        '<span class="math-display">\\begin{split}\n\\end{{split}}\n</span>'
+      )
+      .toString(),
+    unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeStringify)
+      .processSync(
+        '<span class="math-display"><span class="katex-error" title="Error: Expected node of type textord, but got node of type ordgroup" style="color:#cc0000">\\begin{split}\n\\end{{split}}\n</span></span>'
+      )
+      .toString(),
+    'should not crash on non-parse errors'
+  )
+
   t.end()
 })

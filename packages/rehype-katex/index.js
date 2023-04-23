@@ -56,6 +56,25 @@ export default function rehypeKatex(options) {
 
         file[fn](error.message, element.position, origin)
 
+        // KaTeX can handle `ParseError` itself, but not others.
+        // Generate similar markup if this is an other error.
+        // See: <https://github.com/KaTeX/KaTeX/blob/5dc7af0/docs/error.md>.
+        if (error.name !== 'ParseError') {
+          element.children = [
+            {
+              type: 'element',
+              tagName: 'span',
+              properties: {
+                className: ['katex-error'],
+                title: String(error),
+                style: 'color:' + (settings.errorColor || '#cc0000')
+              },
+              children: [{type: 'text', value}]
+            }
+          ]
+          return
+        }
+
         result = katex.renderToString(
           value,
           assign({}, settings, {
