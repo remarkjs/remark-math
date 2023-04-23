@@ -5,14 +5,10 @@
 
 import katex from 'katex'
 import {visit} from 'unist-util-visit'
-import {removePosition} from 'unist-util-remove-position'
 import {toText} from 'hast-util-to-text'
-import {unified} from 'unified'
-import rehypeParse from 'rehype-parse'
+import {fromHtmlIsomorphic} from 'hast-util-from-html-isomorphic'
 
 const assign = Object.assign
-
-const parseHtml = unified().use(rehypeParse, {fragment: true})
 
 const source = 'rehype-katex'
 
@@ -85,8 +81,9 @@ export default function rehypeKatex(options) {
         )
       }
 
+      const root = fromHtmlIsomorphic(result, {fragment: true})
       // @ts-expect-error: assume no `doctypes` in KaTeX result.
-      element.children = removePosition(parseHtml.parse(result), true).children
+      element.children = root.children
     })
   }
 }
