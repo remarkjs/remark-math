@@ -1,6 +1,6 @@
 {
   "name": "rehype-mathjax",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "rehype plugin to transform inline and block math with MathJax",
   "license": "MIT",
   "keywords": [
