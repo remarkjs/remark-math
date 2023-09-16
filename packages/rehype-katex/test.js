@@ -1,4 +1,5 @@
-import test from 'tape'
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import katex from 'katex'
 import {unified} from 'unified'
 import remarkParse from 'remark-parse'
@@ -8,230 +9,244 @@ import rehypeStringify from 'rehype-stringify'
 import remarkMath from '../remark-math/index.js'
 import rehypeKatex from './index.js'
 
-test('rehype-katex', (t) => {
-  t.deepEqual(
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex)
-      .use(rehypeStringify)
-      .processSync(
-        [
-          '<p>Inline math <span class="math-inline">\\alpha</span>.</p>',
-          '<p>Block math:</p>',
-          '<div class="math-display">\\gamma</div>'
-        ].join('\n')
-      )
-      .toString(),
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeStringify)
-      .processSync(
-        [
-          '<p>Inline math <span class="math-inline">' +
-            katex.renderToString('\\alpha') +
-            '</span>.</p>',
-          '<p>Block math:</p>',
-          '<div class="math-display">' +
-            katex.renderToString('\\gamma', {displayMode: true}) +
-            '</div>'
-        ].join('\n')
-      )
-      .toString(),
-    'should transform math with katex'
-  )
-
-  t.deepEqual(
-    unified()
-      .use(remarkParse)
-      .use(remarkMath)
-      .use(remarkRehype)
-      .use(rehypeKatex)
-      .use(rehypeStringify)
-      .processSync(
-        [
-          'Inline math $\\alpha$.',
-          '',
-          'Block math:',
-          '',
-          '$$',
-          '\\gamma',
-          '$$'
-        ].join('\n')
-      )
-      .toString(),
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeStringify)
-      .processSync(
-        [
-          '<p>Inline math <span class="math math-inline">' +
-            katex.renderToString('\\alpha') +
-            '</span>.</p>',
-          '<p>Block math:</p>',
-          '<div class="math math-display">' +
-            katex.renderToString('\\gamma', {displayMode: true}) +
-            '</div>'
-        ].join('\n')
-      )
-      .toString(),
-    'should integrate with `remark-math`'
-  )
-
-  t.deepEqual(
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex)
-      .use(rehypeStringify)
-      .processSync(
-        '<p>Double math <span class="math-inline math-display">\\alpha</span>.</p>'
-      )
-      .toString(),
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeStringify)
-      .processSync(
-        '<p>Double math <span class="math-inline math-display">' +
-          katex.renderToString('\\alpha', {displayMode: true}) +
-          '</span>.</p>'
-      )
-      .toString(),
-    'should transform `.math-inline.math-display` math with `displayMode: true`'
-  )
-
-  const macros = {'\\RR': '\\mathbb{R}'}
-
-  t.deepEqual(
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex, {macros})
-      .use(rehypeStringify)
-      .processSync('<span class="math-inline">\\RR</span>')
-      .toString(),
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeStringify)
-      .processSync(
-        '<span class="math-inline">' +
-          katex.renderToString('\\RR', {macros}) +
-          '</span>'
-      )
-      .toString(),
-    'should support `macros`'
-  )
-
-  t.deepEqual(
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex, {errorColor: 'orange'})
-      .use(rehypeStringify)
-      .processSync('<span class="math-inline">\\alpa</span>')
-      .toString(),
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeStringify)
-      .processSync(
-        '<span class="math-inline">' +
-          katex.renderToString('\\alpa', {
-            throwOnError: false,
-            errorColor: 'orange'
-          }) +
-          '</span>'
-      )
-      .toString(),
-    'should support `errorColor`'
-  )
-
-  t.deepEqual(
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex)
-      .use(rehypeStringify)
-      .processSync(
-        '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
-      )
-      .messages.map(String),
-    [
-      '2:4-2:42: KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
-    ],
-    'should create a message for errors'
-  )
-
-  try {
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex, {throwOnError: true})
-      .use(rehypeStringify)
-      .processSync(
-        '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
-      )
-  } catch (error_) {
-    const error = /** @type {Error} */ (error_)
-    t.equal(
-      error.message,
-      'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲',
-      'should throw an error if `throwOnError: true`'
+test('rehype-katex', async function (t) {
+  await t.test('should transform math with katex', async function () {
+    assert.deepEqual(
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeKatex)
+        .use(rehypeStringify)
+        .processSync(
+          [
+            '<p>Inline math <span class="math-inline">\\alpha</span>.</p>',
+            '<p>Block math:</p>',
+            '<div class="math-display">\\gamma</div>'
+          ].join('\n')
+        )
+        .toString(),
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeStringify)
+        .processSync(
+          [
+            '<p>Inline math <span class="math-inline">' +
+              katex.renderToString('\\alpha') +
+              '</span>.</p>',
+            '<p>Block math:</p>',
+            '<div class="math-display">' +
+              katex.renderToString('\\gamma', {displayMode: true}) +
+              '</div>'
+          ].join('\n')
+        )
+        .toString()
     )
-  }
+  })
 
-  t.deepEqual(
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex, {errorColor: 'orange', strict: 'ignore'})
-      .use(rehypeStringify)
-      .processSync('<span class="math-inline">ê&amp;</span>')
-      .toString(),
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeStringify)
-      .processSync(
-        '<span class="math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span>'
+  await t.test('should integrate with `remark-math`', async function () {
+    assert.deepEqual(
+      unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .use(remarkRehype)
+        .use(rehypeKatex)
+        .use(rehypeStringify)
+        .processSync(
+          [
+            'Inline math $\\alpha$.',
+            '',
+            'Block math:',
+            '',
+            '$$',
+            '\\gamma',
+            '$$'
+          ].join('\n')
+        )
+        .toString(),
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeStringify)
+        .processSync(
+          [
+            '<p>Inline math <span class="math math-inline">' +
+              katex.renderToString('\\alpha') +
+              '</span>.</p>',
+            '<p>Block math:</p>',
+            '<div class="math math-display">' +
+              katex.renderToString('\\gamma', {displayMode: true}) +
+              '</div>'
+          ].join('\n')
+        )
+        .toString()
+    )
+  })
+
+  await t.test(
+    'should transform `.math-inline.math-display` math with `displayMode: true`',
+    async function () {
+      assert.deepEqual(
+        unified()
+          .use(rehypeParse, {fragment: true})
+          .use(rehypeKatex)
+          .use(rehypeStringify)
+          .processSync(
+            '<p>Double math <span class="math-inline math-display">\\alpha</span>.</p>'
+          )
+          .toString(),
+        unified()
+          .use(rehypeParse, {fragment: true})
+          .use(rehypeStringify)
+          .processSync(
+            '<p>Double math <span class="math-inline math-display">' +
+              katex.renderToString('\\alpha', {displayMode: true}) +
+              '</span>.</p>'
+          )
+          .toString()
       )
-      .toString(),
-    'should support `strict: ignore`'
+    }
   )
 
-  t.deepEqual(
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex, {errorColor: 'orange', strict: 'ignore'})
-      .use(rehypeStringify)
-      .processSync(
-        '<div class="math math-display">\\begin{split}\n  f(-2) &= \\sqrt{-2+4} \\\\\n  &= x % Test Comment\n\\end{split}</div>'
-      )
-      .toString(),
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeStringify)
-      .processSync(
-        '<div class="math math-display">' +
-          katex.renderToString(
-            '\\begin{split}\n  f(-2) &= \\sqrt{-2+4} \\\\\n  &= x % Test Comment\n\\end{split}',
-            {displayMode: true}
-          ) +
-          '</div>'
-      )
-      .toString(),
-    'should support comments'
+  await t.test('should support `macros`', async function () {
+    const macros = {'\\RR': '\\mathbb{R}'}
+
+    assert.deepEqual(
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeKatex, {macros})
+        .use(rehypeStringify)
+        .processSync('<span class="math-inline">\\RR</span>')
+        .toString(),
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeStringify)
+        .processSync(
+          '<span class="math-inline">' +
+            katex.renderToString('\\RR', {macros}) +
+            '</span>'
+        )
+        .toString()
+    )
+  })
+
+  await t.test('should support `errorColor`', async function () {
+    assert.deepEqual(
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeKatex, {errorColor: 'orange'})
+        .use(rehypeStringify)
+        .processSync('<span class="math-inline">\\alpa</span>')
+        .toString(),
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeStringify)
+        .processSync(
+          '<span class="math-inline">' +
+            katex.renderToString('\\alpa', {
+              throwOnError: false,
+              errorColor: 'orange'
+            }) +
+            '</span>'
+        )
+        .toString()
+    )
+  })
+
+  await t.test('should create a message for errors', async function () {
+    assert.deepEqual(
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeKatex)
+        .use(rehypeStringify)
+        .processSync(
+          '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
+        )
+        .messages.map(String),
+      [
+        '2:4-2:42: KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
+      ]
+    )
+  })
+
+  await t.test(
+    'should throw an error if `throwOnError: true`',
+    async function () {
+      try {
+        unified()
+          .use(rehypeParse, {fragment: true})
+          .use(rehypeKatex, {throwOnError: true})
+          .use(rehypeStringify)
+          .processSync(
+            '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
+          )
+      } catch (error_) {
+        const error = /** @type {Error} */ (error_)
+        assert.equal(
+          error.message,
+          'KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
+        )
+      }
+    }
   )
 
-  t.deepEqual(
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex)
-      .use(rehypeStringify)
-      .processSync(
-        '<span class="math-display">\\begin{split}\n\\end{{split}}\n</span>'
-      )
-      .toString(),
-    unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeStringify)
-      .processSync(
-        '<span class="math-display"><span class="katex-error" title="Error: Expected node of type textord, but got node of type ordgroup" style="color:#cc0000">\\begin{split}\n\\end{{split}}\n</span></span>'
-      )
-      .toString(),
-    'should not crash on non-parse errors'
-  )
+  await t.test('should support `strict: ignore`', async function () {
+    assert.deepEqual(
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeKatex, {errorColor: 'orange', strict: 'ignore'})
+        .use(rehypeStringify)
+        .processSync('<span class="math-inline">ê&amp;</span>')
+        .toString(),
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeStringify)
+        .processSync(
+          '<span class="math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span>'
+        )
+        .toString()
+    )
+  })
 
-  t.end()
+  await t.test('should support comments', async function () {
+    assert.deepEqual(
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeKatex, {errorColor: 'orange', strict: 'ignore'})
+        .use(rehypeStringify)
+        .processSync(
+          '<div class="math math-display">\\begin{split}\n  f(-2) &= \\sqrt{-2+4} \\\\\n  &= x % Test Comment\n\\end{split}</div>'
+        )
+        .toString(),
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeStringify)
+        .processSync(
+          '<div class="math math-display">' +
+            katex.renderToString(
+              '\\begin{split}\n  f(-2) &= \\sqrt{-2+4} \\\\\n  &= x % Test Comment\n\\end{split}',
+              {displayMode: true}
+            ) +
+            '</div>'
+        )
+        .toString()
+    )
+  })
+
+  await t.test('should not crash on non-parse errors', async function () {
+    assert.deepEqual(
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeKatex)
+        .use(rehypeStringify)
+        .processSync(
+          '<span class="math-display">\\begin{split}\n\\end{{split}}\n</span>'
+        )
+        .toString(),
+      unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeStringify)
+        .processSync(
+          '<span class="math-display"><span class="katex-error" title="Error: Expected node of type textord, but got node of type ordgroup" style="color:#cc0000">\\begin{split}\n\\end{{split}}\n</span></span>'
+        )
+        .toString()
+    )
+  })
 })
