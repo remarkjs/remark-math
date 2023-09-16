@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./lib/create-plugin').Options} Options
+ * @typedef {import('./lib/create-plugin.js').Options} Options
  */
 
 import {createPlugin} from './lib/create-plugin.js'

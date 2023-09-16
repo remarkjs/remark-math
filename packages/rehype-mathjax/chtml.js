@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./lib/create-plugin').Options} Options
+ * @typedef {import('./lib/create-plugin.js').Options} Options
  */
 
 import {CHTML} from 'mathjax-full/js/output/chtml.js'

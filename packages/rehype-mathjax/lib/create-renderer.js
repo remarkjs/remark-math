@@ -1,6 +1,6 @@
 /**
  * @typedef {import('hast').Element} Element
- * @typedef {import('mathjax-full/js/core/OutputJax').OutputJax<HTMLElement, Text, Document>} OutputJax
+ * @typedef {import('mathjax-full/js/core/OutputJax.js').OutputJax<HTMLElement, Text, Document>} OutputJax
  * @typedef {import('mathjax-full/js/core/MathDocument.js').MathDocument<HTMLElement, Text, Document>} MathDocument
  * @typedef {import('mathjax-full/js/input/tex.js').TeX<HTMLElement, Text, Document>} TeX_
  * @typedef {import('./create-plugin.js').Options} Options

@@ -61,21 +61,8 @@
     "@types/jsdom": "^21.0.0"
   },
   "scripts": {
-    "build": "rimraf \"lib/**/*.d.ts\" \"test/**/*.d.ts\" \"*.d.ts\" && tsc && type-coverage",
     "test-api": "node --conditions development test/index.js",
     "test": "npm run build && npm run test-api"
-  },
-  "typeCoverage": {
-    "atLeast": 100,
-    "detail": true,
-    "strict": true,
-    "ignoreCatch": true,
-    "#": "needed `any`s",
-    "ignoreFiles": [
-      "lib/create-plugin.d.ts",
-      "lib/create-renderer.d.ts",
-      "lib/create-renderer.js"
-    ]
   },
   "xo": {
     "prettier": true

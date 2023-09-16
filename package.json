@@ -34,7 +34,6 @@
     "remark-preset-wooorm": "^9.0.0",
     "remark-rehype": "^10.0.0",
     "remark-stringify": "^10.0.0",
-    "rimraf": "^3.0.0",
     "tape": "^5.0.0",
     "to-vfile": "^7.0.0",
     "type-coverage": "^2.0.0",
@@ -45,7 +44,7 @@
     "xo": "^0.56.0"
   },
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "tsc --build --clean && tsc --build && type-coverage",
     "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
     "test-api": "npm run test-api --workspaces",
     "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov --exclude \"packages/*/test.js\" --exclude \"packages/*/test/**/*.js\" npm run test-api",
@@ -68,7 +67,13 @@
     "atLeast": 100,
     "detail": true,
     "strict": true,
-    "ignoreCatch": true
+    "ignoreCatch": true,
+    "#": "needed `any`s",
+    "ignoreFiles": [
+      "packages/rehype-mathjax/lib/create-plugin.d.ts",
+      "packages/rehype-mathjax/lib/create-renderer.d.ts",
+      "packages/rehype-mathjax/lib/create-renderer.js"
+    ]
   },
   "xo": {
     "prettier": true

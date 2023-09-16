@@ -33,15 +33,8 @@
     "unist-util-visit": "^4.0.0"
   },
   "scripts": {
-    "build": "rimraf \"*.d.ts\" && tsc && type-coverage",
     "test-api": "node --conditions development test.js",
     "test": "npm run build && npm run test-api"
-  },
-  "typeCoverage": {
-    "atLeast": 100,
-    "detail": true,
-    "strict": true,
-    "ignoreCatch": true
   },
   "xo": {
     "prettier": true
