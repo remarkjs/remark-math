@@ -24,7 +24,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@types/katex": "^0.14.0",
+    "@types/katex": "^0.16.0",
     "@types/mdast": "^3.0.0",
     "katex": "^0.16.0",
     "rehype-parse": "^8.0.0",
