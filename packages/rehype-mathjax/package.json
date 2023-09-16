@@ -65,7 +65,6 @@
     "test-api": "node --conditions development test/index.js",
     "test": "npm run build && npm run test-api"
   },
-  "xo": false,
   "typeCoverage": {
     "atLeast": 100,
     "detail": true,
@@ -77,5 +76,8 @@
       "lib/create-renderer.d.ts",
       "lib/create-renderer.js"
     ]
+  },
+  "xo": {
+    "prettier": true
   }
 }

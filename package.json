@@ -23,9 +23,9 @@
     "packages/rehype-mathjax"
   ],
   "devDependencies": {
-    "@types/tape": "^4.0.0",
-    "c8": "^7.0.0",
-    "prettier": "^2.0.0",
+    "@types/tape": "^5.0.0",
+    "c8": "^8.0.0",
+    "prettier": "^3.0.0",
     "rehype-parse": "^8.0.0",
     "rehype-stringify": "^9.0.0",
     "remark-cli": "^11.0.0",
@@ -42,11 +42,11 @@
     "unified": "^10.0.0",
     "unist-builder": "^3.0.0",
     "unist-util-remove-position": "^4.0.0",
-    "xo": "^0.54.0"
+    "xo": "^0.56.0"
   },
   "scripts": {
     "build": "npm run build --workspaces",
-    "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
     "test-api": "npm run test-api --workspaces",
     "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov --exclude \"packages/*/test.js\" --exclude \"packages/*/test/**/*.js\" npm run test-api",
     "test": "npm run build && npm run format && npm run test-coverage"
@@ -59,12 +59,6 @@
     "semi": false,
     "trailingComma": "none"
   },
-  "xo": {
-    "prettier": true,
-    "rules": {
-      "unicorn/prefer-logical-operator-over-ternary": "off"
-    }
-  },
   "remarkConfig": {
     "plugins": [
       "remark-preset-wooorm"
@@ -75,5 +69,8 @@
     "detail": true,
     "strict": true,
     "ignoreCatch": true
+  },
+  "xo": {
+    "prettier": true
   }
 }

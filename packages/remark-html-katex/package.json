@@ -37,11 +37,13 @@
     "test-api": "node --conditions development test.js",
     "test": "npm run build && npm run test-api"
   },
-  "xo": false,
   "typeCoverage": {
     "atLeast": 100,
     "detail": true,
     "strict": true,
     "ignoreCatch": true
+  },
+  "xo": {
+    "prettier": true
   }
 }

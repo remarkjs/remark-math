@@ -29,7 +29,7 @@ export default function remarkMath(options = {}) {
     const list = /** @type {Array<unknown>} */ (
       // Other extensions
       /* c8 ignore next 2 */
-      data[field] ? data[field] : (data[field] = [])
+      data[field] || (data[field] = [])
     )
 
     list.push(value)
