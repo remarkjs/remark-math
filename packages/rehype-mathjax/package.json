@@ -52,13 +52,13 @@
     "@types/mathjax": "^0.0.37",
     "hast-util-from-dom": "^4.0.0",
     "hast-util-to-text": "^3.1.0",
-    "jsdom": "^20.0.0",
+    "jsdom": "^21.0.0",
     "mathjax-full": "^3.0.0",
     "unified": "^10.0.0",
     "unist-util-visit": "^4.0.0"
   },
   "devDependencies": {
-    "@types/jsdom": "^20.0.0"
+    "@types/jsdom": "^21.0.0"
   },
   "scripts": {
     "build": "rimraf \"lib/**/*.d.ts\" \"test/**/*.d.ts\" \"*.d.ts\" && tsc && type-coverage",
