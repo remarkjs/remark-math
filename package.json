@@ -17,10 +17,10 @@
   ],
   "type": "module",
   "workspaces": [
-    "packages/remark-math",
-    "packages/remark-html-katex",
-    "packages/rehype-katex",
-    "packages/rehype-mathjax"
+    "packages/remark-html-katex/",
+    "packages/rehype-katex/",
+    "packages/remark-math/",
+    "packages/rehype-mathjax/"
   ],
   "devDependencies": {
     "@types/tape": "^5.0.0",
@@ -45,18 +45,18 @@
   },
   "scripts": {
     "build": "tsc --build --clean && tsc --build && type-coverage",
-    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+    "format": "remark . --frail --output --quiet && prettier . --log-level warn --write && xo --fix",
+    "test": "npm run build && npm run format && npm run test-coverage",
     "test-api": "npm run test-api --workspaces",
-    "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov --exclude \"packages/*/test.js\" --exclude \"packages/*/test/**/*.js\" npm run test-api",
-    "test": "npm run build && npm run format && npm run test-coverage"
+    "test-coverage": "c8 --100 --reporter lcov npm run test-api"
   },
   "prettier": {
-    "tabWidth": 2,
-    "useTabs": false,
-    "singleQuote": true,
     "bracketSpacing": false,
     "semi": false,
-    "trailingComma": "none"
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
   },
   "remarkConfig": {
     "plugins": [
@@ -66,14 +66,14 @@
   "typeCoverage": {
     "atLeast": 100,
     "detail": true,
-    "strict": true,
     "ignoreCatch": true,
     "#": "needed `any`s",
     "ignoreFiles": [
       "packages/rehype-mathjax/lib/create-plugin.d.ts",
       "packages/rehype-mathjax/lib/create-renderer.d.ts",
       "packages/rehype-mathjax/lib/create-renderer.js"
-    ]
+    ],
+    "strict": true
   },
   "xo": {
     "prettier": true
