@@ -144,11 +144,6 @@ Transform `<span class="math-inline">` and `<div class="math-display">` with
 Configuration (optional).
 All options, except for `displayMode`, are passed to [KaTeX][katex-options].
 
-###### `options.throwOnError`
-
-Throw if a KaTeX parse error occurs (`boolean`, default: `false`).
-See [KaTeX options][katex-options].
-
 ## CSS
 
 The HTML produced by KaTeX requires CSS to render correctly.

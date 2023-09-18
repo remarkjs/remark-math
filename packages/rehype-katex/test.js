@@ -142,15 +142,15 @@ test('rehype-katex', async function (t) {
     )
   })
 
-  await t.test('should support `errorColor`', async function () {
+  await t.test('should handle errors, support `errorColor`', async function () {
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeKatex, {errorColor: 'orange'})
+      .use(rehypeStringify)
+      .process('<code class="math-inline">\\alpa</code>')
+
     assert.deepEqual(
-      String(
-        await unified()
-          .use(rehypeParse, {fragment: true})
-          .use(rehypeKatex, {errorColor: 'orange'})
-          .use(rehypeStringify)
-          .process('<code class="math-inline">\\alpa</code>')
-      ),
+      String(file),
       String(
         await unified()
           .use(rehypeParse, {fragment: true})
@@ -165,41 +165,37 @@ test('rehype-katex', async function (t) {
           )
       )
     )
-  })
 
-  await t.test('should create a message for errors', async function () {
-    const file = await unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeKatex)
-      .use(rehypeStringify)
-      .process('<p>Lorem</p>\n<p><code class="math-inline">\\alpa</code></p>')
-
-    assert.deepEqual(file.messages.map(String), [
-      '2:4-2:42: KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲'
-    ])
-  })
-
-  await t.test(
-    'should throw an error if `throwOnError: true`',
-    async function () {
-      try {
-        await unified()
-          .use(rehypeParse, {fragment: true})
-          .use(rehypeKatex, {throwOnError: true})
-          .use(rehypeStringify)
-          .process(
-            '<p>Lorem</p>\n<p><code class="math-inline">\\alpa</code></p>'
-          )
-        /* c8 ignore next 2 -- some c8 bug. */
-        assert.fail()
-      } catch (error) {
-        assert.match(
-          String(error),
-          /KaTeX parse error: Undefined control sequence: \\alpa at position 1: \\̲a̲l̲p̲a̲/
-        )
+    assert.equal(file.messages.length, 1)
+    const message = file.messages[0]
+    assert(message)
+    assert(message.cause)
+    assert(message.ancestors)
+    assert.match(
+      String(message.cause),
+      /KaTeX parse error: Undefined control sequence/
+    )
+    assert.equal(message.ancestors.length, 2)
+    assert.deepEqual(
+      {...file.messages[0], cause: undefined, ancestors: []},
+      {
+        ancestors: [],
+        cause: undefined,
+        column: 1,
+        fatal: false,
+        line: 1,
+        message: 'Could not render math with KaTeX',
+        name: '1:1-1:39',
+        place: {
+          start: {column: 1, line: 1, offset: 0},
+          end: {column: 39, line: 1, offset: 38}
+        },
+        reason: 'Could not render math with KaTeX',
+        ruleId: 'parseerror',
+        source: 'rehype-katex'
       }
-    }
-  )
+    )
+  })
 
   await t.test('should support `strict: ignore`', async function () {
     assert.deepEqual(

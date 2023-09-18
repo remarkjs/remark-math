@@ -2,9 +2,13 @@
  * @typedef {import('hast').ElementContent} ElementContent
  * @typedef {import('hast').Root} Root
  *
- * @typedef {import('katex').KatexOptions} Options
+ * @typedef {import('katex').KatexOptions} KatexOptions
  *
  * @typedef {import('vfile').VFile} VFile
+ */
+
+/**
+ * @typedef {Omit<KatexOptions, 'throwOnError'>} Options
  */
 
 import {fromHtmlIsomorphic} from 'hast-util-from-html-isomorphic'
@@ -28,7 +32,6 @@ const emptyClasses = []
  */
 export default function rehypeKatex(options) {
   const settings = options || emptyOptions
-  const throwOnError = settings.throwOnError || false
 
   /**
    * Transform.
@@ -41,7 +44,7 @@ export default function rehypeKatex(options) {
    *   Nothing.
    */
   return function (tree, file) {
-    visit(tree, 'element', function (element) {
+    visit(tree, 'element', function (element, _, parent) {
       const classes = Array.isArray(element.properties.className)
         ? element.properties.className
         : emptyClasses
@@ -64,16 +67,30 @@ export default function rehypeKatex(options) {
           throwOnError: true
         })
       } catch (error) {
-        const exception = /** @type {Error} */ (error)
-        const fn = throwOnError ? 'fail' : 'message'
-        const origin = ['rehype-katex', exception.name.toLowerCase()].join(':')
+        const cause = /** @type {Error} */ (error)
+        const ruleId = cause.name.toLowerCase()
 
-        file[fn](exception.message, element.position, origin)
+        file.message('Could not render math with KaTeX', {
+          /* c8 ignore next -- verbose to test */
+          ancestors: parent ? [parent, element] : [element],
+          cause,
+          place: element.position,
+          ruleId,
+          source: 'rehype-katex'
+        })
 
         // KaTeX can handle `ParseError` itself, but not others.
+        if (ruleId === 'parseerror') {
+          result = katex.renderToString(value, {
+            ...settings,
+            displayMode,
+            strict: 'ignore',
+            throwOnError: false
+          })
+        }
         // Generate similar markup if this is an other error.
         // See: <https://github.com/KaTeX/KaTeX/blob/5dc7af0/docs/error.md>.
-        if (exception.name !== 'ParseError') {
+        else {
           element.children = [
             {
               type: 'element',
@@ -88,13 +105,6 @@ export default function rehypeKatex(options) {
           ]
           return
         }
-
-        result = katex.renderToString(value, {
-          ...settings,
-          displayMode,
-          strict: 'ignore',
-          throwOnError: false
-        })
       }
 
       const root = fromHtmlIsomorphic(result, {fragment: true})

@@ -5,7 +5,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "exactOptionalPropertyTypes": true,
-    "lib": ["es2020"],
+    "lib": ["es2022"],
     "module": "node16",
     // To do: remove when `mathjax-full` types are fixed.
     "skipLibCheck": true,
