@@ -7,7 +7,7 @@
     "exactOptionalPropertyTypes": true,
     "lib": ["es2020"],
     "module": "node16",
-    // To do: remove when `hast-util-from-parse5` is updated.
+    // To do: remove when `mathjax-full` types are fixed.
     "skipLibCheck": true,
     "strict": true,
     "target": "es2020"

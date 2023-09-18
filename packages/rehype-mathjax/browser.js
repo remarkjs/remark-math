@@ -1,11 +1,15 @@
 /**
  * @typedef {import('./lib/create-plugin.js').Options} Options
+ * @typedef {import('./lib/create-plugin.js').InputTexOptions} InputTexOptions
  */
 
 import {createPlugin} from './lib/create-plugin.js'
 
-const rehypeMathJaxBrowser = createPlugin((options) => {
-  const tex = options.tex || {}
+/** @type {Readonly<InputTexOptions>} */
+const emptyTexOptions = {}
+
+const rehypeMathJaxBrowser = createPlugin(function (options) {
+  const tex = options.tex || emptyTexOptions
   const display = tex.displayMath || [['\\[', '\\]']]
   const inline = tex.inlineMath || [['\\(', '\\)']]
 

@@ -1,38 +1,42 @@
+/// <reference types="mdast-util-math" />
+/// <reference types="remark-parse" />
+/// <reference types="remark-stringify" />
+
 /**
  * @typedef {import('mdast').Root} Root
  * @typedef {import('mdast-util-math').ToOptions} Options
- *
- * @typedef {import('mdast-util-math')} DoNotTouchAsThisImportIncludesMathInTree
+ * @typedef {import('unified').Processor<Root>} Processor
  */
 
-import {math} from 'micromark-extension-math'
 import {mathFromMarkdown, mathToMarkdown} from 'mdast-util-math'
+import {math} from 'micromark-extension-math'
+
+/** @type {Readonly<Options>} */
+const emptyOptions = {}
 
 /**
  * Plugin to support math.
  *
- * @this {import('unified').Processor}
- * @type {import('unified').Plugin<[Options?] | void[], Root, Root>}
+ * @param {Readonly<Options> | null | undefined} [options]
+ *   Configuration (optional).
+ * @returns {undefined}
+ *   Nothing.
  */
-export default function remarkMath(options = {}) {
-  const data = this.data()
+export default function remarkMath(options) {
+  // @ts-expect-error: TS is wrong about `this`.
+  // eslint-disable-next-line unicorn/no-this-assignment
+  const self = /** @type {Processor} */ (this)
+  const settings = options || emptyOptions
+  const data = self.data()
 
-  add('micromarkExtensions', math(options))
-  add('fromMarkdownExtensions', mathFromMarkdown())
-  add('toMarkdownExtensions', mathToMarkdown(options))
+  const micromarkExtensions =
+    data.micromarkExtensions || (data.micromarkExtensions = [])
+  const fromMarkdownExtensions =
+    data.fromMarkdownExtensions || (data.fromMarkdownExtensions = [])
+  const toMarkdownExtensions =
+    data.toMarkdownExtensions || (data.toMarkdownExtensions = [])
 
-  /**
-   * @param {string} field
-   * @param {unknown} value
-   */
-  function add(field, value) {
-    const list = /** @type {Array<unknown>} */ (
-      // Other extensions
-      /* c8 ignore next 2 */
-      // @ts-expect-error: to do: refactor.
-      data[field] || (data[field] = [])
-    )
-
-    list.push(value)
-  }
+  micromarkExtensions.push(math(settings))
+  fromMarkdownExtensions.push(mathFromMarkdown())
+  toMarkdownExtensions.push(mathToMarkdown(settings))
 }

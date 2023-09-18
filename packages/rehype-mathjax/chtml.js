@@ -3,10 +3,10 @@
  */
 
 import {CHTML} from 'mathjax-full/js/output/chtml.js'
-import {createRenderer} from './lib/create-renderer.js'
 import {createPlugin} from './lib/create-plugin.js'
+import {createRenderer} from './lib/create-renderer.js'
 
-const rehypeMathJaxCHtml = createPlugin((options) => {
+const rehypeMathJaxCHtml = createPlugin(function (options) {
   if (!options.chtml || !options.chtml.fontURL) {
     throw new Error(
       'rehype-mathjax: missing `fontURL` in options, which must be set to a URL to reach MathJaX fonts'

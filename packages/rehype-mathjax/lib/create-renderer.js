@@ -1,18 +1,17 @@
 /**
  * @typedef {import('hast').Element} Element
- * @typedef {import('mathjax-full/js/core/OutputJax.js').OutputJax<HTMLElement, Text, Document>} OutputJax
  * @typedef {import('mathjax-full/js/core/MathDocument.js').MathDocument<HTMLElement, Text, Document>} MathDocument
- * @typedef {import('mathjax-full/js/input/tex.js').TeX<HTMLElement, Text, Document>} TeX_
+ * @typedef {import('mathjax-full/js/core/OutputJax.js').OutputJax<HTMLElement, Text, Document>} OutputJax
  * @typedef {import('./create-plugin.js').Options} Options
  * @typedef {import('./create-plugin.js').Renderer} Renderer
  */
 
-import {mathjax} from 'mathjax-full/js/mathjax.js'
+import {fromDom} from 'hast-util-from-dom'
+import {toText} from 'hast-util-to-text'
 import {RegisterHTMLHandler} from 'mathjax-full/js/handlers/html.js'
 import {TeX} from 'mathjax-full/js/input/tex.js'
 import {AllPackages} from 'mathjax-full/js/input/tex/AllPackages.js'
-import {fromDom} from 'hast-util-from-dom'
-import {toText} from 'hast-util-to-text'
+import {mathjax} from 'mathjax-full/js/mathjax.js'
 import {createAdaptor} from './create-adaptor.js'
 
 const adaptor = createAdaptor()
@@ -31,24 +30,30 @@ const adaptor = createAdaptor()
 RegisterHTMLHandler(adaptor)
 
 /**
+ * Create a renderer.
+ *
  * @param {Options} options
+ *   Configuration.
  * @param {OutputJax} output
+ *   Output jax.
  * @returns {Renderer}
+ *   Rendeder.
  */
 export function createRenderer(options, output) {
-  const input = new TeX(Object.assign({packages: AllPackages}, options.tex))
+  const input = new TeX({packages: AllPackages, ...options.tex})
   /** @type {MathDocument} */
   const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 
   return {
     render(node, options) {
-      const domNode = fromDom(
-        // @ts-expect-error: assume mathml nodes can be handled by
-        // `hast-util-from-dom`.
-        doc.convert(toText(node, {whitespace: 'pre'}), options)
+      const mathText = toText(node, {whitespace: 'pre'})
+      // Cast as this practically results in `HTMLElement`.
+      const domNode = /** @type {HTMLElement} */ (
+        doc.convert(mathText, options)
       )
-      // @ts-expect-error: `fromDom` returns an element for a given element.
-      node.children = [domNode]
+      // Cast as `HTMLElement` results in an `Element`.
+      const hastNode = /** @type {Element} */ (fromDom(domNode))
+      node.children = [hastNode]
     },
     styleSheet() {
       const value = adaptor.textContent(output.styleSheet(doc))
