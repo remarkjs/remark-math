@@ -54,9 +54,18 @@ export default function remarkHtmlKatex(options = {}) {
           )
         }
 
-        const data = node.data || (node.data = {})
+        const tree = parseHtml.parse(result)
+        removePosition(tree)
 
-        data.hChildren = removePosition(parseHtml.parse(result)).children
+        if (node.type === 'inlineMath') {
+          const data = node.data || (node.data = {})
+          // @ts-expect-error: fine.
+          data.hChildren = tree.children
+        } else {
+          // @ts-expect-error: fine.
+          const scope = node.data.hChildren[0]
+          scope.children = tree.children
+        }
       }
     })
   }

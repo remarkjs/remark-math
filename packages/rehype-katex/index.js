@@ -82,6 +82,7 @@ export default function rehypeKatex(options) {
       }
 
       const root = fromHtmlIsomorphic(result, {fragment: true})
+      // To do: cast content.
       // @ts-expect-error: assume no `doctypes` in KaTeX result.
       element.children = root.children
     })

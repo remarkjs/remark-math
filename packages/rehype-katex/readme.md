@@ -77,8 +77,8 @@ Say we have the following file `example.html`:
 
 ```html
 <p>
-  Lift(<span class="math math-inline">L</span>) can be determined by Lift Coefficient
-  (<span class="math math-inline">C_L</span>) like the following equation.
+  Lift(<code class="language-math math-inline">L</span>) can be determined by Lift Coefficient
+  (<code class="language-math math-inline">C_L</span>) like the following equation.
 </p>
 
 <div class="math math-display">
@@ -121,8 +121,8 @@ Now running `node example.js` yields:
 </head>
 <body>
 <p>
-  Lift(<span class="math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient
-  (<span class="math math-inline"><span class="katex">…</span></span>) like the following equation.
+  Lift(<code class="language-math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient
+  (<code class="language-math math-inline"><span class="katex">…</span></span>) like the following equation.
 </p>
 <div class="math math-display"><span class="katex-display">…</span></div>
 </body>

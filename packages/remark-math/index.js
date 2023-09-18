@@ -29,6 +29,7 @@ export default function remarkMath(options = {}) {
     const list = /** @type {Array<unknown>} */ (
       // Other extensions
       /* c8 ignore next 2 */
+      // @ts-expect-error: to do: refactor.
       data[field] || (data[field] = [])
     )
 

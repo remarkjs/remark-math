@@ -35,10 +35,10 @@
     "index.js"
   ],
   "dependencies": {
-    "@types/mdast": "^3.0.0",
-    "mdast-util-math": "^2.0.0",
-    "micromark-extension-math": "^2.0.0",
-    "unified": "^10.0.0"
+    "@types/mdast": "^4.0.0",
+    "mdast-util-math": "^3.0.0",
+    "micromark-extension-math": "^3.0.0",
+    "unified": "^11.0.0"
   },
   "scripts": {
     "test-api": "node --conditions development test.js",

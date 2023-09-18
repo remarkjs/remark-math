@@ -110,7 +110,7 @@ console.log(String(file))
 Now running `node example.js` yields:
 
 ```html
-<p>Lift(<span class="math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient (<span class="math math-inline"><span class="katex">…</span></span>) like the following equation.</p>
+<p>Lift(<code class="language-math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient (<code class="language-math math-inline"><span class="katex">…</span></span>) like the following equation.</p>
 <div class="math math-display"><span class="katex-display">…</span></div>
 ```
 

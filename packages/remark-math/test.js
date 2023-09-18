@@ -13,18 +13,20 @@ test('remarkMath', async function (t) {
   const toHtml = unified()
     .use(remarkParse)
     .use(remarkMath)
+    // @ts-expect-error: to do: remove when `remark-rehype` is released.
     .use(remarkRehype)
     .use(rehypeStringify)
 
   await t.test('should parse inline and block math', async function () {
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkMath)
+      .parse('Math $\\alpha$\n\n$$\n\\beta+\\gamma\n$$')
+
+    removePosition(tree, {force: true})
+
     assert.deepEqual(
-      removePosition(
-        unified()
-          .use(remarkParse)
-          .use(remarkMath)
-          .parse('Math $\\alpha$\n\n$$\n\\beta+\\gamma\n$$'),
-        true
-      ),
+      tree,
       u('root', [
         u('paragraph', [
           u('text', 'Math '),
@@ -32,8 +34,8 @@ test('remarkMath', async function (t) {
             'inlineMath',
             {
               data: {
-                hName: 'span',
-                hProperties: {className: ['math', 'math-inline']},
+                hName: 'code',
+                hProperties: {className: ['language-math', 'math-inline']},
                 hChildren: [u('text', '\\alpha')]
               }
             },
@@ -45,9 +47,15 @@ test('remarkMath', async function (t) {
           {
             meta: null,
             data: {
-              hName: 'div',
-              hProperties: {className: ['math', 'math-display']},
-              hChildren: [u('text', '\\beta+\\gamma')]
+              hName: 'pre',
+              hChildren: [
+                {
+                  type: 'element',
+                  tagName: 'code',
+                  properties: {className: ['language-math', 'math-display']},
+                  children: [{type: 'text', value: '\\beta+\\gamma'}]
+                }
+              ]
             }
           },
           '\\beta+\\gamma'
@@ -59,11 +67,15 @@ test('remarkMath', async function (t) {
   await t.test(
     'should ignore an escaped opening dollar sign',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('\\$\\alpha$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified().use(remarkParse).use(remarkMath).parse('\\$\\alpha$'),
-          true
-        ),
+        tree,
         u('root', [u('paragraph', [u('text', '$\\alpha$')])])
       )
     }
@@ -72,19 +84,23 @@ test('remarkMath', async function (t) {
   await t.test(
     'should *not* ignore an escaped closing dollar sign',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('$\\alpha\\$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified().use(remarkParse).use(remarkMath).parse('$\\alpha\\$'),
-          true
-        ),
+        tree,
         u('root', [
           u('paragraph', [
             u(
               'inlineMath',
               {
                 data: {
-                  hName: 'span',
-                  hProperties: {className: ['math', 'math-inline']},
+                  hName: 'code',
+                  hProperties: {className: ['language-math', 'math-inline']},
                   hChildren: [u('text', '\\alpha\\')]
                 }
               },
@@ -99,11 +115,15 @@ test('remarkMath', async function (t) {
   await t.test(
     'should support a escaped escape before a dollar sign',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('\\\\$\\alpha$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified().use(remarkParse).use(remarkMath).parse('\\\\$\\alpha$'),
-          true
-        ),
+        tree,
         u('root', [
           u('paragraph', [
             u('text', '\\'),
@@ -111,8 +131,8 @@ test('remarkMath', async function (t) {
               'inlineMath',
               {
                 data: {
-                  hName: 'span',
-                  hProperties: {className: ['math', 'math-inline']},
+                  hName: 'code',
+                  hProperties: {className: ['language-math', 'math-inline']},
                   hChildren: [u('text', '\\alpha')]
                 }
               },
@@ -127,11 +147,15 @@ test('remarkMath', async function (t) {
   await t.test(
     'should ignore dollar signs in inline code (#1)',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('`$`\\alpha$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified().use(remarkParse).use(remarkMath).parse('`$`\\alpha$'),
-          true
-        ),
+        tree,
         u('root', [
           u('paragraph', [u('inlineCode', '$'), u('text', '\\alpha$')])
         ])
@@ -140,19 +164,20 @@ test('remarkMath', async function (t) {
   )
 
   await t.test('should allow backticks in math', async function () {
+    const tree = unified().use(remarkParse).use(remarkMath).parse('$\\alpha`$`')
+
+    removePosition(tree, {force: true})
+
     assert.deepEqual(
-      removePosition(
-        unified().use(remarkParse).use(remarkMath).parse('$\\alpha`$`'),
-        true
-      ),
+      tree,
       u('root', [
         u('paragraph', [
           u(
             'inlineMath',
             {
               data: {
-                hName: 'span',
-                hProperties: {className: ['math', 'math-inline']},
+                hName: 'code',
+                hProperties: {className: ['language-math', 'math-inline']},
                 hChildren: [u('text', '\\alpha`')]
               }
             },
@@ -165,19 +190,21 @@ test('remarkMath', async function (t) {
   })
 
   await t.test('should support backticks in inline math', async function () {
+    const tree = unified().use(remarkParse).use(remarkMath).parse('$`\\alpha`$')
+
+    removePosition(tree, {force: true})
+
     assert.deepEqual(
-      removePosition(
-        unified().use(remarkParse).use(remarkMath).parse('$`\\alpha`$'),
-        true
-      ),
+      tree,
+
       u('root', [
         u('paragraph', [
           u(
             'inlineMath',
             {
               data: {
-                hName: 'span',
-                hProperties: {className: ['math', 'math-inline']},
+                hName: 'code',
+                hProperties: {className: ['language-math', 'math-inline']},
                 hChildren: [u('text', '`\\alpha`')]
               }
             },
@@ -191,19 +218,23 @@ test('remarkMath', async function (t) {
   await t.test(
     'should support a super factorial in inline math',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('$$ \\alpha$ $$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified().use(remarkParse).use(remarkMath).parse('$$ \\alpha$ $$'),
-          true
-        ),
+        tree,
         u('root', [
           u('paragraph', [
             u(
               'inlineMath',
               {
                 data: {
-                  hName: 'span',
-                  hProperties: {className: ['math', 'math-inline']},
+                  hName: 'code',
+                  hProperties: {className: ['language-math', 'math-inline']},
                   hChildren: [u('text', '\\alpha$')]
                 }
               },
@@ -218,23 +249,30 @@ test('remarkMath', async function (t) {
   await t.test(
     'should support a super factorial in block math',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('$$\n\\alpha\\$\n$$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified()
-            .use(remarkParse)
-            .use(remarkMath)
-            .parse('$$\n\\alpha\\$\n$$'),
-          true
-        ),
+        tree,
         u('root', [
           u(
             'math',
             {
               meta: null,
               data: {
-                hName: 'div',
-                hProperties: {className: ['math', 'math-display']},
-                hChildren: [u('text', '\\alpha\\$')]
+                hName: 'pre',
+                hChildren: [
+                  {
+                    type: 'element',
+                    tagName: 'code',
+                    properties: {className: ['language-math', 'math-display']},
+                    children: [{type: 'text', value: '\\alpha\\$'}]
+                  }
+                ]
               }
             },
             '\\alpha\\$'
@@ -247,14 +285,16 @@ test('remarkMath', async function (t) {
   await t.test(
     'should support a math block right after a paragraph',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('tango\n$$\n\\alpha\n$$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified()
-            .use(remarkParse)
-            .use(remarkMath)
-            .parse('tango\n$$\n\\alpha\n$$'),
-          true
-        ),
+        tree,
+
         u('root', [
           u('paragraph', [u('text', 'tango')]),
           u(
@@ -262,9 +302,15 @@ test('remarkMath', async function (t) {
             {
               meta: null,
               data: {
-                hName: 'div',
-                hProperties: {className: ['math', 'math-display']},
-                hChildren: [u('text', '\\alpha')]
+                hName: 'pre',
+                hChildren: [
+                  {
+                    type: 'element',
+                    tagName: 'code',
+                    properties: {className: ['language-math', 'math-display']},
+                    children: [{type: 'text', value: '\\alpha'}]
+                  }
+                ]
               }
             },
             '\\alpha'
@@ -277,19 +323,23 @@ test('remarkMath', async function (t) {
   await t.test(
     'should support inline math with double dollars',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('$$\\alpha$$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified().use(remarkParse).use(remarkMath).parse('$$\\alpha$$'),
-          true
-        ),
+        tree,
         u('root', [
           u('paragraph', [
             u(
               'inlineMath',
               {
                 data: {
-                  hName: 'span',
-                  hProperties: {className: ['math', 'math-inline']},
+                  hName: 'code',
+                  hProperties: {className: ['language-math', 'math-inline']},
                   hChildren: [u('text', '\\alpha')]
                 }
               },
@@ -304,20 +354,30 @@ test('remarkMath', async function (t) {
   await t.test(
     'should support block math with triple dollars',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('$$$\n\\alpha\n$$$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified().use(remarkParse).use(remarkMath).parse('$$$\n\\alpha\n$$$'),
-          true
-        ),
+        tree,
         u('root', [
           u(
             'math',
             {
               meta: null,
               data: {
-                hName: 'div',
-                hProperties: {className: ['math', 'math-display']},
-                hChildren: [u('text', '\\alpha')]
+                hName: 'pre',
+                hChildren: [
+                  {
+                    type: 'element',
+                    tagName: 'code',
+                    properties: {className: ['language-math', 'math-display']},
+                    children: [{type: 'text', value: '\\alpha'}]
+                  }
+                ]
               }
             },
             '\\alpha'
@@ -328,23 +388,30 @@ test('remarkMath', async function (t) {
   )
 
   await t.test('should support indented block math', async function () {
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkMath)
+      .parse('  $$\n    \\alpha\n  $$')
+
+    removePosition(tree, {force: true})
+
     assert.deepEqual(
-      removePosition(
-        unified()
-          .use(remarkParse)
-          .use(remarkMath)
-          .parse('  $$\n    \\alpha\n  $$'),
-        true
-      ),
+      tree,
       u('root', [
         u(
           'math',
           {
             meta: null,
             data: {
-              hName: 'div',
-              hProperties: {className: ['math', 'math-display']},
-              hChildren: [u('text', '  \\alpha')]
+              hName: 'pre',
+              hChildren: [
+                {
+                  type: 'element',
+                  tagName: 'code',
+                  properties: {className: ['language-math', 'math-display']},
+                  children: [{type: 'text', value: '  \\alpha'}]
+                }
+              ]
             }
           },
           '  \\alpha'
@@ -387,11 +454,12 @@ test('remarkMath', async function (t) {
         unified()
           .use(remarkParse)
           .use(remarkMath, {singleDollarTextMath: false})
+          // @ts-expect-error: to do: remove when `remark-rehype` is released.
           .use(remarkRehype)
           .use(rehypeStringify)
           .processSync('Math $\\alpha$\n\n$$\\beta+\\gamma$$\n')
           .toString(),
-        '<p>Math $\\alpha$</p>\n<p><span class="math math-inline">\\beta+\\gamma</span></p>'
+        '<p>Math $\\alpha$</p>\n<p><code class="language-math math-inline">\\beta+\\gamma</code></p>'
       )
     }
   )
@@ -413,7 +481,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$$just two dollars')),
-        '<div class="math math-display"></div>'
+        '<pre><code class="language-math math-display"></code></pre>'
       )
     }
   )
@@ -421,7 +489,7 @@ test('remarkMath', async function (t) {
   await t.test('should support `meta`', async function () {
     assert.deepEqual(
       String(toHtml.processSync('$$  must\n\\alpha\n$$')),
-      '<div class="math math-display">\\alpha</div>'
+      '<pre><code class="language-math math-display">\\alpha</code></pre>'
     )
   })
 
@@ -430,7 +498,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$$  \n\\alpha\n$$')),
-        '<div class="math math-display">\\alpha</div>'
+        '<pre><code class="language-math math-display">\\alpha</code></pre>'
       )
     }
   )
@@ -440,7 +508,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$$\n\\alpha\nmust  $$')),
-        '<div class="math math-display">\\alpha\nmust  $$</div>'
+        '<pre><code class="language-math math-display">\\alpha\nmust  $$</code></pre>'
       )
     }
   )
@@ -450,7 +518,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$$\n\\alpha\n  $$')),
-        '<div class="math math-display">\\alpha</div>'
+        '<pre><code class="language-math math-display">\\alpha</code></pre>'
       )
     }
   )
@@ -460,29 +528,36 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$$\n\\alpha\n$$  ')),
-        '<div class="math math-display">\\alpha</div>'
+        '<pre><code class="language-math math-display">\\alpha</code></pre>'
       )
     }
   )
 
   await t.test('should not affect the next block', async function () {
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkMath)
+      .parse('$$\n\\alpha\n$$\n```\nbravo\n```\n')
+
+    removePosition(tree, {force: true})
+
     assert.deepEqual(
-      removePosition(
-        unified()
-          .use(remarkParse)
-          .use(remarkMath)
-          .parse('$$\n\\alpha\n$$\n```\nbravo\n```\n'),
-        true
-      ),
+      tree,
       u('root', [
         u(
           'math',
           {
             meta: null,
             data: {
-              hName: 'div',
-              hProperties: {className: ['math', 'math-display']},
-              hChildren: [u('text', '\\alpha')]
+              hName: 'pre',
+              hChildren: [
+                {
+                  type: 'element',
+                  tagName: 'code',
+                  properties: {className: ['language-math', 'math-display']},
+                  children: [{type: 'text', value: '\\alpha'}]
+                }
+              ]
             }
           },
           '\\alpha'
@@ -495,19 +570,23 @@ test('remarkMath', async function (t) {
   await t.test(
     'should support two dollar signs on inline math',
     async function () {
+      const tree = unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .parse('$$\\alpha$$')
+
+      removePosition(tree, {force: true})
+
       assert.deepEqual(
-        removePosition(
-          unified().use(remarkParse).use(remarkMath).parse('$$\\alpha$$'),
-          true
-        ),
+        tree,
         u('root', [
           u('paragraph', [
             u(
               'inlineMath',
               {
                 data: {
-                  hName: 'span',
-                  hProperties: {className: ['math', 'math-inline']},
+                  hName: 'code',
+                  hProperties: {className: ['language-math', 'math-inline']},
                   hChildren: [u('text', '\\alpha')]
                 }
               },
@@ -568,14 +647,14 @@ test('remarkMath', async function (t) {
   await t.test('should do markdown-it-katex#01', async function () {
     assert.deepEqual(
       String(toHtml.processSync('$1+1 = 2$')),
-      '<p><span class="math math-inline">1+1 = 2</span></p>'
+      '<p><code class="language-math math-inline">1+1 = 2</code></p>'
     )
   })
 
   await t.test('should do markdown-it-katex#02 (deviation)', async function () {
     assert.deepEqual(
       String(toHtml.processSync('$$1+1 = 2$$')),
-      '<p><span class="math math-inline">1+1 = 2</span></p>'
+      '<p><code class="language-math math-inline">1+1 = 2</code></p>'
     )
   })
 
@@ -584,7 +663,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('foo$1+1 = 2$bar')),
-        '<p>foo<span class="math math-inline">1+1 = 2</span>bar</p>'
+        '<p>foo<code class="language-math math-inline">1+1 = 2</code>bar</p>'
       )
     }
   )
@@ -594,7 +673,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('foo$-1+1 = 2$bar')),
-        '<p>foo<span class="math math-inline">-1+1 = 2</span>bar</p>'
+        '<p>foo<code class="language-math math-inline">-1+1 = 2</code>bar</p>'
       )
     }
   )
@@ -634,7 +713,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('foo $1 *i* 1$ bar')),
-        '<p>foo <span class="math math-inline">1 *i* 1</span> bar</p>'
+        '<p>foo <code class="language-math math-inline">1 *i* 1</code> bar</p>'
       )
     }
   )
@@ -644,7 +723,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('   $$\n   1+1 = 2\n   $$')),
-        '<div class="math math-display">1+1 = 2</div>'
+        '<pre><code class="language-math math-display">1+1 = 2</code></pre>'
       )
     }
   )
@@ -664,7 +743,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('foo $1 + 1\n= 2$ bar')),
-        '<p>foo <span class="math math-inline">1 + 1\n= 2</span> bar</p>'
+        '<p>foo <code class="language-math math-inline">1 + 1\n= 2</code> bar</p>'
       )
     }
   )
@@ -674,7 +753,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$$\n\n  1\n+ 1\n\n= 2\n\n$$')),
-        '<div class="math math-display">\n  1\n+ 1\n\n= 2\n</div>'
+        '<pre><code class="language-math math-display">\n  1\n+ 1\n\n= 2\n</code></pre>'
       )
     }
   )
@@ -684,7 +763,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$n$-th order')),
-        '<p><span class="math math-inline">n</span>-th order</p>'
+        '<p><code class="language-math math-inline">n</code>-th order</p>'
       )
     }
   )
@@ -694,7 +773,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$$\n1+1 = 2')),
-        '<div class="math math-display">1+1 = 2</div>'
+        '<pre><code class="language-math math-display">1+1 = 2</code></pre>'
       )
     }
   )
@@ -704,7 +783,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('* $1+1 = 2$\n* $$\n  1+1 = 2\n  $$')),
-        '<ul>\n<li><span class="math math-inline">1+1 = 2</span></li>\n<li>\n<div class="math math-display">1+1 = 2</div>\n</li>\n</ul>'
+        '<ul>\n<li><code class="language-math math-inline">1+1 = 2</code></li>\n<li>\n<pre><code class="language-math math-display">1+1 = 2</code></pre>\n</li>\n</ul>'
       )
     }
   )
@@ -714,7 +793,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('$$1+1 = 2$$')),
-        '<p><span class="math math-inline">1+1 = 2</span></p>'
+        '<p><code class="language-math math-inline">1+1 = 2</code></p>'
       )
     }
   )
@@ -725,7 +804,7 @@ test('remarkMath', async function (t) {
       // To do: this is broken.
       assert.deepEqual(
         String(toHtml.processSync('$$\n[\n[1, 2]\n[3, 4]\n]\n$$')),
-        '<div class="math math-display">[\n[1, 2]\n[3, 4]\n]</div>'
+        '<pre><code class="language-math math-display">[\n[1, 2]\n[3, 4]\n]</code></pre>'
       )
     }
   )
@@ -735,7 +814,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('Foo \\$1$ bar\n\\$\\$\n1\n\\$\\$')),
-        '<p>Foo $1<span class="math math-inline"> bar\n\\</span>$\n1\n$$</p>'
+        '<p>Foo $1<code class="language-math math-inline"> bar\n\\</code>$\n1\n$$</p>'
       )
     }
   )
@@ -749,7 +828,7 @@ test('remarkMath', async function (t) {
             'Thus, $20,000 and USD$30,000 won’t parse as math.'
           )
         ),
-        '<p>Thus, <span class="math math-inline">20,000 and USD</span>30,000 won’t parse as math.</p>'
+        '<p>Thus, <code class="language-math math-inline">20,000 and USD</code>30,000 won’t parse as math.</p>'
       )
     }
   )
@@ -759,7 +838,7 @@ test('remarkMath', async function (t) {
     async function () {
       assert.deepEqual(
         String(toHtml.processSync('It is 2$ for a can of soda, not 1$.')),
-        '<p>It is 2<span class="math math-inline"> for a can of soda, not 1</span>.</p>'
+        '<p>It is 2<code class="language-math math-inline"> for a can of soda, not 1</code>.</p>'
       )
     }
   )
@@ -773,7 +852,7 @@ test('remarkMath', async function (t) {
             'I’ll give $20 today, if you give me more $ tomorrow.'
           )
         ),
-        '<p>I’ll give <span class="math math-inline">20 today, if you give me more </span> tomorrow.</p>'
+        '<p>I’ll give <code class="language-math math-inline">20 today, if you give me more </code> tomorrow.</p>'
       )
     }
   )
@@ -784,7 +863,7 @@ test('remarkMath', async function (t) {
       // #22 “inline blockmath is not (currently) registered” <-- we do support it!
       assert.deepEqual(
         String(toHtml.processSync('Money adds: $\\$X + \\$Y = \\$Z$.')),
-        '<p>Money adds: <span class="math math-inline">\\</span>X + $Y = $Z$.</p>'
+        '<p>Money adds: <code class="language-math math-inline">\\</code>X + $Y = $Z$.</p>'
       )
     }
   )
@@ -798,7 +877,7 @@ test('remarkMath', async function (t) {
             'Weird-o: $\\displaystyle{\\begin{pmatrix} \\$ & 1\\\\\\$ \\end{pmatrix}}$.'
           )
         ),
-        '<p>Weird-o: <span class="math math-inline">\\displaystyle{\\begin{pmatrix} \\</span> &#x26; 1\\$ \\end{pmatrix}}$.</p>'
+        '<p>Weird-o: <code class="language-math math-inline">\\displaystyle{\\begin{pmatrix} \\</code> &#x26; 1\\$ \\end{pmatrix}}$.</p>'
       )
     }
   )

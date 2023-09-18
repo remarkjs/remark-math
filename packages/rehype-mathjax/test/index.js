@@ -67,6 +67,7 @@ test('rehype-mathjax', async function (t) {
       unified()
         .use(remarkParse)
         .use(remarkMath)
+        // @ts-expect-error: to do: remove when `remark-rehype` is released.
         .use(remarkRehype)
         .use(rehypeMathJaxSvg)
         .use(rehypeStringify)

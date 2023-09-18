@@ -16,6 +16,7 @@ test('remark-html-katex', async function (t) {
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkHtmlKatex)
+        // @ts-expect-error: to do: remove when `remark-html` is released.
         .use(remarkHtml, {sanitize: false})
         .processSync(
           [
@@ -34,13 +35,13 @@ test('remark-html-katex', async function (t) {
         .use(rehypeStringify)
         .processSync(
           [
-            '<p>Inline math <span class="math math-inline">' +
+            '<p>Inline math <code class="language-math math-inline">' +
               katex.renderToString('\\alpha') +
-              '</span>.</p>',
+              '</code>.</p>',
             '<p>Block math:</p>',
-            '<div class="math math-display">' +
+            '<pre><code class="language-math math-display">' +
               katex.renderToString('\\gamma', {displayMode: true}) +
-              '</div>',
+              '</code></pre>',
             ''
           ].join('\n')
         )
@@ -56,6 +57,7 @@ test('remark-html-katex', async function (t) {
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkHtmlKatex, {macros})
+        // @ts-expect-error: to do: remove when `remark-html` is released.
         .use(remarkHtml, {sanitize: false})
         .processSync('$\\RR$')
         .toString(),
@@ -63,9 +65,9 @@ test('remark-html-katex', async function (t) {
         .use(rehypeParse, {fragment: true})
         .use(rehypeStringify)
         .processSync(
-          '<p><span class="math math-inline">' +
+          '<p><code class="language-math math-inline">' +
             katex.renderToString('\\RR', {macros}) +
-            '</span></p>\n'
+            '</code></p>\n'
         )
         .toString()
     )
@@ -77,6 +79,7 @@ test('remark-html-katex', async function (t) {
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkHtmlKatex, {errorColor: 'orange'})
+        // @ts-expect-error: to do: remove when `remark-html` is released.
         .use(remarkHtml, {sanitize: false})
         .processSync('$\\alpa$')
         .toString(),
@@ -84,12 +87,12 @@ test('remark-html-katex', async function (t) {
         .use(rehypeParse, {fragment: true})
         .use(rehypeStringify)
         .processSync(
-          '<p><span class="math math-inline">' +
+          '<p><code class="language-math math-inline">' +
             katex.renderToString('\\alpa', {
               throwOnError: false,
               errorColor: 'orange'
             }) +
-            '</span></p>\n'
+            '</code></p>\n'
         )
         .toString()
     )
@@ -101,6 +104,7 @@ test('remark-html-katex', async function (t) {
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkHtmlKatex)
+        // @ts-expect-error: to do: remove when `remark-html` is released.
         .use(remarkHtml, {sanitize: false})
         .processSync('Lorem\n$\\alpa$')
         .messages.map(String),
@@ -118,6 +122,7 @@ test('remark-html-katex', async function (t) {
           .use(remarkParse)
           .use(remarkMath)
           .use(remarkHtmlKatex, {throwOnError: true})
+          // @ts-expect-error: to do: remove when `remark-html` is released.
           .use(remarkHtml, {sanitize: false})
           .processSync('Lorem\n$\\alpa$')
       } catch (error_) {
@@ -136,6 +141,7 @@ test('remark-html-katex', async function (t) {
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkHtmlKatex, {errorColor: 'orange', strict: 'ignore'})
+        // @ts-expect-error: to do: remove when `remark-html` is released.
         .use(remarkHtml, {sanitize: false})
         .processSync('$ê&$')
         .toString(),
@@ -143,7 +149,7 @@ test('remark-html-katex', async function (t) {
         .use(rehypeParse, {fragment: true})
         .use(rehypeStringify)
         .processSync(
-          '<p><span class="math math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span></p>\n'
+          '<p><code class="language-math math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></code></p>\n'
         )
         .toString()
     )
@@ -152,6 +158,7 @@ test('remark-html-katex', async function (t) {
   await t.test('should support generated nodes', async function () {
     const pipeline = unified()
       .use(remarkHtmlKatex, {errorColor: 'orange', strict: 'ignore'})
+      // @ts-expect-error: to do: remove when `remark-html` is released.
       .use(remarkHtml, {sanitize: false})
 
     assert.deepEqual(

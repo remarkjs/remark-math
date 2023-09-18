@@ -18,7 +18,7 @@ test('rehype-katex', async function (t) {
         .use(rehypeStringify)
         .processSync(
           [
-            '<p>Inline math <span class="math-inline">\\alpha</span>.</p>',
+            '<p>Inline math <code class="math-inline">\\alpha</code>.</p>',
             '<p>Block math:</p>',
             '<div class="math-display">\\gamma</div>'
           ].join('\n')
@@ -29,9 +29,9 @@ test('rehype-katex', async function (t) {
         .use(rehypeStringify)
         .processSync(
           [
-            '<p>Inline math <span class="math-inline">' +
+            '<p>Inline math <code class="math-inline">' +
               katex.renderToString('\\alpha') +
-              '</span>.</p>',
+              '</code>.</p>',
             '<p>Block math:</p>',
             '<div class="math-display">' +
               katex.renderToString('\\gamma', {displayMode: true}) +
@@ -47,6 +47,7 @@ test('rehype-katex', async function (t) {
       unified()
         .use(remarkParse)
         .use(remarkMath)
+        // @ts-expect-error: to do: remove when `remark-rehype` is released.
         .use(remarkRehype)
         .use(rehypeKatex)
         .use(rehypeStringify)
@@ -67,13 +68,13 @@ test('rehype-katex', async function (t) {
         .use(rehypeStringify)
         .processSync(
           [
-            '<p>Inline math <span class="math math-inline">' +
+            '<p>Inline math <code class="language-math math-inline">' +
               katex.renderToString('\\alpha') +
-              '</span>.</p>',
+              '</code>.</p>',
             '<p>Block math:</p>',
-            '<div class="math math-display">' +
+            '<pre><code class="language-math math-display">' +
               katex.renderToString('\\gamma', {displayMode: true}) +
-              '</div>'
+              '</code></pre>'
           ].join('\n')
         )
         .toString()
@@ -89,16 +90,16 @@ test('rehype-katex', async function (t) {
           .use(rehypeKatex)
           .use(rehypeStringify)
           .processSync(
-            '<p>Double math <span class="math-inline math-display">\\alpha</span>.</p>'
+            '<p>Double math <code class="math-inline math-display">\\alpha</code>.</p>'
           )
           .toString(),
         unified()
           .use(rehypeParse, {fragment: true})
           .use(rehypeStringify)
           .processSync(
-            '<p>Double math <span class="math-inline math-display">' +
+            '<p>Double math <code class="math-inline math-display">' +
               katex.renderToString('\\alpha', {displayMode: true}) +
-              '</span>.</p>'
+              '</code>.</p>'
           )
           .toString()
       )
@@ -113,15 +114,15 @@ test('rehype-katex', async function (t) {
         .use(rehypeParse, {fragment: true})
         .use(rehypeKatex, {macros})
         .use(rehypeStringify)
-        .processSync('<span class="math-inline">\\RR</span>')
+        .processSync('<code class="math-inline">\\RR</code>')
         .toString(),
       unified()
         .use(rehypeParse, {fragment: true})
         .use(rehypeStringify)
         .processSync(
-          '<span class="math-inline">' +
+          '<code class="math-inline">' +
             katex.renderToString('\\RR', {macros}) +
-            '</span>'
+            '</code>'
         )
         .toString()
     )
@@ -133,18 +134,18 @@ test('rehype-katex', async function (t) {
         .use(rehypeParse, {fragment: true})
         .use(rehypeKatex, {errorColor: 'orange'})
         .use(rehypeStringify)
-        .processSync('<span class="math-inline">\\alpa</span>')
+        .processSync('<code class="math-inline">\\alpa</code>')
         .toString(),
       unified()
         .use(rehypeParse, {fragment: true})
         .use(rehypeStringify)
         .processSync(
-          '<span class="math-inline">' +
+          '<code class="math-inline">' +
             katex.renderToString('\\alpa', {
               throwOnError: false,
               errorColor: 'orange'
             }) +
-            '</span>'
+            '</code>'
         )
         .toString()
     )
@@ -157,7 +158,7 @@ test('rehype-katex', async function (t) {
         .use(rehypeKatex)
         .use(rehypeStringify)
         .processSync(
-          '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
+          '<p>Lorem</p>\n<p><code class="math-inline">\\alpa</code></p>'
         )
         .messages.map(String),
       [
@@ -175,7 +176,7 @@ test('rehype-katex', async function (t) {
           .use(rehypeKatex, {throwOnError: true})
           .use(rehypeStringify)
           .processSync(
-            '<p>Lorem</p>\n<p><span class="math-inline">\\alpa</span></p>'
+            '<p>Lorem</p>\n<p><code class="math-inline">\\alpa</code></p>'
           )
       } catch (error_) {
         const error = /** @type {Error} */ (error_)
@@ -193,13 +194,13 @@ test('rehype-katex', async function (t) {
         .use(rehypeParse, {fragment: true})
         .use(rehypeKatex, {errorColor: 'orange', strict: 'ignore'})
         .use(rehypeStringify)
-        .processSync('<span class="math-inline">ê&amp;</span>')
+        .processSync('<code class="math-inline">ê&amp;</code>')
         .toString(),
       unified()
         .use(rehypeParse, {fragment: true})
         .use(rehypeStringify)
         .processSync(
-          '<span class="math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></span>'
+          '<code class="math-inline"><span class="katex-error" title="ParseError: KaTeX parse error: Expected \'EOF\', got \'&\' at position 2: ê&̲" style="color:orange">ê&amp;</span></code>'
         )
         .toString()
     )
@@ -237,14 +238,14 @@ test('rehype-katex', async function (t) {
         .use(rehypeKatex)
         .use(rehypeStringify)
         .processSync(
-          '<span class="math-display">\\begin{split}\n\\end{{split}}\n</span>'
+          '<code class="math-display">\\begin{split}\n\\end{{split}}\n</code>'
         )
         .toString(),
       unified()
         .use(rehypeParse, {fragment: true})
         .use(rehypeStringify)
         .processSync(
-          '<span class="math-display"><span class="katex-error" title="Error: Expected node of type textord, but got node of type ordgroup" style="color:#cc0000">\\begin{split}\n\\end{{split}}\n</span></span>'
+          '<code class="math-display"><span class="katex-error" title="Error: Expected node of type textord, but got node of type ordgroup" style="color:#cc0000">\\begin{split}\n\\end{{split}}\n</span></code>'
         )
         .toString()
     )
