@@ -1,25 +1,5 @@
 /**
  * @typedef {import('./lib/create-plugin.js').Options} Options
- * @typedef {import('./lib/create-plugin.js').InputTexOptions} InputTexOptions
  */
 
-import {createPlugin} from './lib/create-plugin.js'
-
-/** @type {Readonly<InputTexOptions>} */
-const emptyTexOptions = {}
-
-const rehypeMathJaxBrowser = createPlugin(function (options) {
-  const tex = options.tex || emptyTexOptions
-  const display = tex.displayMath || [['\\[', '\\]']]
-  const inline = tex.inlineMath || [['\\(', '\\)']]
-
-  return {
-    render(node, options) {
-      const delimiters = (options.display ? display : inline)[0]
-      node.children.unshift({type: 'text', value: delimiters[0]})
-      node.children.push({type: 'text', value: delimiters[1]})
-    }
-  }
-})
-
-export default rehypeMathJaxBrowser
+export {default} from './lib/browser.js'
