@@ -17,7 +17,6 @@
   ],
   "type": "module",
   "workspaces": [
-    "packages/remark-html-katex/",
     "packages/rehype-katex/",
     "packages/remark-math/",
     "packages/rehype-mathjax/"
