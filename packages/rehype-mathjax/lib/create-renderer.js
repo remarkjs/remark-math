@@ -12,11 +12,11 @@ import {RegisterHTMLHandler} from 'mathjax-full/js/handlers/html.js'
 import {TeX} from 'mathjax-full/js/input/tex.js'
 import {AllPackages} from 'mathjax-full/js/input/tex/AllPackages.js'
 import {mathjax} from 'mathjax-full/js/mathjax.js'
-import {createAdaptor} from './create-adaptor.js'
+import {createAdapter} from '#create-adapter'
 
-const adaptor = createAdaptor()
+const adapter = createAdapter()
 
-// To do next major: Keep resultant HTML handler from `register(adaptor)` to
+// To do next major: Keep resultant HTML handler from `register(adapter)` to
 // allow registering the `AssistiveMmlHandler` as in this demo:
 // <https://github.com/mathjax/MathJax-demos-node/tree/master/direct>
 //
@@ -27,7 +27,7 @@ const adaptor = createAdaptor()
 // That is to prevent memory leak in `mathjax.handlers` whenever a new instance
 // of the plugin is used.
 /* eslint-disable-next-line new-cap */
-RegisterHTMLHandler(adaptor)
+RegisterHTMLHandler(adapter)
 
 /**
  * Create a renderer.
@@ -56,7 +56,7 @@ export function createRenderer(options, output) {
       node.children = [hastNode]
     },
     styleSheet() {
-      const value = adaptor.textContent(output.styleSheet(doc))
+      const value = adapter.textContent(output.styleSheet(doc))
 
       return {
         type: 'element',

@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import test from 'node:test'
-import rehypeMathJaxBrowser from 'rehype-mathjax/browser.js'
-import rehypeMathJaxChtml from 'rehype-mathjax/chtml.js'
-import rehypeMathJaxSvg from 'rehype-mathjax/svg.js'
+import rehypeMathJaxBrowser from 'rehype-mathjax/browser'
+import rehypeMathJaxChtml from 'rehype-mathjax/chtml'
+import rehypeMathJaxSvg from 'rehype-mathjax/svg'
 import rehypeParse from 'rehype-parse'
 import rehypeStringify from 'rehype-stringify'
 import remarkMath from 'remark-math'
@@ -24,32 +24,31 @@ test('rehype-mathjax', async function (t) {
   )
 
   await t.test(
-    'should expose the public api for `rehype-mathjax/browser.js`',
+    'should expose the public api for `rehype-mathjax/browser`',
     async function () {
       assert.deepEqual(
-        Object.keys(await import('rehype-mathjax/browser.js')).sort(),
+        Object.keys(await import('rehype-mathjax/browser')).sort(),
         ['default']
       )
     }
   )
 
   await t.test(
-    'should expose the public api for `rehype-mathjax/chtml.js`',
+    'should expose the public api for `rehype-mathjax/chtml`',
     async function () {
       assert.deepEqual(
-        Object.keys(await import('rehype-mathjax/chtml.js')).sort(),
+        Object.keys(await import('rehype-mathjax/chtml')).sort(),
         ['default']
       )
     }
   )
 
   await t.test(
-    'should expose the public api for `rehype-mathjax/svg.js`',
+    'should expose the public api for `rehype-mathjax/svg`',
     async function () {
-      assert.deepEqual(
-        Object.keys(await import('rehype-mathjax/svg.js')).sort(),
-        ['default']
-      )
+      assert.deepEqual(Object.keys(await import('rehype-mathjax/svg')).sort(), [
+        'default'
+      ])
     }
   )
 

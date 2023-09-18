@@ -31,22 +31,30 @@
   ],
   "sideEffects": false,
   "type": "module",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "exports": {
+    ".": "./svg.js",
+    "./browser": "./browser.js",
+    "./chtml": "./chtml.js",
+    "./svg": "./svg.js"
+  },
+  "imports": {
+    "#create-adapter": {
+      "deno": "./lib/create-adapter.default.js",
+      "react-native": "./lib/create-adapter.default.js",
+      "worker": "./lib/create-adapter.default.js",
+      "browser": "./lib/create-adapter.browser.js",
+      "default": "./lib/create-adapter.default.js"
+    }
+  },
   "files": [
     "lib/",
     "browser.d.ts",
     "browser.js",
     "chtml.d.ts",
     "chtml.js",
-    "index.d.ts",
-    "index.js",
     "svg.d.ts",
     "svg.js"
   ],
-  "browser": {
-    "./lib/create-adaptor.js": "./lib/create-adaptor.browser.js"
-  },
   "dependencies": {
     "@types/hast": "^3.0.0",
     "@types/mathjax": "^0.0.37",
@@ -65,6 +73,9 @@
     "test": "npm run build && npm run test-api"
   },
   "xo": {
-    "prettier": true
+    "prettier": true,
+    "rules": {
+      "n/file-extension-in-import": "off"
+    }
   }
 }
