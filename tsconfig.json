@@ -10,7 +10,7 @@
     // To do: remove when `mathjax-full` types are fixed.
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2020"
+    "target": "es2022"
   },
   "exclude": ["coverage/", "node_modules/"],
   "include": ["**/*.js"]
