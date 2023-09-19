@@ -74,14 +74,14 @@ npm install remark-math
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import remarkMath from 'https://esm.sh/remark-math@5'
+import remarkMath from 'https://esm.sh/remark-math@6'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import remarkMath from 'https://esm.sh/remark-math@5?bundle'
+  import remarkMath from 'https://esm.sh/remark-math@6?bundle'
 </script>
 ```
 
