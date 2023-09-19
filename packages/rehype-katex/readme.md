@@ -56,14 +56,14 @@ npm install rehype-katex
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import rehypeKatex from 'https://esm.sh/rehype-katex@6'
+import rehypeKatex from 'https://esm.sh/rehype-katex@7'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import rehypeKatex from 'https://esm.sh/rehype-katex@6?bundle'
+  import rehypeKatex from 'https://esm.sh/rehype-katex@7?bundle'
 </script>
 ```
 
