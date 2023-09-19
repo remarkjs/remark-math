@@ -8,8 +8,8 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-**[rehype][]** plugin to render `<span class=math-inline>` and
-`<div class=math-display>` with [MathJax][].
+**[rehype][]** plugin to render elements with a `language-math` class with
+[MathJax][].
 
 ## Contents
 
@@ -18,9 +18,11 @@
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`unified().use(rehypeMathjaxSvg[, options])`](#unifieduserehypemathjaxsvg-options)
+    *   [`unified().use(rehypeMathjax[, options])`](#unifieduserehypemathjax-options)
+    *   [`Options`](#options)
+*   [Markdown](#markdown)
+*   [HTML](#html)
 *   [CSS](#css)
-*   [Syntax tree](#syntax-tree)
 *   [Types](#types)
 *   [Compatibility](#compatibility)
 *   [Security](#security)
@@ -31,27 +33,21 @@
 ## What is this?
 
 This package is a [unified][] ([rehype][]) plugin to render math.
-You can combine it with [`remark-math`][remark-math] for math in markdown or add
-`math-inline` and `math-display` classes in HTML.
-
-**unified** is a project that transforms content with abstract syntax trees
-(ASTs).
-**rehype** adds support for HTML to unified.
-**hast** is the HTML AST that rehype uses.
-This is a rehype plugin that transforms hast.
+You can add classes to HTML elements, use fenced code in markdown, or combine
+with [`remark-math`][remark-math] for a `$C$` syntax extension.
 
 ## When should I use this?
 
 This project is useful as it renders math with MathJax at compile time, which
 means that there is no client side JavaScript needed.
 
-A different plugin, [`rehype-katex`][rehype-katex], is similar but uses
-[KaTeX][] instead.
+A different plugin, [`rehype-katex`][rehype-katex], does the same but with
+[KaTeX][].
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
-In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
+This package is [ESM only][esm].
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install rehype-mathjax
@@ -73,46 +69,45 @@ In browsers with [`esm.sh`][esmsh]:
 
 ## Use
 
-Say we have the following file `example.html`:
+Say our document `input.html` contains:
 
 ```html
 <p>
-  Lift(<code class="language-math math-inline">L</span>) can be determined by Lift Coefficient
-  (<code class="language-math math-inline">C_L</span>) like the following equation.
+  Lift(<code class="language-math">L</code>) can be determined by Lift Coefficient
+  (<code class="language-math">C_L</code>) like the following equation.
 </p>
-
-<div class="math math-display">
+<pre><code class="language-math">
   L = \frac{1}{2} \rho v^2 S C_L
-</div>
+</code></pre>
 ```
 
-And our module `example.js` looks as follows:
+…and our module `example.js` contains:
 
 ```js
-import {read} from 'to-vfile'
-import {unified} from 'unified'
-import rehypeParse from 'rehype-parse'
 import rehypeMathjax from 'rehype-mathjax'
+import rehypeParse from 'rehype-parse'
 import rehypeStringify from 'rehype-stringify'
+import {read, write} from 'to-vfile'
+import {unified} from 'unified'
 
 const file = await unified()
   .use(rehypeParse, {fragment: true})
   .use(rehypeMathjax)
   .use(rehypeStringify)
-  .process(await read('example.html'))
+  .process(await read('input.html'))
 
-console.log(String(file))
+file.basename = 'output.html'
+await write(file)
 ```
 
-Now running `node example.js` yields:
+…then running `node example.js` creates an `output.html` with:
 
 ```html
 <p>
-  Lift(<code class="language-math math-inline"><mjx-container class="MathJax" jax="SVG"><!--…--></mjx-container></span>) can be determined by Lift Coefficient
-  (<code class="language-math math-inline"><mjx-container class="MathJax" jax="SVG"><!--…--></mjx-container></span>) like the following equation.
+  Lift(<mjx-container class="MathJax" jax="SVG"><!--…--></mjx-container>) can be determined by Lift Coefficient
+  (<mjx-container class="MathJax" jax="SVG"><!--…--></mjx-container>) like the following equation.
 </p>
-
-<div class="math math-display"><mjx-container class="MathJax" jax="SVG" display="true"><!--…--></mjx-container></div>
+<mjx-container class="MathJax" jax="SVG" display="true"><!--…--></mjx-container>
 <style>
 mjx-container[jax="SVG"] {
   direction: ltr;
@@ -121,61 +116,65 @@ mjx-container[jax="SVG"] {
 </style>
 ```
 
+…open `output.html` in a browser to see the rendered math.
+
 ## API
 
-This package exports no identifiers.
-The default export is `rehypeMathjaxSvg`.
+This package has an export map with several entries for plugins using different
+strategies:
 
-### `unified().use(rehypeMathjaxSvg[, options])`
+*   `rehype-mathjax/browser` — browser (±1kb)
+*   `rehype-mathjax/chtml` — [CHTML][mathjax-chtml] (±154kb)
+*   `rehype-mathjax/svg` — [SVG][mathjax-svg] (±566kb)
+*   `rehype-mathjax` — same as SVG
 
-Transform `<span class="math-inline">` and `<div class="math-display">` with
-[MathJax][].
+Each module exports the plugin [`rehypeMathjax`][api-rehype-mathjax] as
+the default export.
 
-This package includes three plugins, split out because MathJax targets have a
-big memory and bundle size footprint: SVG, CHTML, and browser:
+### `unified().use(rehypeMathjax[, options])`
 
-###### SVG
+Render elements with a `language-math` (or `math-display`, `math-inline`)
+class with [MathJax][].
 
-Render math as [SVG][mathjax-svg]
-(`import rehypeMathjaxSvg from 'rehype-mathjax/svg.js'`, default).
-About 566kb minzipped.
+###### Parameters
 
-###### CHTML
+*   `options` ([`Options`][api-options], typically optional)
+    — configuration
 
-Render math as [CHTML][mathjax-chtml]
-(`import rehypeMathjaxChtml from 'rehype-mathjax/chtml.js'`).
-About 154kb minzipped.
-Needs a `fontURL` to be passed.
+###### Returns
 
-###### Browser
+Transform ([`Transformer`][unified-transformer]).
 
-Tiny wrapper that expects MathJax to do work client side
-(`import rehypeMathjaxBrowser from 'rehype-mathjax/browser.js'`).
-About 1kb minzipped.
+### `Options`
 
-Uses `options.displayMath` (default: `['\\[', '\\]']`) for display math and
-`options.inlineMath` (default: `['\\(', '\\)']`) for inline math.
+Configuration (TypeScript type).
 
-You need to load MathJax on the client yourself and start it with corresponding
-markers.
-Options are not passed to MathJax: do that yourself on the client.
+###### Fields
 
-#### `options`
+*   `chtml` (`unknown`, optional)
+    — configuration for the output, when CHTML;
+    see [*CommonHTML Output Processor Options* on
+    `mathjax.org`][mathjax-chtml-options]
+*   `svg` (`unknown`, optional)
+    — configuration for the output, when SVG;
+    see [*SVG Output Processor Options* on
+    `mathjax.org`][mathjax-svg-options]
+*   `tex` (`unknown`, optional)
+    — configuration for the input TeX;
+    see [*TeX Input Processor Options* on
+    `mathjax.org`][mathjax-tex-options]
 
-All options, except when using the browser plugin, are passed to
-[MathJax][mathjax-options].
+###### Notes
 
-#### `options.tex`
+When using `rehype-mathjax/browser`, only `options.tex.displayMath` and
+`options.tex.inlineMath` are used.
+That plugin will use the first delimiter pair in those fields to wrap
+math.
+Then you need to load MathJax yourself on the client and start it with the
+same markers.
+You can pass other options on the client.
 
-These options are passed to the [TeX input processor][mathjax-tex-options].
-The browser plugin uses the first delimiter pair in `tex.displayMath` and
-`tex.inlineMath` to instead wrap math.
-
-#### `options.chtml`
-
-These options are passed to the [CommonHTML output
-processor][mathjax-chtml-options].
-Passing `fontURL` is required!
+When using `rehype-mathjax/chtml`, `options.chtml.fontURL` is required.
 For example:
 
 ```js
@@ -188,69 +187,83 @@ For example:
   // …
 ```
 
-#### `options.svg`
+## Markdown
 
-These options are passed to the [SVG output processor][mathjax-svg-options].
+This plugin supports the syntax extension enabled by
+[`remark-math`][remark-math].
+It also supports math generated by using fenced code:
+
+````markdown
+```math
+C_L
+```
+````
+
+## HTML
+
+The content of any element with a `language-math`, `math-inline`, or
+`math-display` class is transformed.
+The elements are replaced by what MathJax renders.
+Either a `math-display` class or using `<pre><code class="language-math">` will
+result in “display” math: math that is a centered block on its own line.
 
 ## CSS
 
 The HTML produced by MathJax does not require any extra CSS to render correctly.
 
-## Syntax tree
-
-This plugin transforms elements with a class name of either `math-inline` and/or
-`math-display`.
-
 ## Types
 
 This package is fully typed with [TypeScript][].
-An extra `Options` type is exported, which models the accepted options.
+It exports the additional type [`Options`][api-options].
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, and 16.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line, `rehype-mathjax@^5`,
+compatible with Node.js 16.
 
 This plugin works with unified version 6+ and rehype version 4+.
 
 ## Security
 
-Using `rehype-mathjax` should be safe assuming that you trust MathJax.
-Any vulnerability in it could open you to a [cross-site scripting (XSS)][xss]
-attack.
-Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
+Assuming you trust MathJax, using `rehype-mathjax` is safe.
+A vulnerability in it could open you to a
+[cross-site scripting (XSS)][wiki-xss] attack.
+Be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
 
-When you don’t trust user content but do trust MathKax, you can allow the
-classes added by `remark-math` while disallowing anything else in the
-`rehype-sanitize` schema, and run `rehype-katex` afterwards.
-Like so:
+When you don’t trust user content but do trust MathJax, run `rehype-mathjax`
+*after* `rehype-sanitize`:
 
 ```js
-import rehypeSanitize, {defaultSchema} from 'rehype-stringify'
+import rehypeMathjax from 'rehype-mathjax'
+import rehypeSanitize, {defaultSchema} from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
+import remarkMath from 'remark-math'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
 
-const mathSanitizeSchema = {
-  ...defaultSchema,
-  attributes: {
-    ...defaultSchema.attributes,
-    div: [
-      ...defaultSchema.attributes.div,
-      ['className', 'math', 'math-display']
-    ],
-    span: [
-      ['className', 'math', 'math-inline']
-    ]
-  }
-}
-
-// …
-
-unified()
-  // …
-  .use(rehypeSanitize, mathSanitizeSchema)
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkMath)
+  .use(remarkRehype)
+  .use(rehypeSanitize, {
+    ...defaultSchema,
+    attributes: {
+      ...defaultSchema.attributes,
+      // The `language-*` regex is allowed by default.
+      code: [['className', /^language-./, 'math-inline', 'math-display']]
+    }
+  })
   .use(rehypeMathjax)
-  // …
+  .use(rehypeStringify)
+  .process('$C$')
+
+console.log(String(file))
 ```
 
 ## Related
@@ -294,9 +307,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/rehype-mathjax
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/rehype-mathjax.svg
+[size-badge]: https://img.shields.io/bundlejs/size/rehype-mathjax
 
-[size]: https://bundlephobia.com/result?p=rehype-mathjax
+[size]: https://bundlejs.com/?q=rehype-mathjax
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -310,33 +323,23 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
 [esmsh]: https://esm.sh
 
 [health]: https://github.com/remarkjs/.github
 
-[contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
 
-[support]: https://github.com/remarkjs/.github/blob/HEAD/support.md
+[support]: https://github.com/remarkjs/.github/blob/main/support.md
 
-[coc]: https://github.com/remarkjs/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
 
 [license]: https://github.com/remarkjs/remark-math/blob/main/license
 
 [author]: https://rokt33r.github.io
 
-[rehype]: https://github.com/rehypejs/rehype
-
-[unified]: https://github.com/unifiedjs/unified
-
-[xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
-
-[typescript]: https://www.typescriptlang.org
-
-[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
-
-[mathjax]: https://mathjax.org/
-
-[mathjax-options]: http://docs.mathjax.org/en/latest/options/
+[katex]: https://github.com/Khan/KaTeX
 
 [mathjax-svg]: http://docs.mathjax.org/en/latest/output/svg.html
 
@@ -348,8 +351,24 @@ abide by its terms.
 
 [mathjax-chtml-options]: http://docs.mathjax.org/en/latest/options/output/chtml.html
 
-[katex]: https://github.com/Khan/KaTeX
+[rehype]: https://github.com/rehypejs/rehype
 
-[remark-math]: ../remark-math
+[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
 
-[rehype-katex]: ../rehype-katex
+[typescript]: https://www.typescriptlang.org
+
+[unified]: https://github.com/unifiedjs/unified
+
+[unified-transformer]: https://github.com/unifiedjs/unified#transformer
+
+[wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+
+[mathjax]: https://mathjax.org/
+
+[remark-math]: ../remark-math/
+
+[rehype-katex]: ../rehype-katex/
+
+[api-options]: #options
+
+[api-rehype-mathjax]: #unifieduserehypemathjax-options

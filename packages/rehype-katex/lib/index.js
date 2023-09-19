@@ -8,7 +8,7 @@
  */
 
 /**
- * @typedef {Omit<KatexOptions, 'throwOnError'>} Options
+ * @typedef {Omit<KatexOptions, 'displayMode' | 'throwOnError'>} Options
  */
 
 import {fromHtmlIsomorphic} from 'hast-util-from-html-isomorphic'
@@ -22,8 +22,8 @@ const emptyOptions = {}
 const emptyClasses = []
 
 /**
- * Plugin to transform `<span class=math-inline>` and `<div class=math-display>`
- * with KaTeX.
+ * Render elements with a `language-math` (or `math-display`, `math-inline`)
+ * class with KaTeX.
  *
  * @param {Readonly<Options> | null | undefined} [options]
  *   Configuration (optional).

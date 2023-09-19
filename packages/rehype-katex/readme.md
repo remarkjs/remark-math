@@ -8,8 +8,8 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-**[rehype][]** plugin to render `<span class=math-inline>` and
-`<div class=math-display>` with [KaTeX][].
+**[rehype][]** plugin to render elements with a `language-math` class with
+[KaTeX][].
 
 ## Contents
 
@@ -19,8 +19,10 @@
 *   [Use](#use)
 *   [API](#api)
     *   [`unified().use(rehypeKatex[, options])`](#unifieduserehypekatex-options)
+    *   [`Options`](#options)
+*   [Markdown](#markdown)
+*   [HTML](#html)
 *   [CSS](#css)
-*   [Syntax tree](#syntax-tree)
 *   [Types](#types)
 *   [Compatibility](#compatibility)
 *   [Security](#security)
@@ -31,27 +33,21 @@
 ## What is this?
 
 This package is a [unified][] ([rehype][]) plugin to render math.
-You can combine it with [`remark-math`][remark-math] for math in markdown or add
-`math-inline` and `math-display` classes in HTML.
-
-**unified** is a project that transforms content with abstract syntax trees
-(ASTs).
-**rehype** adds support for HTML to unified.
-**hast** is the HTML AST that rehype uses.
-This is a rehype plugin that transforms hast.
+You can add classes to HTML elements, use fenced code in markdown, or combine
+with [`remark-math`][remark-math] for a `$C$` syntax extension.
 
 ## When should I use this?
 
 This project is useful as it renders math with KaTeX at compile time, which
 means that there is no client side JavaScript needed.
 
-A different plugin, [`rehype-mathjax`][rehype-mathjax], is similar but uses
-[MathJax][] instead.
+A different plugin, [`rehype-mathjax`][rehype-mathjax], does the same but with
+[MathJax][].
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
-In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
+This package is [ESM only][esm].
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install rehype-katex
@@ -73,76 +69,117 @@ In browsers with [`esm.sh`][esmsh]:
 
 ## Use
 
-Say we have the following file `example.html`:
+Say our document `input.html` contains:
 
 ```html
 <p>
-  Lift(<code class="language-math math-inline">L</span>) can be determined by Lift Coefficient
-  (<code class="language-math math-inline">C_L</span>) like the following equation.
+  Lift(<code class="language-math">L</code>) can be determined by Lift Coefficient
+  (<code class="language-math">C_L</code>) like the following equation.
 </p>
-
-<div class="math math-display">
+<pre><code class="language-math">
   L = \frac{1}{2} \rho v^2 S C_L
-</div>
+</code></pre>
 ```
 
-And our module `example.js` looks as follows:
+…and our module `example.js` contains:
 
 ```js
-import {read} from 'to-vfile'
-import {unified} from 'unified'
-import rehypeParse from 'rehype-parse'
-import rehypeKatex from 'rehype-katex'
 import rehypeDocument from 'rehype-document'
+import rehypeKatex from 'rehype-katex'
+import rehypeParse from 'rehype-parse'
 import rehypeStringify from 'rehype-stringify'
+import {read, write} from 'to-vfile'
+import {unified} from 'unified'
 
 const file = await unified()
   .use(rehypeParse, {fragment: true})
-  .use(rehypeKatex)
   .use(rehypeDocument, {
-    css: 'https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css'
+    // Get the latest one from: <https://katex.org/docs/browser>.
+    css: 'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css'
   })
+  .use(rehypeKatex)
   .use(rehypeStringify)
-  .process(await read('example.html'))
+  .process(await read('input.html'))
 
-console.log(String(file))
+file.basename = 'output.html'
+await write(file)
 ```
 
-Now running `node example.js` yields:
+…then running `node example.js` creates an `output.html` with:
 
 ```html
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>example</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+<title>input</title>
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<link href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" rel="stylesheet">
 </head>
 <body>
 <p>
-  Lift(<code class="language-math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient
-  (<code class="language-math math-inline"><span class="katex">…</span></span>) like the following equation.
+  Lift(<span class="katex"><!--…--></span>) can be determined by Lift Coefficient
+  (<span class="katex"><!--…--></span>) like the following equation.
 </p>
-<div class="math math-display"><span class="katex-display">…</span></div>
+<span class="katex-display"><!--…--></span>
 </body>
 </html>
 ```
 
+…open `output.html` in a browser to see the rendered math.
+
 ## API
 
 This package exports no identifiers.
-The default export is `rehypeKatex`.
+The default export is [`rehypeKatex`][api-rehype-katex].
 
 ### `unified().use(rehypeKatex[, options])`
 
-Transform `<span class="math-inline">` and `<div class="math-display">` with
-[KaTeX][].
+Render elements with a `language-math` (or `math-display`, `math-inline`)
+class with [KaTeX][].
 
-##### `options`
+###### Parameters
 
-Configuration (optional).
-All options, except for `displayMode`, are passed to [KaTeX][katex-options].
+*   `options` ([`Options`][api-options])
+    — configuration
+
+###### Returns
+
+Transform ([`Transformer`][unified-transformer]).
+
+### `Options`
+
+Configuration (TypeScript type).
+
+###### Type
+
+```ts
+import {KatexOptions} from 'katex'
+
+type Options = Omit<KatexOptions, 'displayMode' | 'throwOnError'>
+```
+
+See [*Options* on `katex.org`][katex-options] for more info.
+
+## Markdown
+
+This plugin supports the syntax extension enabled by
+[`remark-math`][remark-math].
+It also supports math generated by using fenced code:
+
+````markdown
+```math
+C_L
+```
+````
+
+## HTML
+
+The content of any element with a `language-math`, `math-inline`, or
+`math-display` class is transformed.
+The elements are replaced by what KaTeX renders.
+Either a `math-display` class or using `<pre><code class="language-math">` will
+result in “display” math: math that is a centered block on its own line.
 
 ## CSS
 
@@ -152,66 +189,63 @@ style it properly.
 At the time of writing, the last version is:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+<!-- Get the latest one from: https://katex.org/docs/browser -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
 ```
-
-<!-- To update the above, read the note in the monorepo readme. -->
-
-## Syntax tree
-
-This plugin transforms elements with a class name of either `math-inline` and/or
-`math-display`.
 
 ## Types
 
 This package is fully typed with [TypeScript][].
-An extra `Options` type is exported, which models the accepted options.
+It exports the additional type [`Options`][api-options].
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, and 16.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line, `rehype-katex@^7`,
+compatible with Node.js 16.
 
 This plugin works with unified version 6+ and rehype version 4+.
 
 ## Security
 
-Using `rehype-katex` should be safe assuming that you trust KaTeX.
-Any vulnerability in it could open you to a [cross-site scripting (XSS)][xss]
-attack.
-Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
+Assuming you trust KaTeX, using `rehype-katex` is safe.
+A vulnerability in it could open you to a
+[cross-site scripting (XSS)][wiki-xss] attack.
+Be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
 
-When you don’t trust user content but do trust KaTeX, you can allow the classes
-added by `remark-math` while disallowing anything else in the `rehype-sanitize`
-schema, and run `rehype-katex` afterwards.
-Like so:
+When you don’t trust user content but do trust KaTeX, run `rehype-katex`
+*after* `rehype-sanitize`:
 
 ```js
+import rehypeKatex from 'rehype-katex'
 import rehypeSanitize, {defaultSchema} from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
+import remarkMath from 'remark-math'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
 
-const mathSanitizeSchema = {
-  ...defaultSchema,
-  attributes: {
-    ...defaultSchema.attributes,
-    div: [
-      ...defaultSchema.attributes.div,
-      ['className', 'math', 'math-display']
-    ],
-    span: [
-      ['className', 'math', 'math-inline']
-    ]
-  }
-}
-
-// …
-
-unified()
-  // …
-  .use(rehypeSanitize, mathSanitizeSchema)
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkMath)
+  .use(remarkRehype)
+  .use(rehypeSanitize, {
+    ...defaultSchema,
+    attributes: {
+      ...defaultSchema.attributes,
+      // The `language-*` regex is allowed by default.
+      code: [['className', /^language-./, 'math-inline', 'math-display']]
+    }
+  })
   .use(rehypeKatex)
-  // …
+  .use(rehypeStringify)
+  .process('$C$')
+
+console.log(String(file))
 ```
 
 ## Related
@@ -255,9 +289,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/rehype-katex
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/rehype-katex.svg
+[size-badge]: https://img.shields.io/bundlejs/size/rehype-katex
 
-[size]: https://bundlephobia.com/result?p=rehype-katex
+[size]: https://bundlejs.com/?q=rehype-katex
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -271,36 +305,44 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
 [esmsh]: https://esm.sh
 
 [health]: https://github.com/remarkjs/.github
 
-[contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
 
-[support]: https://github.com/remarkjs/.github/blob/HEAD/support.md
+[support]: https://github.com/remarkjs/.github/blob/main/support.md
 
-[coc]: https://github.com/remarkjs/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
 
 [license]: https://github.com/remarkjs/remark-math/blob/main/license
 
 [author]: https://rokt33r.github.io
 
-[unified]: https://github.com/unifiedjs/unified
-
-[rehype]: https://github.com/rehypejs/rehype
-
-[xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
-
-[typescript]: https://www.typescriptlang.org
-
-[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
-
 [katex]: https://github.com/Khan/KaTeX
 
 [katex-options]: https://katex.org/docs/options.html
 
+[rehype]: https://github.com/rehypejs/rehype
+
+[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
+
+[unified]: https://github.com/unifiedjs/unified
+
+[unified-transformer]: https://github.com/unifiedjs/unified#transformer
+
+[typescript]: https://www.typescriptlang.org
+
+[wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+
 [mathjax]: https://www.mathjax.org
 
-[remark-math]: ../remark-math
+[remark-math]: ../remark-math/
 
-[rehype-mathjax]: ../rehype-mathjax
+[rehype-mathjax]: ../rehype-mathjax/
+
+[api-options]: #options
+
+[api-rehype-katex]: #unifieduserehypekatex-options

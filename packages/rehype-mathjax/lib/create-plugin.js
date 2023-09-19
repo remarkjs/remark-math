@@ -62,6 +62,29 @@
  *
  * @typedef Options
  *   Configuration.
+ *
+ *   ###### Notes
+ *
+ *   When using `rehype-mathjax/browser`, only `options.tex.displayMath` and
+ *   `options.tex.inlineMath` are used.
+ *   That plugin will use the first delimiter pair in those fields to wrap
+ *   math.
+ *   Then you need to load MathJax yourself on the client and start it with the
+ *   same markers.
+ *   You can pass other options on the client.
+ *
+ *   When using `rehype-mathjax/chtml`, `options.chtml.fontURL` is required.
+ *   For example:
+ *
+ *   ```js
+ *     // …
+ *     .use(rehypeMathjaxChtml, {
+ *       chtml: {
+ *         fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'
+ *       }
+ *     })
+ *     // …
+ *   ```
  * @property {Readonly<OutputCHtmlOptions> | null | undefined} [chtml]
  *   Configuration for the output, when CHTML (optional).
  * @property {Readonly<OutputSvgOptions> | null | undefined} [svg]

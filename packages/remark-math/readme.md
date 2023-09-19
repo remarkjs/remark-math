@@ -18,8 +18,11 @@
 *   [Use](#use)
 *   [API](#api)
     *   [`unified().use(remarkMath[, options])`](#unifieduseremarkmath-options)
-*   [Syntax](#syntax)
+    *   [`Options`](#options)
+*   [Authoring](#authoring)
 *   [HTML](#html)
+*   [CSS](#css)
+*   [Syntax](#syntax)
 *   [Syntax tree](#syntax-tree)
 *   [Types](#types)
 *   [Compatibility](#compatibility)
@@ -30,16 +33,13 @@
 
 ## What is this?
 
-This package is a [unified][] ([remark][]) plugin to add support for math.
+This package is a [unified][] ([remark][]) plugin to add support for math
+syntax.
 You can use this to add support for parsing and serializing this syntax
 extension.
 
-**unified** is a project that transforms content with abstract syntax trees
-(ASTs).
-**remark** adds support for markdown to unified.
-**mdast** is the markdown AST that remark uses.
-**micromark** is the markdown parser we use.
-This is a remark plugin that adds support for the math syntax and AST to remark.
+As there is no spec for math in markdown, this extension follows how code
+(fenced and text) works in Commonmark, but uses dollars (`$`).
 
 ## When should I use this?
 
@@ -49,10 +49,23 @@ LaTeX equations are also quite hard.
 But this mechanism works well when you want authors, that have some LaTeX
 experience, to be able to embed rich diagrams of math in scientific text.
 
+If you *just* want to turn markdown into HTML (with maybe a few extensions such
+as math), we recommend [`micromark`][micromark] with
+[`micromark-extension-math`][micromark-extension-math] instead.
+If you don’t use plugins and want to access the syntax tree, you can use
+[`mdast-util-from-markdown`][mdast-util-from-markdown] with
+[`mdast-util-math`][mdast-util-math].
+
+This plugins adds [fields on nodes][mdast-util-to-hast-fields] so that the
+plugin responsible for turning markdown (mdast) into HTML (hast),
+[`remark-rehype`][remark-rehype], will turn text math (inline) into
+`<code class="language-math math-inline">…</code>` and flow math (block)
+into `<pre><code class="language-math math-display">…</code></pre>`.
+
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
-In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
+This package is [ESM only][esm].
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install remark-math
@@ -74,10 +87,10 @@ In browsers with [`esm.sh`][esmsh]:
 
 ## Use
 
-Say we have the following file `example.md`:
+Say our document `example.md` contains:
 
 ```markdown
-Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following
+Lift($$L$$) can be determined by Lift Coefficient ($$C_L$$) like the following
 equation.
 
 $$
@@ -85,16 +98,16 @@ L = \frac{1}{2} \rho v^2 S C_L
 $$
 ```
 
-And our module `example.js` looks as follows:
+…and our module `example.js` contains:
 
 ```js
-import {read} from 'to-vfile'
-import {unified} from 'unified'
-import remarkParse from 'remark-parse'
-import remarkMath from 'remark-math'
-import remarkRehype from 'remark-rehype'
 import rehypeKatex from 'rehype-katex'
 import rehypeStringify from 'rehype-stringify'
+import remarkMath from 'remark-math'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {read} from 'to-vfile'
+import {unified} from 'unified'
 
 const file = await unified()
   .use(remarkParse)
@@ -107,94 +120,108 @@ const file = await unified()
 console.log(String(file))
 ```
 
-Now running `node example.js` yields:
+…then running `node example.js` yields:
 
 ```html
-<p>Lift(<code class="language-math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient (<code class="language-math math-inline"><span class="katex">…</span></span>) like the following equation.</p>
-<div class="math math-display"><span class="katex-display">…</span></div>
+<p>Lift(<code class="language-math math-inline"><span class="katex">…</span></code>) like the following
+equation.</p>
+<pre><code class="language-math math-display"><span class="katex-display"><span class="katex">…</span></span></code></pre>
 ```
 
 ## API
 
 This package exports no identifiers.
-The default export is `remarkMath`.
+The default export is [`remarkMath`][api-remark-math].
 
 ### `unified().use(remarkMath[, options])`
 
-Plugin to support math.
+Add support for math.
 
-##### `options`
+###### Parameters
 
-Configuration (optional).
+*   `options` ([`Options`][api-options], optional)
+    — configuration
 
-###### `options.singleDollarTextMath`
+###### Returns
 
-Whether to support math (text) with a single dollar (`boolean`, default:
-`true`).
-Single dollars work in Pandoc and many other places, but often interfere with
-“normal” dollars in text.
+Nothing (`undefined`).
 
-If you turn this off, you can still use two or more dollars for text math.
+### `Options`
 
-## Syntax
+Configuration (TypeScript type).
 
-This plugin applies a micromark extensions to parse the syntax.
-The syntax basically follows how code works in markdown, except that dollars (`$`)
-are used instead of backticks (`` ` ``) and that 2 or more dollars instead of 3
-or more backticks is enough for blocks.
+###### Fields
 
-See its readme for parse details:
+*   `singleDollarTextMath` (`boolean`, default: `true`)
+    — whether to support text math (inline) with a single dollar.
+    Single dollars work in Pandoc and many other places, but often interfere
+    with “normal” dollars in text.
+    If you turn this off, you can still use two or more dollars for text math.
 
-*   [`micromark-extension-math`](https://github.com/micromark/micromark-extension-math#syntax)
+## Authoring
 
-> 👉 **Note**: `$math$` works similar to `` `code` ``.
-> That means escapes don’t work inside math but you can use more dollars around
-> the math instead: `$$\raisebox{0.25em}{$\frac a b$}$$`
+When authoring markdown with math, keep in mind that math doesn’t work in most
+places.
+Notably, GitHub currently has a really weird crappy client-side regex-based
+thing.
+But on your own (math-heavy?) site it can be great!
 
-> 👉 **Note**: Like code, the difference between “inline” and “block”,
-> is in the line endings:
->
-> ```markdown
-> $$inline$$
->
-> $$
-> block
-> $$
-> ```
+Instead of a syntax extension to markdown, you can also use fenced code with an
+info string of `math`:
+
+````markdown
+```math
+L = \frac{1}{2} \rho v^2 S C_L
+```
+````
 
 ## HTML
 
 This plugin integrates with [`remark-rehype`][remark-rehype].
-When mdast (markdown AST) is turned into hast (the HTML AST) the math nodes
-are turned into `<span class=math-inline>` and `<div class=math-block>`
-elements.
+When markdown (mdast) is turned into HTML (hast) the math nodes are turned
+into `<code class="language-math math-inline">…</code>` and
+`<pre><code class="language-math math-display">…</code></pre>` elements.
+
+## CSS
+
+This package does not relate to CSS.
+You can choose to render the math with KaTeX, MathJax, or something else, which
+might need CSS.
+
+## Syntax
+
+See [*Syntax* in
+`micromark-extension-math`](https://github.com/micromark/micromark-extension-math#syntax).
 
 ## Syntax tree
 
-This plugin applies one mdast utility to build and serialize the AST.
-See its readme for the node types supported in the tree:
-
-*   [`mdast-util-math`](https://github.com/syntax-tree/mdast-util-math#syntax-tree)
+See [*Syntax tree* in
+`mdast-util-math`](https://github.com/syntax-tree/mdast-util-math#syntax-tree).
 
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports an extra `Options` type which models the interface of the accepted
-options.
+It exports the additional type [`Options`][api-options].
 
-If you’re working with the syntax tree, make sure to import this plugin
-somewhere in your types, as that registers the new node types in the tree.
+If you’re working with the syntax tree, you can register the new node types
+with `@types/mdast` by adding a reference:
 
 ```js
-/** @typedef {import('remark-math')} */
+// Register math nodes in mdast:
+/// <reference types="mdast-util-math" />
 
 import {visit} from 'unist-util-visit'
 
-/** @type {import('unified').Plugin<[], import('mdast').Root>} */
-export default function myRemarkPlugin() {
+function myRemarkPlugin() {
+  /**
+   * @param {import('mdast').Root} tree
+   *   Tree.
+   * @returns {undefined}
+   *   Nothing.
+   */
   return function (tree) {
-    visit(tree, function(node) {
-      // `node` can now be one of the nodes for math.
+    visit(tree, function (node) {
+      console.log(node) // `node` can now be one of the math nodes.
     })
   }
 }
@@ -202,19 +229,22 @@ export default function myRemarkPlugin() {
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, and 16.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line, `remark-math@^6`,
+compatible with Node.js 16.
 
 This plugin works with unified version 6+ and remark version 14+.
 The previous major (version 4) worked with remark 13.
 
 ## Security
 
-Use of `remark-math` itself does not open you up to [cross-site scripting
-(XSS)][xss] attacks.
-Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
+Use of `remark-math` does not involve **[rehype][]** ([hast][]) or user
+content so there are no openings for [cross-site scripting (XSS)][wiki-xss]
+attacks.
 
 ## Related
 
@@ -226,7 +256,7 @@ Always be wary of user input and use [`rehype-sanitize`][rehype-sanitize].
 *   [`remark-directive`](https://github.com/remarkjs/remark-directive)
     — support directives
 *   [`remark-mdx`](https://github.com/mdx-js/mdx/tree/main/packages/remark-mdx)
-    — support MDX (JSX, expressions, ESM)
+    — support MDX (ESM, JSX, expressions)
 
 ## Contribute
 
@@ -256,9 +286,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/remark-math
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/remark-math.svg
+[size-badge]: https://img.shields.io/bundlejs/size/remark-math
 
-[size]: https://bundlephobia.com/result?p=remark-math
+[size]: https://bundlejs.com/?q=remark-math
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -272,28 +302,46 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
 [esmsh]: https://esm.sh
 
 [health]: https://github.com/remarkjs/.github
 
-[contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
 
-[support]: https://github.com/remarkjs/.github/blob/HEAD/support.md
+[support]: https://github.com/remarkjs/.github/blob/main/support.md
 
-[coc]: https://github.com/remarkjs/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
 
 [license]: https://github.com/remarkjs/remark-math/blob/main/license
 
 [author]: https://rokt33r.github.io
 
-[unified]: https://github.com/unifiedjs/unified
+[hast]: https://github.com/syntax-tree/hast
+
+[mdast-util-from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
+
+[mdast-util-math]: https://github.com/syntax-tree/mdast-util-math
+
+[mdast-util-to-hast-fields]: https://github.com/syntax-tree/mdast-util-to-hast#fields-on-nodes
+
+[micromark]: https://github.com/micromark/micromark
+
+[micromark-extension-math]: https://github.com/micromark/micromark-extension-math
+
+[rehype]: https://github.com/rehypejs/rehype
 
 [remark]: https://github.com/remarkjs/remark
 
-[xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+[remark-rehype]: https://github.com/remarkjs/remark-rehype
 
 [typescript]: https://www.typescriptlang.org
 
-[remark-rehype]: https://github.com/remarkjs/remark-rehype
+[unified]: https://github.com/unifiedjs/unified
 
-[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
+[wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+
+[api-options]: #options
+
+[api-remark-math]: #unifieduseremarkmath-options
