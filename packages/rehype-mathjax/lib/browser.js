@@ -13,10 +13,9 @@ const rehypeMathJaxBrowser = createPlugin(function (options) {
   const inline = tex.inlineMath || [['\\(', '\\)']]
 
   return {
-    render(node, options) {
+    render(value, options) {
       const delimiters = (options.display ? display : inline)[0]
-      node.children.unshift({type: 'text', value: delimiters[0]})
-      node.children.push({type: 'text', value: delimiters[1]})
+      return [{type: 'text', value: delimiters[0] + value + delimiters[1]}]
     }
   }
 })

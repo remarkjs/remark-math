@@ -15,7 +15,7 @@ import {math} from 'micromark-extension-math'
 const emptyOptions = {}
 
 /**
- * Plugin to support math.
+ * Add support for math.
  *
  * @param {Readonly<Options> | null | undefined} [options]
  *   Configuration (optional).

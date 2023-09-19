@@ -7,7 +7,6 @@
  */
 
 import {fromDom} from 'hast-util-from-dom'
-import {toText} from 'hast-util-to-text'
 import {RegisterHTMLHandler} from 'mathjax-full/js/handlers/html.js'
 import {TeX} from 'mathjax-full/js/input/tex.js'
 import {AllPackages} from 'mathjax-full/js/input/tex/AllPackages.js'
@@ -45,15 +44,12 @@ export function createRenderer(options, output) {
   const doc = mathjax.document('', {InputJax: input, OutputJax: output})
 
   return {
-    render(node, options) {
-      const mathText = toText(node, {whitespace: 'pre'})
+    render(value, options) {
       // Cast as this practically results in `HTMLElement`.
-      const domNode = /** @type {HTMLElement} */ (
-        doc.convert(mathText, options)
-      )
+      const domNode = /** @type {HTMLElement} */ (doc.convert(value, options))
       // Cast as `HTMLElement` results in an `Element`.
       const hastNode = /** @type {Element} */ (fromDom(domNode))
-      node.children = [hastNode]
+      return [hastNode]
     },
     styleSheet() {
       const value = adapter.textContent(output.styleSheet(doc))

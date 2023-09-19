@@ -43,7 +43,7 @@
     "hast-util-from-html-isomorphic": "^2.0.0",
     "hast-util-to-text": "^4.0.0",
     "katex": "^0.16.0",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit-parents": "^6.0.0",
     "vfile": "^6.0.0"
   },
   "scripts": {
@@ -51,6 +51,9 @@
     "test": "npm run build && npm run test-api"
   },
   "xo": {
-    "prettier": true
+    "prettier": true,
+    "rules": {
+      "unicorn/prefer-at": "off"
+    }
   }
 }

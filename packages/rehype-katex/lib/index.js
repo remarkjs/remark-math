@@ -14,7 +14,7 @@
 import {fromHtmlIsomorphic} from 'hast-util-from-html-isomorphic'
 import {toText} from 'hast-util-to-text'
 import katex from 'katex'
-import {visit} from 'unist-util-visit'
+import {SKIP, visitParents} from 'unist-util-visit-parents'
 
 /** @type {Readonly<Options>} */
 const emptyOptions = {}
@@ -44,20 +44,46 @@ export default function rehypeKatex(options) {
    *   Nothing.
    */
   return function (tree, file) {
-    visit(tree, 'element', function (element, _, parent) {
+    visitParents(tree, 'element', function (element, parents) {
       const classes = Array.isArray(element.properties.className)
         ? element.properties.className
         : emptyClasses
-      const inline = classes.includes('math-inline')
-      const displayMode = classes.includes('math-display')
+      // This class can be generated from markdown with ` ```math `.
+      const languageMath = classes.includes('language-math')
+      // This class is used by `remark-math` for flow math (block, `$$\nmath\n$$`).
+      const mathDisplay = classes.includes('math-display')
+      // This class is used by `remark-math` for text math (inline, `$math$`).
+      const mathInline = classes.includes('math-inline')
+      let displayMode = mathDisplay
 
-      if (!inline && !displayMode) {
+      // Any class is fine.
+      if (!languageMath && !mathDisplay && !mathInline) {
         return
       }
 
-      const value = toText(element, {whitespace: 'pre'})
+      let parent = parents[parents.length - 1]
+      let scope = element
 
-      /** @type {string} */
+      // If this was generated with ` ```math `, replace the `<pre>` and use
+      // display.
+      if (
+        element.tagName === 'code' &&
+        languageMath &&
+        parent &&
+        parent.type === 'element' &&
+        parent.tagName === 'pre'
+      ) {
+        scope = parent
+        parent = parents[parents.length - 2]
+        displayMode = true
+      }
+
+      /* c8 ignore next -- verbose to test. */
+      if (!parent) return
+
+      const value = toText(scope, {whitespace: 'pre'})
+
+      /** @type {Array<ElementContent> | string | undefined} */
       let result
 
       try {
@@ -71,8 +97,7 @@ export default function rehypeKatex(options) {
         const ruleId = cause.name.toLowerCase()
 
         file.message('Could not render math with KaTeX', {
-          /* c8 ignore next -- verbose to test */
-          ancestors: parent ? [parent, element] : [element],
+          ancestors: [...parents, element],
           cause,
           place: element.position,
           ruleId,
@@ -91,7 +116,7 @@ export default function rehypeKatex(options) {
         // Generate similar markup if this is an other error.
         // See: <https://github.com/KaTeX/KaTeX/blob/5dc7af0/docs/error.md>.
         else {
-          element.children = [
+          result = [
             {
               type: 'element',
               tagName: 'span',
@@ -103,14 +128,18 @@ export default function rehypeKatex(options) {
               children: [{type: 'text', value}]
             }
           ]
-          return
         }
       }
 
-      const root = fromHtmlIsomorphic(result, {fragment: true})
-      // Cast because there will not be `doctypes` in KaTeX result.
-      const content = /** @type {Array<ElementContent>} */ (root.children)
-      element.children = content
+      if (typeof result === 'string') {
+        const root = fromHtmlIsomorphic(result, {fragment: true})
+        // Cast as we don’t expect `doctypes` in KaTeX result.
+        result = /** @type {Array<ElementContent>} */ (root.children)
+      }
+
+      const index = parent.children.indexOf(scope)
+      parent.children.splice(index, 1, ...result)
+      return SKIP
     })
   }
 }

@@ -109,6 +109,23 @@ test('rehype-mathjax', async function (t) {
     )
   })
 
+  await t.test('should support markdown fenced code', async function () {
+    assert.deepEqual(
+      String(
+        await unified()
+          .use(remarkParse)
+          // @ts-expect-error: to do: remove when `remark-rehype` is released.
+          .use(remarkRehype)
+          .use(rehypeMathJaxSvg)
+          .use(rehypeStringify)
+          .process('```math\n\\gamma\n```')
+      ),
+      String(
+        await fs.readFile(new URL('markdown-code-fenced-svg.html', base))
+      ).trim()
+    )
+  })
+
   await t.test('should integrate with `remark-math`', async function () {
     assert.equal(
       String(

@@ -1,5 +1,6 @@
 /**
  * @typedef {import('hast').Element} Element
+ * @typedef {import('hast').ElementContent} ElementContent
  * @typedef {import('hast').Root} Root
  */
 
@@ -128,12 +129,12 @@
  *
  * @callback Render
  *   Render a math node.
- * @param {Element} element
- *   Math node.
+ * @param {string} value
+ *   Math value.
  * @param {Readonly<RenderOptions>} options
  *   Configuration.
- * @returns {undefined}
- *   Nothing.
+ * @returns {Array<ElementContent>}
+ *   Content.
  *
  * @typedef RenderOptions
  *   Configuration.
@@ -153,7 +154,8 @@
  *   Style sheet.
  */
 
-import {SKIP, visit} from 'unist-util-visit'
+import {toText} from 'hast-util-to-text'
+import {SKIP, visitParents} from 'unist-util-visit-parents'
 
 /** @type {Readonly<Options>} */
 const emptyOptions = {}
@@ -192,23 +194,54 @@ export function createPlugin(createRenderer) {
       /** @type {Element | Root} */
       let context = tree
 
-      visit(tree, 'element', function (node) {
-        const classes = Array.isArray(node.properties.className)
-          ? node.properties.className
+      visitParents(tree, 'element', function (element, parents) {
+        const classes = Array.isArray(element.properties.className)
+          ? element.properties.className
           : emptyClasses
-        const inline = classes.includes('math-inline')
-        const display = classes.includes('math-display')
+        // This class can be generated from markdown with ` ```math `.
+        const languageMath = classes.includes('language-math')
+        // This class is used by `remark-math` for flow math (block, `$$\nmath\n$$`).
+        const mathDisplay = classes.includes('math-display')
+        // This class is used by `remark-math` for text math (inline, `$math$`).
+        const mathInline = classes.includes('math-inline')
+        let display = mathDisplay
 
-        if (node.tagName === 'head') {
-          context = node
+        // Find `<head>`.
+        if (element.tagName === 'head') {
+          context = element
         }
 
-        if (!inline && !display) {
+        // Any class is fine.
+        if (!languageMath && !mathDisplay && !mathInline) {
           return
         }
 
+        let parent = parents[parents.length - 1]
+        let scope = element
+
+        // If this was generated with ` ```math `, replace the `<pre>` and use
+        // display.
+        if (
+          element.tagName === 'code' &&
+          languageMath &&
+          parent &&
+          parent.type === 'element' &&
+          parent.tagName === 'pre'
+        ) {
+          scope = parent
+          parent = parents[parents.length - 2]
+          display = true
+        }
+
+        /* c8 ignore next -- verbose to test. */
+        if (!parent) return
+
         found = true
-        renderer.render(node, {display})
+        const text = toText(scope, {whitespace: 'pre'})
+        const result = renderer.render(text, {display})
+
+        const index = parent.children.indexOf(scope)
+        parent.children.splice(index, 1, ...result)
 
         return SKIP
       })

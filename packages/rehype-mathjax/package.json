@@ -63,7 +63,7 @@
     "jsdom": "^22.0.0",
     "mathjax-full": "^3.0.0",
     "unified": "^11.0.0",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit-parents": "^6.0.0"
   },
   "devDependencies": {
     "@types/jsdom": "^21.0.0"
@@ -75,7 +75,8 @@
   "xo": {
     "prettier": true,
     "rules": {
-      "n/file-extension-in-import": "off"
+      "n/file-extension-in-import": "off",
+      "unicorn/prefer-at": "off"
     }
   }
 }
