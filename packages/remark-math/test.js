@@ -12,7 +12,6 @@ test('remarkMath', async function (t) {
   const toHtml = unified()
     .use(remarkParse)
     .use(remarkMath)
-    // @ts-expect-error: to do: remove when `remark-rehype` is released.
     .use(remarkRehype)
     .use(rehypeStringify)
 
@@ -480,7 +479,6 @@ test('remarkMath', async function (t) {
           await unified()
             .use(remarkParse)
             .use(remarkMath, {singleDollarTextMath: false})
-            // @ts-expect-error: to do: remove when `remark-rehype` is released.
             .use(remarkRehype)
             .use(rehypeStringify)
             .process('Math $\\alpha$\n\n$$\\beta+\\gamma$$\n')

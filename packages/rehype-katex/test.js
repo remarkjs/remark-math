@@ -51,7 +51,6 @@ test('rehype-katex', async function (t) {
       String(
         await unified()
           .use(remarkParse)
-          // @ts-expect-error: to do: remove when `remark-rehype` is released.
           .use(remarkRehype)
           .use(rehypeKatex)
           .use(rehypeStringify)
@@ -72,7 +71,6 @@ test('rehype-katex', async function (t) {
         await unified()
           .use(remarkParse)
           .use(remarkMath)
-          // @ts-expect-error: to do: remove when `remark-rehype` is released.
           .use(remarkRehype)
           .use(rehypeKatex)
           .use(rehypeStringify)
