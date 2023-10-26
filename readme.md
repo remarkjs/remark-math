@@ -144,7 +144,7 @@ mjx-container[jax="SVG"] {
 
 Assuming you trust KaTeX/MathJax, using `rehype-katex`/`rehype-mathjax` is
 safe.
-A vulnerability in them could open you to a
+If a vulnerability is introduced in them, it opens you up to a
 [cross-site scripting (XSS)][wiki-xss] attack.
 See their readmes for more info.
 
