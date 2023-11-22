@@ -15,6 +15,8 @@ import {fromHtmlIsomorphic} from 'hast-util-from-html-isomorphic'
 import {toText} from 'hast-util-to-text'
 import katex from 'katex'
 import {SKIP, visitParents} from 'unist-util-visit-parents'
+// eslint-disable-next-line import/no-unassigned-import
+import 'katex/dist/contrib/mhchem'
 
 /** @type {Readonly<Options>} */
 const emptyOptions = {}
