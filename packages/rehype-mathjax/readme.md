@@ -56,14 +56,14 @@ npm install rehype-mathjax
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import rehypeMathjax from 'https://esm.sh/rehype-mathjax@5'
+import rehypeMathjax from 'https://esm.sh/rehype-mathjax@6'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import rehypeMathjax from 'https://esm.sh/rehype-mathjax@5?bundle'
+  import rehypeMathjax from 'https://esm.sh/rehype-mathjax@6?bundle'
 </script>
 ```
 
