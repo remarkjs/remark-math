@@ -47,7 +47,7 @@ A different plugin, [`rehype-katex`][rehype-katex], does the same but with
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 16+), install with [npm][]:
+In Node.js (version 18+), install with [npm][]:
 
 ```sh
 npm install rehype-mathjax
@@ -223,8 +223,8 @@ versions of Node.js.
 
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
-This means we try to keep the current release line, `rehype-mathjax@^5`,
-compatible with Node.js 16.
+This means we try to keep the current release line, `rehype-mathjax@^6`,
+compatible with Node.js 18.
 
 This plugin works with unified version 6+ and rehype version 4+.
 
