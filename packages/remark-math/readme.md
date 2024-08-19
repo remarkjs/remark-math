@@ -12,24 +12,24 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`unified().use(remarkMath[, options])`](#unifieduseremarkmath-options)
-    *   [`Options`](#options)
-*   [Authoring](#authoring)
-*   [HTML](#html)
-*   [CSS](#css)
-*   [Syntax](#syntax)
-*   [Syntax tree](#syntax-tree)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Related](#related)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`unified().use(remarkMath[, options])`](#unifieduseremarkmath-options)
+  * [`Options`](#options)
+* [Authoring](#authoring)
+* [HTML](#html)
+* [CSS](#css)
+* [Syntax](#syntax)
+* [Syntax tree](#syntax-tree)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Related](#related)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -139,8 +139,8 @@ Add support for math.
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], optional)
-    — configuration
+* `options` ([`Options`][api-options], optional)
+  — configuration
 
 ###### Returns
 
@@ -152,11 +152,11 @@ Configuration (TypeScript type).
 
 ###### Fields
 
-*   `singleDollarTextMath` (`boolean`, default: `true`)
-    — whether to support text math (inline) with a single dollar.
-    Single dollars work in Pandoc and many other places, but often interfere
-    with “normal” dollars in text.
-    If you turn this off, you can still use two or more dollars for text math.
+* `singleDollarTextMath` (`boolean`, default: `true`)
+  — whether to support text math (inline) with a single dollar.
+  Single dollars work in Pandoc and many other places, but often interfere
+  with “normal” dollars in text.
+  If you turn this off, you can still use two or more dollars for text math.
 
 ## Authoring
 
@@ -248,15 +248,15 @@ attacks.
 
 ## Related
 
-*   [`remark-gfm`](https://github.com/remarkjs/remark-gfm)
-    — support GFM (autolink literals, footnotes, strikethrough, tables,
-    tasklists)
-*   [`remark-frontmatter`](https://github.com/remarkjs/remark-frontmatter)
-    — support frontmatter (YAML, TOML, and more)
-*   [`remark-directive`](https://github.com/remarkjs/remark-directive)
-    — support directives
-*   [`remark-mdx`](https://github.com/mdx-js/mdx/tree/main/packages/remark-mdx)
-    — support MDX (ESM, JSX, expressions)
+* [`remark-gfm`](https://github.com/remarkjs/remark-gfm)
+  — support GFM (autolink literals, footnotes, strikethrough, tables,
+  tasklists)
+* [`remark-frontmatter`](https://github.com/remarkjs/remark-frontmatter)
+  — support frontmatter (YAML, TOML, and more)
+* [`remark-directive`](https://github.com/remarkjs/remark-directive)
+  — support directives
+* [`remark-mdx`](https://github.com/mdx-js/mdx/tree/main/packages/remark-mdx)
+  — support MDX (ESM, JSX, expressions)
 
 ## Contribute
 

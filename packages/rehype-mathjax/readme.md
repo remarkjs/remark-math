@@ -13,22 +13,22 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`unified().use(rehypeMathjax[, options])`](#unifieduserehypemathjax-options)
-    *   [`Options`](#options)
-*   [Markdown](#markdown)
-*   [HTML](#html)
-*   [CSS](#css)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Related](#related)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`unified().use(rehypeMathjax[, options])`](#unifieduserehypemathjax-options)
+  * [`Options`](#options)
+* [Markdown](#markdown)
+* [HTML](#html)
+* [CSS](#css)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Related](#related)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -123,10 +123,10 @@ mjx-container[jax="SVG"] {
 This package has an export map with several entries for plugins using different
 strategies:
 
-*   `rehype-mathjax/browser` — browser (±1kb)
-*   `rehype-mathjax/chtml` — [CHTML][mathjax-chtml] (±154kb)
-*   `rehype-mathjax/svg` — [SVG][mathjax-svg] (±566kb)
-*   `rehype-mathjax` — same as SVG
+* `rehype-mathjax/browser` — browser (±1kb)
+* `rehype-mathjax/chtml` — [CHTML][mathjax-chtml] (±154kb)
+* `rehype-mathjax/svg` — [SVG][mathjax-svg] (±566kb)
+* `rehype-mathjax` — same as SVG
 
 Each module exports the plugin [`rehypeMathjax`][api-rehype-mathjax] as
 the default export.
@@ -138,8 +138,8 @@ class with [MathJax][].
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], typically optional)
-    — configuration
+* `options` ([`Options`][api-options], typically optional)
+  — configuration
 
 ###### Returns
 
@@ -151,18 +151,18 @@ Configuration (TypeScript type).
 
 ###### Fields
 
-*   `chtml` (`unknown`, optional)
-    — configuration for the output, when CHTML;
-    see [*CommonHTML Output Processor Options* on
-    `mathjax.org`][mathjax-chtml-options]
-*   `svg` (`unknown`, optional)
-    — configuration for the output, when SVG;
-    see [*SVG Output Processor Options* on
-    `mathjax.org`][mathjax-svg-options]
-*   `tex` (`unknown`, optional)
-    — configuration for the input TeX;
-    see [*TeX Input Processor Options* on
-    `mathjax.org`][mathjax-tex-options]
+* `chtml` (`unknown`, optional)
+  — configuration for the output, when CHTML;
+  see [*CommonHTML Output Processor Options* on
+  `mathjax.org`][mathjax-chtml-options]
+* `svg` (`unknown`, optional)
+  — configuration for the output, when SVG;
+  see [*SVG Output Processor Options* on
+  `mathjax.org`][mathjax-svg-options]
+* `tex` (`unknown`, optional)
+  — configuration for the input TeX;
+  see [*TeX Input Processor Options* on
+  `mathjax.org`][mathjax-tex-options]
 
 ###### Notes
 
@@ -268,16 +268,16 @@ console.log(String(file))
 
 ## Related
 
-*   [`rehype-katex`][rehype-katex]
-    — same but with KaTeX
-*   [`rehype-highlight`](https://github.com/rehypejs/rehype-highlight)
-    — highlight code blocks
-*   [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
-    — add links to headings
-*   [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize)
-    — sanitize HTML
-*   [`rehype-document`](https://github.com/rehypejs/rehype-document)
-    — wrap a document around the tree
+* [`rehype-katex`][rehype-katex]
+  — same but with KaTeX
+* [`rehype-highlight`](https://github.com/rehypejs/rehype-highlight)
+  — highlight code blocks
+* [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
+  — add links to headings
+* [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize)
+  — sanitize HTML
+* [`rehype-document`](https://github.com/rehypejs/rehype-document)
+  — wrap a document around the tree
 
 ## Contribute
 

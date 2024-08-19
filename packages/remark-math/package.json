@@ -45,6 +45,9 @@
     "test": "npm run build && npm run test-api"
   },
   "xo": {
-    "prettier": true
+    "prettier": true,
+    "rules": {
+      "logical-assignment-operators": "off"
+    }
   }
 }

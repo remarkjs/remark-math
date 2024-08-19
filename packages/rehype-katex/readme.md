@@ -13,22 +13,22 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`unified().use(rehypeKatex[, options])`](#unifieduserehypekatex-options)
-    *   [`Options`](#options)
-*   [Markdown](#markdown)
-*   [HTML](#html)
-*   [CSS](#css)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Related](#related)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`unified().use(rehypeKatex[, options])`](#unifieduserehypekatex-options)
+  * [`Options`](#options)
+* [Markdown](#markdown)
+* [HTML](#html)
+* [CSS](#css)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Related](#related)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -140,8 +140,8 @@ class with [KaTeX][].
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options])
-    — configuration
+* `options` ([`Options`][api-options])
+  — configuration
 
 ###### Returns
 
@@ -250,16 +250,16 @@ console.log(String(file))
 
 ## Related
 
-*   [`rehype-mathjax`][rehype-mathjax]
-    — same but with MathJax
-*   [`rehype-highlight`](https://github.com/rehypejs/rehype-highlight)
-    — highlight code blocks
-*   [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
-    — add links to headings
-*   [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize)
-    — sanitize HTML
-*   [`rehype-document`](https://github.com/rehypejs/rehype-document)
-    — wrap a document around the tree
+* [`rehype-mathjax`][rehype-mathjax]
+  — same but with MathJax
+* [`rehype-highlight`](https://github.com/rehypejs/rehype-highlight)
+  — highlight code blocks
+* [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
+  — add links to headings
+* [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize)
+  — sanitize HTML
+* [`rehype-document`](https://github.com/rehypejs/rehype-document)
+  — wrap a document around the tree
 
 ## Contribute
 

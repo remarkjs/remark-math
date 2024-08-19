@@ -41,18 +41,20 @@ RegisterHTMLHandler(adapter)
 export function createRenderer(options, output) {
   const input = new TeX({packages: AllPackages, ...options.tex})
   /** @type {MathDocument} */
-  const doc = mathjax.document('', {InputJax: input, OutputJax: output})
+  const document = mathjax.document('', {InputJax: input, OutputJax: output})
 
   return {
     render(value, options) {
       // Cast as this practically results in `HTMLElement`.
-      const domNode = /** @type {HTMLElement} */ (doc.convert(value, options))
+      const domNode = /** @type {HTMLElement} */ (
+        document.convert(value, options)
+      )
       // Cast as `HTMLElement` results in an `Element`.
       const hastNode = /** @type {Element} */ (fromDom(domNode))
       return [hastNode]
     },
     styleSheet() {
-      const value = adapter.textContent(output.styleSheet(doc))
+      const value = adapter.textContent(output.styleSheet(document))
 
       return {
         type: 'element',

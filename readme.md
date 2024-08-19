@@ -13,14 +13,14 @@ math in markdown and HTML.
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Examples](#examples)
-    *   [Example: KaTeX](#example-katex)
-    *   [Example: MathJax](#example-mathjax)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Examples](#examples)
+  * [Example: KaTeX](#example-katex)
+  * [Example: MathJax](#example-mathjax)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -29,12 +29,12 @@ support for math.
 You can use them to add support for parsing and serializing a syntax extension
 and to render math with KaTeX or MathJax.
 
-*   [`remark-math`][remark-math]
-    — remark plugin to support a math syntax in markdown
-*   [`rehype-katex`][rehype-katex]
-    — rehype plugin to render math in HTML with [KaTeX][]
-*   [`rehype-mathjax`][rehype-mathjax]
-    — rehype plugin to render math in HTML with [MathJax][]
+* [`remark-math`][remark-math]
+  — remark plugin to support a math syntax in markdown
+* [`rehype-katex`][rehype-katex]
+  — rehype plugin to render math in HTML with [KaTeX][]
+* [`rehype-mathjax`][rehype-mathjax]
+  — rehype plugin to render math in HTML with [MathJax][]
 
 When dealing with markdown, you optionally use `remark-math`, or alternatively
 use fenced code (` ```math `).
