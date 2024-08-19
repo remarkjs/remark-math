@@ -207,14 +207,16 @@ If you’re working with the syntax tree, you can register the new node types
 with `@types/mdast` by adding a reference:
 
 ```js
-// Register math nodes in mdast:
-/// <reference types="mdast-util-math" />
+/**
+ * @import {} from 'mdast-util-math' // Register math nodes.
+ * @import {Root} from 'mdast'
+ */
 
 import {visit} from 'unist-util-visit'
 
 function myRemarkPlugin() {
   /**
-   * @param {import('mdast').Root} tree
+   * @param {Root} tree
    *   Tree.
    * @returns {undefined}
    *   Nothing.

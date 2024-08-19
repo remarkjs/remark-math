@@ -1,11 +1,9 @@
-/// <reference types="mdast-util-math" />
-/// <reference types="remark-parse" />
-/// <reference types="remark-stringify" />
-
 /**
- * @typedef {import('mdast').Root} Root
- * @typedef {import('mdast-util-math').ToOptions} Options
- * @typedef {import('unified').Processor<Root>} Processor
+ * @import {ToOptions as Options} from 'mdast-util-math'
+ * @import {Root} from 'mdast'
+ * @import {} from 'remark-parse'
+ * @import {} from 'remark-stringify'
+ * @import {Processor} from 'unified'
  */
 
 import {mathFromMarkdown, mathToMarkdown} from 'mdast-util-math'
@@ -25,7 +23,7 @@ const emptyOptions = {}
 export default function remarkMath(options) {
   // @ts-expect-error: TS is wrong about `this`.
   // eslint-disable-next-line unicorn/no-this-assignment
-  const self = /** @type {Processor} */ (this)
+  const self = /** @type {Processor<Root>} */ (this)
   const settings = options || emptyOptions
   const data = self.data()
 

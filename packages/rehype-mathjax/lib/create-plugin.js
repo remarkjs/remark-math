@@ -1,7 +1,5 @@
 /**
- * @typedef {import('hast').Element} Element
- * @typedef {import('hast').ElementContent} ElementContent
- * @typedef {import('hast').Root} Root
+ * @import {ElementContent, Element, Root} from 'hast'
  */
 
 /**

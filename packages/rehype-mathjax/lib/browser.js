@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./create-plugin.js').InputTexOptions} InputTexOptions
+ * @import {InputTexOptions} from './create-plugin.js'
  */
 
 import {createPlugin} from './create-plugin.js'

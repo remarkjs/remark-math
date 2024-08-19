@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./lib/index.js').Options} Options
+ * @typedef {import('mdast-util-math').ToOptions} Options
  */
 
 export {default} from './lib/index.js'

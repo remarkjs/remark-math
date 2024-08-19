@@ -1,9 +1,8 @@
 /**
- * @typedef {import('hast').Element} Element
- * @typedef {import('mathjax-full/js/core/MathDocument.js').MathDocument<HTMLElement, Text, Document>} MathDocument
- * @typedef {import('mathjax-full/js/core/OutputJax.js').OutputJax<HTMLElement, Text, Document>} OutputJax
- * @typedef {import('./create-plugin.js').Options} Options
- * @typedef {import('./create-plugin.js').Renderer} Renderer
+ * @import {Element} from 'hast'
+ * @import {MathDocument} from 'mathjax-full/js/core/MathDocument.js'
+ * @import {OutputJax} from 'mathjax-full/js/core/OutputJax.js'
+ * @import {Options, Renderer} from './create-plugin.js'
  */
 
 import {fromDom} from 'hast-util-from-dom'
@@ -33,14 +32,14 @@ RegisterHTMLHandler(adapter)
  *
  * @param {Options} options
  *   Configuration.
- * @param {OutputJax} output
+ * @param {OutputJax<HTMLElement, Text, Document>} output
  *   Output jax.
  * @returns {Renderer}
  *   Rendeder.
  */
 export function createRenderer(options, output) {
   const input = new TeX({packages: AllPackages, ...options.tex})
-  /** @type {MathDocument} */
+  /** @type {MathDocument<HTMLElement, Text, Document>} */
   const document = mathjax.document('', {InputJax: input, OutputJax: output})
 
   return {

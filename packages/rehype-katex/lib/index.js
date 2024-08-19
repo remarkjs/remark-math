@@ -1,10 +1,7 @@
 /**
- * @typedef {import('hast').ElementContent} ElementContent
- * @typedef {import('hast').Root} Root
- *
- * @typedef {import('katex').KatexOptions} KatexOptions
- *
- * @typedef {import('vfile').VFile} VFile
+ * @import {ElementContent, Root} from 'hast'
+ * @import {KatexOptions} from 'katex'
+ * @import {VFile} from 'vfile'
  */
 
 /**
