@@ -60,7 +60,7 @@
     "@types/mathjax": "^0.0.40",
     "hast-util-from-dom": "^5.0.0",
     "hast-util-to-text": "^4.0.0",
-    "jsdom": "^23.0.0",
+    "jsdom": "^24.0.0",
     "mathjax-full": "^3.0.0",
     "unified": "^11.0.0",
     "unist-util-visit-parents": "^6.0.0"
