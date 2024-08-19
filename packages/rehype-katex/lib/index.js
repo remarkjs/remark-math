@@ -101,18 +101,19 @@ export default function rehypeKatex(options) {
           source: 'rehype-katex'
         })
 
-        // KaTeX can handle `ParseError` itself, but not others.
-        if (ruleId === 'parseerror') {
+        // KaTeX *should* handle `ParseError` itself, but not others.
+        // it doesn’t always:
+        // <https://github.com/remarkjs/react-markdown/issues/853>
+        try {
           result = katex.renderToString(value, {
             ...settings,
             displayMode,
             strict: 'ignore',
             throwOnError: false
           })
-        }
-        // Generate similar markup if this is an other error.
-        // See: <https://github.com/KaTeX/KaTeX/blob/5dc7af0/docs/error.md>.
-        else {
+        } catch {
+          // Generate similar markup if this is an other error.
+          // See: <https://github.com/KaTeX/KaTeX/blob/5dc7af0/docs/error.md>.
           result = [
             {
               type: 'element',
