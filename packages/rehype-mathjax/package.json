@@ -48,10 +48,13 @@
   },
   "files": [
     "lib/",
+    "browser.d.ts.map",
     "browser.d.ts",
     "browser.js",
+    "chtml.d.ts.map",
     "chtml.d.ts",
     "chtml.js",
+    "svg.d.ts.map",
     "svg.d.ts",
     "svg.js"
   ],
