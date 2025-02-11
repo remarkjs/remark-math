@@ -274,7 +274,7 @@ console.log(String(file))
   — highlight code blocks
 * [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
   — add links to headings
-* [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize)
+* [`rehype-sanitize`][rehype-sanitize]
   — sanitize HTML
 * [`rehype-document`](https://github.com/rehypejs/rehype-document)
   — wrap a document around the tree
@@ -295,33 +295,35 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
+[api-options]: #options
 
-[build]: https://github.com/remarkjs/remark-math/actions
+[api-rehype-mathjax]: #unifieduserehypemathjax-options
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
-
-[coverage]: https://codecov.io/github/remarkjs/remark-math
-
-[downloads-badge]: https://img.shields.io/npm/dm/rehype-mathjax.svg
-
-[downloads]: https://www.npmjs.com/package/rehype-mathjax
-
-[size-badge]: https://img.shields.io/bundlejs/size/rehype-mathjax
-
-[size]: https://bundlejs.com/?q=rehype-mathjax
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[author]: https://rokt33r.github.io
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[collective]: https://opencollective.com/unified
+[build]: https://github.com/remarkjs/remark-math/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
 
 [chat]: https://github.com/remarkjs/remark/discussions
 
-[npm]: https://docs.npmjs.com/cli/install
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
+
+[collective]: https://opencollective.com/unified
+
+[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/remarkjs/remark-math
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
+
+[downloads]: https://www.npmjs.com/package/rehype-mathjax
+
+[downloads-badge]: https://img.shields.io/npm/dm/rehype-mathjax.svg
 
 [esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
@@ -329,31 +331,39 @@ abide by its terms.
 
 [health]: https://github.com/remarkjs/.github
 
-[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
-
-[support]: https://github.com/remarkjs/.github/blob/main/support.md
-
-[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
+[katex]: https://github.com/Khan/KaTeX
 
 [license]: https://github.com/remarkjs/remark-math/blob/main/license
 
-[author]: https://rokt33r.github.io
-
-[katex]: https://github.com/Khan/KaTeX
-
-[mathjax-svg]: http://docs.mathjax.org/en/latest/output/svg.html
+[mathjax]: https://mathjax.org/
 
 [mathjax-chtml]: http://docs.mathjax.org/en/latest/output/html.html
 
-[mathjax-tex-options]: http://docs.mathjax.org/en/latest/options/input/tex.html
+[mathjax-chtml-options]: http://docs.mathjax.org/en/latest/options/output/chtml.html
+
+[mathjax-svg]: http://docs.mathjax.org/en/latest/output/svg.html
 
 [mathjax-svg-options]: http://docs.mathjax.org/en/latest/options/output/svg.html
 
-[mathjax-chtml-options]: http://docs.mathjax.org/en/latest/options/output/chtml.html
+[mathjax-tex-options]: http://docs.mathjax.org/en/latest/options/input/tex.html
+
+[npm]: https://docs.npmjs.com/cli/install
 
 [rehype]: https://github.com/rehypejs/rehype
 
+[rehype-katex]: ../rehype-katex/
+
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
+
+[remark-math]: ../remark-math/
+
+[size]: https://bundlejs.com/?q=rehype-mathjax
+
+[size-badge]: https://img.shields.io/bundlejs/size/rehype-mathjax
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/remarkjs/.github/blob/main/support.md
 
 [typescript]: https://www.typescriptlang.org
 
@@ -362,13 +372,3 @@ abide by its terms.
 [unified-transformer]: https://github.com/unifiedjs/unified#transformer
 
 [wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
-
-[mathjax]: https://mathjax.org/
-
-[remark-math]: ../remark-math/
-
-[rehype-katex]: ../rehype-katex/
-
-[api-options]: #options
-
-[api-rehype-mathjax]: #unifieduserehypemathjax-options

@@ -256,7 +256,7 @@ console.log(String(file))
   — highlight code blocks
 * [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
   — add links to headings
-* [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize)
+* [`rehype-sanitize`][rehype-sanitize]
   — sanitize HTML
 * [`rehype-document`](https://github.com/rehypejs/rehype-document)
   — wrap a document around the tree
@@ -277,33 +277,35 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
+[api-options]: #options
 
-[build]: https://github.com/remarkjs/remark-math/actions
+[api-rehype-katex]: #unifieduserehypekatex-options
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
-
-[coverage]: https://codecov.io/github/remarkjs/remark-math
-
-[downloads-badge]: https://img.shields.io/npm/dm/rehype-katex.svg
-
-[downloads]: https://www.npmjs.com/package/rehype-katex
-
-[size-badge]: https://img.shields.io/bundlejs/size/rehype-katex
-
-[size]: https://bundlejs.com/?q=rehype-katex
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[author]: https://rokt33r.github.io
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[collective]: https://opencollective.com/unified
+[build]: https://github.com/remarkjs/remark-math/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
 
 [chat]: https://github.com/remarkjs/remark/discussions
 
-[npm]: https://docs.npmjs.com/cli/install
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
+
+[collective]: https://opencollective.com/unified
+
+[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/remarkjs/remark-math
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
+
+[downloads]: https://www.npmjs.com/package/rehype-katex
+
+[downloads-badge]: https://img.shields.io/npm/dm/rehype-katex.svg
 
 [esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
@@ -311,38 +313,36 @@ abide by its terms.
 
 [health]: https://github.com/remarkjs/.github
 
-[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
-
-[support]: https://github.com/remarkjs/.github/blob/main/support.md
-
-[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
-
-[license]: https://github.com/remarkjs/remark-math/blob/main/license
-
-[author]: https://rokt33r.github.io
-
 [katex]: https://github.com/Khan/KaTeX
 
 [katex-options]: https://katex.org/docs/options.html
 
+[license]: https://github.com/remarkjs/remark-math/blob/main/license
+
+[mathjax]: https://www.mathjax.org
+
+[npm]: https://docs.npmjs.com/cli/install
+
 [rehype]: https://github.com/rehypejs/rehype
 
+[rehype-mathjax]: ../rehype-mathjax/
+
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
+
+[remark-math]: ../remark-math/
+
+[size]: https://bundlejs.com/?q=rehype-katex
+
+[size-badge]: https://img.shields.io/bundlejs/size/rehype-katex
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/remarkjs/.github/blob/main/support.md
+
+[typescript]: https://www.typescriptlang.org
 
 [unified]: https://github.com/unifiedjs/unified
 
 [unified-transformer]: https://github.com/unifiedjs/unified#transformer
 
-[typescript]: https://www.typescriptlang.org
-
 [wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
-
-[mathjax]: https://www.mathjax.org
-
-[remark-math]: ../remark-math/
-
-[rehype-mathjax]: ../rehype-mathjax/
-
-[api-options]: #options
-
-[api-rehype-katex]: #unifieduserehypekatex-options

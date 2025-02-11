@@ -164,58 +164,58 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
-
-[build]: https://github.com/remarkjs/remark-math/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
-
-[coverage]: https://codecov.io/github/remarkjs/remark-math
-
-[downloads-badge]: https://img.shields.io/npm/dm/remark-math.svg
-
-[downloads]: https://www.npmjs.com/package/remark-math
-
-[size-badge]: https://img.shields.io/bundlejs/size/remark-math
-
-[size]: https://bundlejs.com/?q=remark-math
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[author]: https://rokt33r.github.io
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[collective]: https://opencollective.com/unified
+[build]: https://github.com/remarkjs/remark-math/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
 
 [chat]: https://github.com/remarkjs/remark/discussions
 
-[health]: https://github.com/remarkjs/.github
-
-[contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
-
-[support]: https://github.com/remarkjs/.github/blob/HEAD/support.md
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
 [coc]: https://github.com/remarkjs/.github/blob/HEAD/code-of-conduct.md
 
-[license]: license
+[collective]: https://opencollective.com/unified
 
-[author]: https://rokt33r.github.io
+[contributing]: https://github.com/remarkjs/.github/blob/HEAD/contributing.md
+
+[coverage]: https://codecov.io/github/remarkjs/remark-math
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
+
+[downloads]: https://www.npmjs.com/package/remark-math
+
+[downloads-badge]: https://img.shields.io/npm/dm/remark-math.svg
+
+[health]: https://github.com/remarkjs/.github
 
 [katex]: https://github.com/Khan/KaTeX
 
+[license]: license
+
 [mathjax]: https://mathjax.org/
 
-[unified]: https://github.com/unifiedjs/unified
-
 [rehype]: https://github.com/rehypejs/rehype
-
-[remark]: https://github.com/remarkjs/remark
-
-[wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
 
 [rehype-katex]: ./packages/rehype-katex/
 
 [rehype-mathjax]: ./packages/rehype-mathjax/
 
+[remark]: https://github.com/remarkjs/remark
+
 [remark-math]: ./packages/remark-math/
+
+[size]: https://bundlejs.com/?q=remark-math
+
+[size-badge]: https://img.shields.io/bundlejs/size/remark-math
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/remarkjs/.github/blob/HEAD/support.md
+
+[unified]: https://github.com/unifiedjs/unified
+
+[wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting

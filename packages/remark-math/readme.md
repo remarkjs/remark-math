@@ -276,51 +276,45 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
+[api-options]: #options
 
-[build]: https://github.com/remarkjs/remark-math/actions
+[api-remark-math]: #unifieduseremarkmath-options
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
-
-[coverage]: https://codecov.io/github/remarkjs/remark-math
-
-[downloads-badge]: https://img.shields.io/npm/dm/remark-math.svg
-
-[downloads]: https://www.npmjs.com/package/remark-math
-
-[size-badge]: https://img.shields.io/bundlejs/size/remark-math
-
-[size]: https://bundlejs.com/?q=remark-math
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[author]: https://rokt33r.github.io
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[collective]: https://opencollective.com/unified
+[build]: https://github.com/remarkjs/remark-math/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
 
 [chat]: https://github.com/remarkjs/remark/discussions
 
-[npm]: https://docs.npmjs.com/cli/install
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
+
+[collective]: https://opencollective.com/unified
+
+[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/remarkjs/remark-math
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
+
+[downloads]: https://www.npmjs.com/package/remark-math
+
+[downloads-badge]: https://img.shields.io/npm/dm/remark-math.svg
 
 [esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
 [esmsh]: https://esm.sh
 
+[hast]: https://github.com/syntax-tree/hast
+
 [health]: https://github.com/remarkjs/.github
 
-[contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
-
-[support]: https://github.com/remarkjs/.github/blob/main/support.md
-
-[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
-
 [license]: https://github.com/remarkjs/remark-math/blob/main/license
-
-[author]: https://rokt33r.github.io
-
-[hast]: https://github.com/syntax-tree/hast
 
 [mdast-util-from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
 
@@ -332,18 +326,24 @@ abide by its terms.
 
 [micromark-extension-math]: https://github.com/micromark/micromark-extension-math
 
+[npm]: https://docs.npmjs.com/cli/install
+
 [rehype]: https://github.com/rehypejs/rehype
 
 [remark]: https://github.com/remarkjs/remark
 
 [remark-rehype]: https://github.com/remarkjs/remark-rehype
 
+[size]: https://bundlejs.com/?q=remark-math
+
+[size-badge]: https://img.shields.io/bundlejs/size/remark-math
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/remarkjs/.github/blob/main/support.md
+
 [typescript]: https://www.typescriptlang.org
 
 [unified]: https://github.com/unifiedjs/unified
 
 [wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
-
-[api-options]: #options
-
-[api-remark-math]: #unifieduseremarkmath-options
