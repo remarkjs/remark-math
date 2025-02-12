@@ -164,9 +164,13 @@
  *
  * @typedef Renderer
  *   Renderer.
+ * @property {(() => undefined) | undefined} [register]
+ *   Called before transform.
+ * @property {(() => undefined) | undefined} [unregister]
+ *   Called after transform.
  * @property {Render} render
  *   Render a math node.
- * @property {StyleSheet | null | undefined} [styleSheet]
+ * @property {StyleSheet | undefined} [styleSheet]
  *   Render a style sheet (optional).
  *
  * @callback StyleSheet
@@ -257,7 +261,9 @@ export function createPlugin(createRenderer) {
         /* c8 ignore next -- verbose to test. */
         if (!parent) return
 
+        if (!found && renderer.register) renderer.register()
         found = true
+
         const text = toText(scope, {whitespace: 'pre'})
         const result = renderer.render(text, {display})
 
@@ -267,8 +273,9 @@ export function createPlugin(createRenderer) {
         return SKIP
       })
 
-      if (found && renderer.styleSheet) {
-        context.children.push(renderer.styleSheet())
+      if (found) {
+        if (renderer.styleSheet) context.children.push(renderer.styleSheet())
+        if (renderer.unregister) renderer.unregister()
       }
     }
   }
