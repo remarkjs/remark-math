@@ -54,7 +54,7 @@
  * @property {boolean | null | undefined} [useLabelIds]
  *   Use label name rather than tag for ids (optional).
  *
- * @typedef {[string, string]} MathNotation
+ * @typedef {[open: string, close: string]} MathNotation
  *   Markers to use for math.
  *   See: <http://docs.mathjax.org/en/latest/options/input/tex.html#the-configuration-block>
  *
@@ -83,14 +83,14 @@
  *     })
  *     // …
  *   ```
- * @property {Readonly<OutputCHtmlOptions> | null | undefined} [chtml]
+ * @property {Readonly<OutputChtmlOptions> | null | undefined} [chtml]
  *   Configuration for the output, when CHTML (optional).
  * @property {Readonly<OutputSvgOptions> | null | undefined} [svg]
  *   Configuration for the output, when SVG (optional).
  * @property {Readonly<InputTexOptions> | null | undefined} [tex]
  *   Configuration for the input TeX (optional).
  *
- * @typedef OutputCHtmlOptions
+ * @typedef OutputChtmlOptions
  *   Configuration for output CHTML.
  *   <http://docs.mathjax.org/en/latest/options/output/chtml.html#the-configuration-block>
  * @property {boolean | null | undefined} [adaptiveCSS]

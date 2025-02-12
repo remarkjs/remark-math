@@ -5,15 +5,15 @@
  * @import {LiteText} from 'mathjax-full/js/adaptors/lite/Text.js'
  * @import {MathDocument} from 'mathjax-full/js/core/MathDocument.js'
  * @import {OutputJax} from 'mathjax-full/js/core/OutputJax.js'
- * @import {HTMLHandler} from 'mathjax-full/js/handlers/html/HTMLHandler.js'
+ * @import {HTMLHandler as HtmlHandler} from 'mathjax-full/js/handlers/html/HTMLHandler.js'
  * @import {Options, Renderer} from './create-plugin.js'
  */
 
 import {h} from 'hastscript'
 import {liteAdaptor as liteAdapter} from 'mathjax-full/js/adaptors/liteAdaptor.js'
-import {RegisterHTMLHandler} from 'mathjax-full/js/handlers/html.js'
-import {AllPackages} from 'mathjax-full/js/input/tex/AllPackages.js'
-import {TeX} from 'mathjax-full/js/input/tex.js'
+import {RegisterHTMLHandler as registerHtmlHandler} from 'mathjax-full/js/handlers/html.js'
+import {AllPackages as allPackages} from 'mathjax-full/js/input/tex/AllPackages.js'
+import {TeX as Tex} from 'mathjax-full/js/input/tex.js'
 import {mathjax} from 'mathjax-full/js/mathjax.js'
 
 /**
@@ -27,17 +27,16 @@ import {mathjax} from 'mathjax-full/js/mathjax.js'
  *   Rendeder.
  */
 export function createRenderer(options, output) {
-  const input = new TeX({packages: AllPackages, ...options.tex})
+  const input = new Tex({packages: allPackages, ...options.tex})
   /** @type {MathDocument<LiteElement, LiteText, LiteDocument>} */
   let document
-  /** @type {HTMLHandler<LiteElement | LiteText, LiteText, LiteDocument>} */
+  /** @type {HtmlHandler<LiteElement | LiteText, LiteText, LiteDocument>} */
   let handler
 
   return {
     register() {
       const adapter = liteAdapter()
-      /* eslint-disable-next-line new-cap */
-      handler = RegisterHTMLHandler(adapter)
+      handler = registerHtmlHandler(adapter)
       document = mathjax.document('', {InputJax: input, OutputJax: output})
     },
     render(value, options) {

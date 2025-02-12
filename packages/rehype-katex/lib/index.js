@@ -112,7 +112,7 @@ export default function rehypeKatex(options) {
             throwOnError: false
           })
         } catch {
-          // Generate similar markup if this is an other error.
+          // Generate similar markup if this is another error.
           // See: <https://github.com/KaTeX/KaTeX/blob/5dc7af0/docs/error.md>.
           result = [
             {
