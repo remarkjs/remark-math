@@ -291,7 +291,7 @@ abide by its terms.
 
 ## License
 
-[MIT][license] © [TANIGUCHI Masaya][author]
+[MIT][license] © [Taniguchi Masaya][author]
 
 <!-- Definitions -->
 

@@ -160,7 +160,7 @@ abide by its terms.
 
 ## License
 
-[MIT][license] © [Junyoung Choi][author] and TANIGUCHI Masaya
+[MIT][license] © [Junyoung Choi][author] and Taniguchi Masaya
 
 <!-- Definitions -->
 
