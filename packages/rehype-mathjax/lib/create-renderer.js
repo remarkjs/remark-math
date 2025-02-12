@@ -36,9 +36,6 @@ export function createRenderer(options, output) {
   return {
     register() {
       const adapter = liteAdapter()
-      // To do next major: Keep resultant HTML handler from `register(adapter)` to
-      // allow registering the `AssistiveMmlHandler` as in this demo:
-      // <https://github.com/mathjax/MathJax-demos-node/tree/master/direct>
       /* eslint-disable-next-line new-cap */
       handler = RegisterHTMLHandler(adapter)
       document = mathjax.document('', {InputJax: input, OutputJax: output})
