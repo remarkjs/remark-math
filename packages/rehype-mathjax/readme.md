@@ -56,14 +56,14 @@ npm install rehype-mathjax
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import rehypeMathjax from 'https://esm.sh/rehype-mathjax@6'
+import rehypeMathjax from 'https://esm.sh/rehype-mathjax@7'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import rehypeMathjax from 'https://esm.sh/rehype-mathjax@6?bundle'
+  import rehypeMathjax from 'https://esm.sh/rehype-mathjax@7?bundle'
 </script>
 ```
 
@@ -223,7 +223,7 @@ versions of Node.js.
 
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
-This means we try to keep the current release line, `rehype-mathjax@6`,
+This means we try to keep the current release line, `rehype-mathjax@7`,
 compatible with Node.js 18.
 
 This plugin works with unified version 6+ and rehype version 4+.
