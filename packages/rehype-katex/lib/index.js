@@ -42,7 +42,7 @@ export default function rehypeKatex(options) {
    */
   return function (tree, file) {
     visitParents(tree, 'element', function (element, parents) {
-      const classes = Array.isArray(element.properties.className)
+      const classes = Array.isArray(element.properties?.className)
         ? element.properties.className
         : emptyClasses
       // This class can be generated from markdown with ` ```math `.
