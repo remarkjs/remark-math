@@ -38,7 +38,7 @@ and to render math with KaTeX or MathJax.
 
 When dealing with markdown, you optionally use `remark-math`, or alternatively
 use fenced code (` ```math `).
-Then, you either use `rehype-katex` or `rehype-mathjax` to render math in HTML.
+Then, you either use `rehype-katex` or `rehype-mathjax` (or one of third party rehype plugins [(see here for major ones)](https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins) for other math renderers e.g. Temml) to render math in HTML.
 
 ## When should I use this?
 
