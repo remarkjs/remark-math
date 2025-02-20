@@ -1,5 +1,6 @@
 /**
  * @import {ElementContent, Element, Root} from 'hast'
+ * @import {VFile} from 'vfile'
  */
 
 /**
@@ -210,10 +211,12 @@ export function createPlugin(createRenderer) {
      *
      * @param {Root} tree
      *   Tree.
+     * @param {VFile} file
+     *   File.
      * @returns {undefined}
      *   Nothing.
      */
-    return function (tree) {
+    return function (tree, file) {
       const renderer = createRenderer(options || emptyOptions)
       let found = false
       /** @type {Element | Root} */
@@ -265,11 +268,38 @@ export function createPlugin(createRenderer) {
         found = true
 
         const text = toText(scope, {whitespace: 'pre'})
-        const result = renderer.render(text, {display})
+        /** @type {Array<ElementContent> | undefined} */
+        let result
+
+        try {
+          result = renderer.render(text, {display})
+        } catch (error) {
+          const cause = /** @type {Error} */ (error)
+
+          file.message('Could not render math with mathjax', {
+            ancestors: [...parents, element],
+            cause,
+            place: element.position,
+            ruleId: 'mathjax-error',
+            source: 'rehype-mathjax'
+          })
+
+          result = [
+            {
+              type: 'element',
+              tagName: 'span',
+              properties: {
+                className: ['mathjax-error'],
+                style: 'color:#cc0000',
+                title: String(cause)
+              },
+              children: [{type: 'text', value: text}]
+            }
+          ]
+        }
 
         const index = parent.children.indexOf(scope)
         parent.children.splice(index, 1, ...result)
-
         return SKIP
       })
 

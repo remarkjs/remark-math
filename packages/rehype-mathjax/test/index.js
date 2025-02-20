@@ -261,4 +261,23 @@ test('rehype-mathjax', async function (t) {
       ).trim()
     )
   })
+
+  await t.test('should catch mathjax exceptions', async function () {
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeMathJaxSvg)
+      .use(rehypeStringify)
+      .process('<code class=language-math>\\a{₹}</code>.')
+
+    const value = String(file).replace(/<style>[\s\S]*<\/style>/, '')
+
+    assert.equal(
+      value,
+      '<span class="mathjax-error" style="color:#cc0000" title="TypeError: Cannot read properties of null (reading &#x27;4&#x27;)">\\a{₹}</span>.'
+    )
+
+    assert.deepEqual(file.messages.map(String), [
+      '1:1-1:39: Could not render math with mathjax'
+    ])
+  })
 })

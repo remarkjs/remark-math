@@ -12,7 +12,8 @@
     "hastscript": "^9.0.0",
     "mathjax-full": "^3.0.0",
     "unified": "^11.0.0",
-    "unist-util-visit-parents": "^6.0.0"
+    "unist-util-visit-parents": "^6.0.0",
+    "vfile": "^6.0.0"
   },
   "description": "rehype plugin to transform inline and block math with MathJax",
   "exports": {
