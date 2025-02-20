@@ -40,6 +40,10 @@ When dealing with markdown, you optionally use `remark-math`, or alternatively
 use fenced code (` ```math `).
 Then, you either use `rehype-katex` or `rehype-mathjax` to render math in HTML.
 
+There are also other plugins that work with `remark-math`.
+Such as [`rehype-mathml`](https://github.com/Daiji256/rehype-mathml)
+which uses [`ronkok/Temml`](https://github.com/ronkok/Temml).
+
 ## When should I use this?
 
 This project is useful when you want to support LaTeX math.
