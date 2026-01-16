@@ -1,4 +1,4 @@
-import {CHTML as Chtml} from 'mathjax-full/js/output/chtml.js'
+import {CHTML as Chtml} from '@mathjax/src/mjs/output/chtml.js'
 import {createPlugin} from './create-plugin.js'
 import {createRenderer} from './create-renderer.js'
 

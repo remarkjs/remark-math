@@ -1,4 +1,4 @@
-import {SVG as Svg} from 'mathjax-full/js/output/svg.js'
+import {SVG as Svg} from '@mathjax/src/mjs/output/svg.js'
 import {createPlugin} from './create-plugin.js'
 import {createRenderer} from './create-renderer.js'
 
