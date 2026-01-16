@@ -130,8 +130,6 @@
  *   Default size of ex in em units (optional).
  * @property {'global' | 'local' | 'none' | null | undefined} [fontCache]
  *   Or `'global'` or `'none'` (optional).
- * @property {boolean | null | undefined} [internalSpeechTitles]
- *   Insert `<title>` tags with speech content (optional).
  * @property {string | null | undefined} [localID]
  *   ID to use for local font cache, for single equation processing (optional).
  * @property {boolean | null | undefined} [mathmlSpacing]
