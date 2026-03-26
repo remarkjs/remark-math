@@ -262,22 +262,83 @@ test('rehype-mathjax', async function (t) {
     )
   })
 
-  await t.test('should catch mathjax exceptions', async function () {
-    const file = await unified()
+  await t.test(
+    'should render dynamic font characters (e.g. double-struck)',
+    async function () {
+      const value = String(
+        await unified()
+          .use(rehypeParse, {fragment: true})
+          .use(rehypeMathJaxSvg)
+          .use(rehypeStringify)
+          .process('<code class="language-math">\\mathbb{R}</code>')
+      )
+
+      // Double-struck R requires the dynamic `double-struck` font file.
+      // If it loaded correctly, the SVG output contains path data.
+      assert.match(value, /path.*d="/)
+    }
+  )
+
+  await t.test(
+    'should render undefined commands gracefully (mathjax v4)',
+    async function () {
+      const file = await unified()
+        .use(rehypeParse, {fragment: true})
+        .use(rehypeMathJaxSvg)
+        .use(rehypeStringify)
+        .process('<code class=language-math>\\a{₹}</code>.')
+
+      const value = String(file).replace(/<style>[\s\S]*<\/style>/, '')
+
+      // MathJax v4 renders undefined commands in red via noundefined,
+      // rather than throwing an exception.
+      assert.match(value, /fill="red"/)
+      assert.deepEqual(file.messages.map(String), [])
+    }
+  )
+
+  await t.test('should work with `processSync`', function () {
+    // react-markdown always uses unified's `runSync()` / `processSync()`
+    // internally, so the transform must be fully synchronous.
+    const file = unified()
       .use(rehypeParse, {fragment: true})
       .use(rehypeMathJaxSvg)
       .use(rehypeStringify)
-      .process('<code class=language-math>\\a{₹}</code>.')
+      .processSync('<code class="language-math">x</code>')
 
-    const value = String(file).replace(/<style>[\s\S]*<\/style>/, '')
+    assert.match(String(file), /mjx-container/)
+  })
+
+  await t.test('should have a no-op asyncLoad', async function () {
+    const {mathjax} = await import('@mathjax/src/js/mathjax.js')
+    assert.ok(mathjax.asyncLoad('anything') instanceof Promise)
+    assert.equal(await mathjax.asyncLoad('anything'), undefined)
+  })
+
+  await t.test('should catch renderer exceptions', async function () {
+    const {createPlugin} = await import('../lib/create-plugin.js')
+
+    const rehypeThrow = createPlugin(function () {
+      return {
+        render() {
+          throw new Error('test error')
+        }
+      }
+    })
+
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeThrow)
+      .use(rehypeStringify)
+      .process('<code class=language-math>x</code>.')
 
     assert.equal(
-      value,
-      '<span class="mathjax-error" style="color:#cc0000" title="TypeError: Cannot read properties of null (reading &#x27;4&#x27;)">\\a{₹}</span>.'
+      String(file),
+      '<span class="mathjax-error" style="color:#cc0000" title="Error: test error">x</span>.'
     )
 
     assert.deepEqual(file.messages.map(String), [
-      '1:1-1:39: Could not render math with mathjax'
+      '1:1-1:35: Could not render math with mathjax'
     ])
   })
 })

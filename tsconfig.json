@@ -8,7 +8,7 @@
     "exactOptionalPropertyTypes": true,
     "lib": ["es2022"],
     "module": "node16",
-    // To do: remove when `mathjax-full` types are fixed.
+    // To do: remove when `@mathjax/src` types are fixed.
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022"
