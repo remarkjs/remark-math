@@ -58,7 +58,7 @@ export default function rehypeKatex(options) {
         return
       }
 
-      let parent = parents[parents.length - 1]
+      let parent = parents.at(-1)
       let scope = element
 
       // If this was generated with ` ```math `, replace the `<pre>` and use
@@ -71,7 +71,7 @@ export default function rehypeKatex(options) {
         parent.tagName === 'pre'
       ) {
         scope = parent
-        parent = parents[parents.length - 2]
+        parent = parents.at(-2)
         displayMode = true
       }
 

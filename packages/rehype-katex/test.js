@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import katex from 'katex'
-import rehypeKatex from 'rehype-katex'
 import rehypeParse from 'rehype-parse'
 import rehypeStringify from 'rehype-stringify'
 import remarkMath from 'remark-math'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import {unified} from 'unified'
+import rehypeKatex from 'rehype-katex'
 
 test('rehype-katex', async function (t) {
   await t.test('should expose the public api', async function () {
@@ -25,9 +25,9 @@ test('rehype-katex', async function (t) {
           .use(rehypeStringify)
           .process(
             [
-              '<p>Inline math <span class="math-inline">\\alpha</span>.</p>',
+              String.raw`<p>Inline math <span class="math-inline">\alpha</span>.</p>`,
               '<p>Block math:</p>',
-              '<div class="math-display">\\gamma</div>'
+              String.raw`<div class="math-display">\gamma</div>`
             ].join('\n')
           )
       ),
@@ -37,9 +37,11 @@ test('rehype-katex', async function (t) {
           .use(rehypeStringify)
           .process(
             [
-              '<p>Inline math ' + katex.renderToString('\\alpha') + '.</p>',
+              '<p>Inline math ' +
+                katex.renderToString(String.raw`\alpha`) +
+                '.</p>',
               '<p>Block math:</p>',
-              katex.renderToString('\\gamma', {displayMode: true})
+              katex.renderToString(String.raw`\gamma`, {displayMode: true})
             ].join('\n')
           )
       )
@@ -76,12 +78,12 @@ test('rehype-katex', async function (t) {
           .use(rehypeStringify)
           .process(
             [
-              'Inline math $\\alpha$.',
+              String.raw`Inline math $\alpha$.`,
               '',
               'Block math:',
               '',
               '$$',
-              '\\gamma',
+              String.raw`\gamma`,
               '$$'
             ].join('\n')
           )
@@ -92,9 +94,11 @@ test('rehype-katex', async function (t) {
           .use(rehypeStringify)
           .process(
             [
-              '<p>Inline math ' + katex.renderToString('\\alpha') + '.</p>',
+              '<p>Inline math ' +
+                katex.renderToString(String.raw`\alpha`) +
+                '.</p>',
               '<p>Block math:</p>',
-              katex.renderToString('\\gamma', {displayMode: true})
+              katex.renderToString(String.raw`\gamma`, {displayMode: true})
             ].join('\n')
           )
       )
@@ -111,7 +115,7 @@ test('rehype-katex', async function (t) {
             .use(rehypeKatex)
             .use(rehypeStringify)
             .process(
-              '<p>Double math <code class="math-inline math-display">\\alpha</code>.</p>'
+              String.raw`<p>Double math <code class="math-inline math-display">\alpha</code>.</p>`
             )
         ),
         String(
@@ -120,7 +124,7 @@ test('rehype-katex', async function (t) {
             .use(rehypeStringify)
             .process(
               '<p>Double math ' +
-                katex.renderToString('\\alpha', {displayMode: true}) +
+                katex.renderToString(String.raw`\alpha`, {displayMode: true}) +
                 '.</p>'
             )
         )
@@ -129,7 +133,7 @@ test('rehype-katex', async function (t) {
   )
 
   await t.test('should support `macros`', async function () {
-    const macros = {'\\RR': '\\mathbb{R}'}
+    const macros = {'\\RR': String.raw`\mathbb{R}`}
 
     assert.deepEqual(
       String(
@@ -137,13 +141,13 @@ test('rehype-katex', async function (t) {
           .use(rehypeParse, {fragment: true})
           .use(rehypeKatex, {macros})
           .use(rehypeStringify)
-          .process('<span class="math-inline">\\RR</span>')
+          .process(String.raw`<span class="math-inline">\RR</span>`)
       ),
       String(
         await unified()
           .use(rehypeParse, {fragment: true})
           .use(rehypeStringify)
-          .process(katex.renderToString('\\RR', {macros}))
+          .process(katex.renderToString(String.raw`\RR`, {macros}))
       )
     )
   })
@@ -153,7 +157,7 @@ test('rehype-katex', async function (t) {
       .use(rehypeParse, {fragment: true})
       .use(rehypeKatex, {errorColor: 'orange'})
       .use(rehypeStringify)
-      .process('<span class="math-inline">\\alpa</span>')
+      .process(String.raw`<span class="math-inline">\alpa</span>`)
 
     assert.deepEqual(
       String(file),
@@ -162,7 +166,7 @@ test('rehype-katex', async function (t) {
           .use(rehypeParse, {fragment: true})
           .use(rehypeStringify)
           .process(
-            katex.renderToString('\\alpa', {
+            katex.renderToString(String.raw`\alpa`, {
               errorColor: 'orange',
               throwOnError: false
             })
@@ -172,17 +176,22 @@ test('rehype-katex', async function (t) {
 
     assert.equal(file.messages.length, 1)
     const message = file.messages[0]
-    assert(message)
-    assert(message.cause)
+    assert.ok(message)
+    assert.ok(message.cause)
     assert.match(
       String(message.cause),
       /KaTeX parse error: Undefined control sequence/
     )
-    assert(message.ancestors)
+    assert.ok(message.ancestors)
     assert.equal(message.ancestors.length, 2)
     assert.deepEqual(
       {...file.messages[0], cause: undefined, ancestors: []},
       {
+        actual: undefined,
+        expected: undefined,
+        url: undefined,
+        file: '',
+        note: undefined,
         ancestors: [],
         cause: undefined,
         column: 1,

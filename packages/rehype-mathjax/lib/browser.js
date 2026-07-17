@@ -18,11 +18,11 @@ const emptyTexOptions = {}
  */
 const rehypeMathJaxBrowser = createPlugin(function (options) {
   const tex = options.tex || emptyTexOptions
-  const display = tex.displayMath || [['\\[', '\\]']]
-  const inline = tex.inlineMath || [['\\(', '\\)']]
+  const display = tex.displayMath || [[String.raw`\[`, String.raw`\]`]]
+  const inline = tex.inlineMath || [[String.raw`\(`, String.raw`\)`]]
 
   return {
-    render(value, options) {
+    async render(value, options) {
       const delimiters = (options.display ? display : inline)[0]
       return [{type: 'text', value: delimiters[0] + value + delimiters[1]}]
     }

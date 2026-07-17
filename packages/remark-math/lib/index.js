@@ -27,14 +27,11 @@ export default function remarkMath(options) {
   const settings = options || emptyOptions
   const data = self.data()
 
-  const micromarkExtensions =
-    data.micromarkExtensions || (data.micromarkExtensions = [])
-  const fromMarkdownExtensions =
-    data.fromMarkdownExtensions || (data.fromMarkdownExtensions = [])
-  const toMarkdownExtensions =
-    data.toMarkdownExtensions || (data.toMarkdownExtensions = [])
+  data.micromarkExtensions ||= []
+  data.fromMarkdownExtensions ||= []
+  data.toMarkdownExtensions ||= []
 
-  micromarkExtensions.push(math(settings))
-  fromMarkdownExtensions.push(mathFromMarkdown())
-  toMarkdownExtensions.push(mathToMarkdown(settings))
+  data.micromarkExtensions.push(math(settings))
+  data.fromMarkdownExtensions.push(mathFromMarkdown())
+  data.toMarkdownExtensions.push(mathToMarkdown(settings))
 }
