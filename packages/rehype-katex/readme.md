@@ -95,7 +95,7 @@ const file = await unified()
   .use(rehypeParse, {fragment: true})
   .use(rehypeDocument, {
     // Get the latest one from: <https://katex.org/docs/browser>.
-    css: 'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css'
+    css: 'https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.css'
   })
   .use(rehypeKatex)
   .use(rehypeStringify)
@@ -114,7 +114,7 @@ await write(file)
 <meta charset="utf-8">
 <title>input</title>
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<link href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.css" rel="stylesheet">
 </head>
 <body>
 <p>
@@ -190,7 +190,7 @@ At the time of writing, the last version is:
 
 ```html
 <!-- Get the latest one from: https://katex.org/docs/browser -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.css">
 ```
 
 ## Types
