@@ -254,7 +254,7 @@ test('rehype-katex', async function (t) {
           .use(rehypeKatex)
           .use(rehypeStringify)
           .process(
-            '<span class="math-display">\\begin{split}\n\\end{{split}}\n</span>'
+            '<span class="math-display">\\begin{array}{{c}}\na\n\\end{array}\n</span>'
           )
       ),
       String(
@@ -262,7 +262,7 @@ test('rehype-katex', async function (t) {
           .use(rehypeParse, {fragment: true})
           .use(rehypeStringify)
           .process(
-            '<span class="katex-error" style="color:#cc0000" title="Error: Expected node of type textord, but got node of type ordgroup">\\begin{split}\n\\end{{split}}\n</span>'
+            '<span class="katex-error" style="color:#cc0000" title="Error: Expected node of symbol group type, but got node of type ordgroup">\\begin{array}{{c}}\na\n\\end{array}\n</span>'
           )
       )
     )

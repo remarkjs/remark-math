@@ -106,7 +106,7 @@ equation.</p>
 >
 > ```html
 > <!-- Get the latest one from: https://katex.org/docs/browser -->
-> <link href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" rel="stylesheet">
+> <link href="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.css" rel="stylesheet">
 > ```
 
 ### Example: MathJax
