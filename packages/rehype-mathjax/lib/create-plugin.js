@@ -173,11 +173,18 @@
  *   Render a math node.
  * @property {StyleSheet | undefined} [styleSheet]
  *   Render a style sheet (optional).
+ * @property {PageElements | undefined} [pageElements]
+ *   Render elements for the page, such as a global font cache (optional).
  *
  * @callback StyleSheet
  *   Render a style sheet.
  * @returns {Element}
  *   Style sheet.
+ *
+ * @callback PageElements
+ *   Render elements for the page.
+ * @returns {Element | undefined}
+ *   Page elements, if needed.
  */
 
 import {toText} from 'hast-util-to-text'
@@ -221,6 +228,8 @@ export function createPlugin(createRenderer) {
       let found = false
       /** @type {Element | Root} */
       let context = tree
+      /** @type {Element | Root} */
+      let body = tree
 
       visitParents(tree, 'element', function (element, parents) {
         const classes = Array.isArray(element.properties.className)
@@ -237,6 +246,11 @@ export function createPlugin(createRenderer) {
         // Find `<head>`.
         if (element.tagName === 'head') {
           context = element
+        }
+
+        // Find `<body>`.
+        if (element.tagName === 'body') {
+          body = element
         }
 
         // Any class is fine.
@@ -305,6 +319,12 @@ export function createPlugin(createRenderer) {
 
       if (found) {
         if (renderer.styleSheet) context.children.push(renderer.styleSheet())
+
+        if (renderer.pageElements) {
+          const pageElements = renderer.pageElements()
+          if (pageElements) body.children.push(pageElements)
+        }
+
         if (renderer.unregister) renderer.unregister()
       }
     }
