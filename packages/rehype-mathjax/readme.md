@@ -187,6 +187,10 @@ For example:
   // …
 ```
 
+When using `rehype-mathjax/svg` with `options.svg.fontCache` set to
+`'global'`, a hidden `<svg>` with the glyphs used by all math is added at the
+end of `<body>` (or of the tree, for fragments).
+
 ## Markdown
 
 This plugin supports the syntax extension enabled by

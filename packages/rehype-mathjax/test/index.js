@@ -182,6 +182,37 @@ test('rehype-mathjax', async function (t) {
     )
   })
 
+  await t.test('should render SVG with a global font cache', async function () {
+    assert.equal(
+      String(
+        await unified()
+          .use(rehypeParse, {fragment: true})
+          .use(rehypeMathJaxSvg, {svg: {fontCache: 'global'}})
+          .use(rehypeStringify)
+          .process(await fs.readFile(new URL('small.html', base)))
+      ),
+      String(await fs.readFile(new URL('small-svg-global.html', base))).trim()
+    )
+  })
+
+  await t.test(
+    'should add a global font cache to `body` in complete documents',
+    async function () {
+      assert.equal(
+        String(
+          await unified()
+            .use(rehypeParse)
+            .use(rehypeMathJaxSvg, {svg: {fontCache: 'global'}})
+            .use(rehypeStringify)
+            .process(await fs.readFile(new URL('document.html', base)))
+        ),
+        String(
+          await fs.readFile(new URL('document-svg-global.html', base))
+        ).trim()
+      )
+    }
+  )
+
   await t.test(
     'should support custom `inlineMath` and `displayMath` delimiters for browser',
     async function () {

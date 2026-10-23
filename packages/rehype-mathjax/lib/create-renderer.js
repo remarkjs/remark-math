@@ -52,6 +52,14 @@ export function createRenderer(options, output) {
       node.properties.id = undefined
       return node
     },
+    pageElements() {
+      // Only the SVG output with `fontCache: 'global'` has page elements: a
+      // hidden `<svg>` with the glyphs that each `<use>` references.
+      const liteElement = /** @type {LiteElement | null} */ (
+        output.pageElements(document)
+      )
+      return liteElement ? fromLiteElement(liteElement) : undefined
+    },
     unregister() {
       mathjax.handlers.unregister(handler)
     }
