@@ -183,20 +183,25 @@ test('rehype-katex', async function (t) {
     assert.deepEqual(
       {...file.messages[0], cause: undefined, ancestors: []},
       {
+        actual: undefined,
         ancestors: [],
         cause: undefined,
         column: 1,
+        expected: undefined,
         fatal: false,
+        file: '',
         line: 1,
         message: 'Could not render math with KaTeX',
         name: '1:1-1:39',
+        note: undefined,
         place: {
           start: {column: 1, line: 1, offset: 0},
           end: {column: 39, line: 1, offset: 38}
         },
         reason: 'Could not render math with KaTeX',
         ruleId: 'parseerror',
-        source: 'rehype-katex'
+        source: 'rehype-katex',
+        url: undefined
       }
     )
   })
